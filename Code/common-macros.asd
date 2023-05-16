@@ -1,6 +1,7 @@
 (cl:in-package #:asdf-user)
 
 (defsystem #:common-macros
+  :depends-on (#:iconoclast-builder)
   :serial t
   :components
   ((:file "packages")
@@ -10,4 +11,5 @@
    (:file "unless")
    (:file "and")
    (:file "or")
-   (:file "cond")))
+   (:file "cond")
+   (:file "case")))
