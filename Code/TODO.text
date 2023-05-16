@@ -72,7 +72,7 @@ restart-case
 * return
 rotatef
 setf
-shiftf
+* shiftf
 x step
 x time
 x trace

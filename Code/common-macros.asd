@@ -18,4 +18,5 @@
    (:file "push")
    (:file "pop")
    (:file "return")
-   (:file "nth-value")))
+   (:file "nth-value")
+   (:file "shiftf")))
