@@ -53,7 +53,7 @@ multiple-value-list
 multiple-value-setq
 nth-value
 * or
-pop
+* pop
 x pprint-exit-if-list-exhausted
 x pprint-logical-block
 x pprint-pop
@@ -64,7 +64,7 @@ prog1
 prog2
 psetf
 psetq
-push
+* push
 pushnew
 remf
 restart-bind

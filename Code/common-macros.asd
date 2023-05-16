@@ -14,4 +14,6 @@
    (:file "cond")
    (:file "case")
    (:file "incf")
-   (:file "decf")))
+   (:file "decf")
+   (:file "push")
+   (:file "pop")))

@@ -13,5 +13,7 @@
          #:cond
          #:case
          #:incf
-         #:decf))
+         #:decf
+         #:push
+         #:pop))
   (:export . #1#))
