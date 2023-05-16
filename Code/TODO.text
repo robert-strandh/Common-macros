@@ -4,7 +4,7 @@ x = not included
 * and
 assert
 call-method
-case
+* case
 ccase
 check-type
 * cond
