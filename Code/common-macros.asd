@@ -5,6 +5,7 @@
   :components
   ((:file "packages")
    (:file "utilities")
+   (:file "conditions")
    (:file "when")
    (:file "unless")
    (:file "and")
