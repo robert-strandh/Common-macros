@@ -12,4 +12,6 @@
    (:file "and")
    (:file "or")
    (:file "cond")
-   (:file "case")))
+   (:file "case")
+   (:file "incf")
+   (:file "decf")))

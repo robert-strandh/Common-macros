@@ -10,7 +10,7 @@ check-type
 * cond
 ctypecase
 declaim
-decf
+* decf
 defclass
 defconstant
 defgeneric
@@ -44,10 +44,10 @@ handler-bind
 handler-case
 ignore-errors
 in-package
-incf
+* incf
 lambda
-loop
-loop-finish
+x loop
+x loop-finish
 multiple-value-bind
 multiple-value-list
 multiple-value-setq

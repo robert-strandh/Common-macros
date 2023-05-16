@@ -11,5 +11,7 @@
          #:and
          #:or
          #:cond
-         #:case))
+         #:case
+         #:incf
+         #:decf))
   (:export . #1#))
