@@ -74,14 +74,14 @@ rotatef
 setf
 shiftf
 x step
-time
+x time
 x trace
 typecase
 * unless
 x untrace
 * when
 with-accessors
-with-compilation-unit
+x with-compilation-unit
 with-condition-restarts
 with-hash-table-iterator
 with-input-from-string
