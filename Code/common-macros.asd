@@ -16,4 +16,5 @@
    (:file "incf")
    (:file "decf")
    (:file "push")
-   (:file "pop")))
+   (:file "pop")
+   (:file "return")))

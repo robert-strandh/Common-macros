@@ -15,5 +15,6 @@
          #:incf
          #:decf
          #:push
-         #:pop))
+         #:pop
+         #:return))
   (:export . #1#))

@@ -69,7 +69,7 @@ pushnew
 remf
 restart-bind
 restart-case
-return
+* return
 rotatef
 setf
 shiftf
