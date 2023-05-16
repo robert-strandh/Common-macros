@@ -16,5 +16,6 @@
          #:decf
          #:push
          #:pop
-         #:return))
+         #:return
+         #:nth-value))
   (:export . #1#))

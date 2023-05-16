@@ -17,4 +17,5 @@
    (:file "decf")
    (:file "push")
    (:file "pop")
-   (:file "return")))
+   (:file "return")
+   (:file "nth-value")))

@@ -51,7 +51,7 @@ x loop-finish
 multiple-value-bind
 multiple-value-list
 multiple-value-setq
-nth-value
+* nth-value
 * or
 * pop
 x pprint-exit-if-list-exhausted
