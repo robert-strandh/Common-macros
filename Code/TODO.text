@@ -54,9 +54,9 @@ multiple-value-setq
 nth-value
 * or
 pop
-pprint-exit-if-list-exhausted
-pprint-logical-block
-pprint-pop
+x pprint-exit-if-list-exhausted
+x pprint-logical-block
+x pprint-pop
 print-unreadable-object
 prog
 prog*
@@ -73,12 +73,12 @@ return
 rotatef
 setf
 shiftf
-step
+x step
 time
-trace
+x trace
 typecase
 * unless
-untrace
+x untrace
 * when
 with-accessors
 with-compilation-unit
