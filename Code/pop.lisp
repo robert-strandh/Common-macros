@@ -9,5 +9,6 @@
            (prog1 (car ,(car store-vars))
              (setq ,(car store-vars) (cdr ,(car store-vars)))
              ,writer-form)
-           (error 'must-be-list
+           (error 'type-error
+                  :expected-type 'list
                   :datum ',(car store-vars))))))
