@@ -25,8 +25,8 @@ defmethod
 defpackage
 * defparameter
 defsetf
-defstruct
-deftype
+x defstruct
+x deftype
 defun
 * defvar
 destructuring-bind
@@ -39,7 +39,7 @@ dolist
 dotimes
 ecase
 etypecase
-formatter
+x formatter
 handler-bind
 handler-case
 ignore-errors
@@ -83,7 +83,7 @@ x untrace
 with-accessors
 x with-compilation-unit
 with-condition-restarts
-with-hash-table-iterator
+x with-hash-table-iterator
 with-input-from-string
 with-open-file
 with-open-stream
@@ -91,4 +91,4 @@ with-output-to-string
 with-package-iterator
 with-simple-restart
 with-slots
-with-standard-io-syntax
+x with-standard-io-syntax
