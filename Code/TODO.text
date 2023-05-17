@@ -23,12 +23,12 @@ define-symbol-macro
 defmacro
 defmethod
 defpackage
-defparameter
+* defparameter
 defsetf
 defstruct
 deftype
 defun
-defvar
+* defvar
 destructuring-bind
 do
 do*
