@@ -41,13 +41,11 @@
          (setf-expansions
            ;; Collect the SETF-EXPANSION of each place as a list of the
            ;; values returned by GET-SETF-EXPANSION. 
-           (loop for place in places
-                 collect (multiple-value-list
-                          (get-setf-expansion place)))))
+           (mapcar (cl:lambda (place)
+                     (cl:multiple-value-list (get-setf-expansion place)))
+                   places)))
     (flet ((make-let*-bindings (temporary-variables value-forms)
-             (cl:loop for var in temporary-variables
-                      for form in value-forms
-                      collect `(,var ,form))))
+             (mapcar #'list temporary-variables value-forms)))
       (if (= (length places) 1)
           (cl:destructuring-bind (temporary-variables
                                   value-forms
@@ -63,9 +61,7 @@
                   ;; We start by creating the body of the result, which
                   ;; contains all the STORE-FORMs, storing the
                   ;; STORE-VARIABLEs in the respective place.
-                  `(progn ,@(cl:loop for setf-expansion in setf-expansions
-                                     for store-form = (fourth setf-expansion)
-                                     collect store-form))))
+                  `(progn ,@(mapcar #'fourth setf-expansions))))
             ;; Now, we deal with the LAST PLACE.  We wrap the body of
             ;; the result in the binding of NEW-VALUE-FORM to the
             ;; store variables of that place.
