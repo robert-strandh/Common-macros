@@ -70,7 +70,7 @@ remf
 restart-bind
 restart-case
 * return
-rotatef
+* rotatef
 setf
 * shiftf
 x step

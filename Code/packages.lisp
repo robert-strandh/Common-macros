@@ -18,5 +18,6 @@
          #:pop
          #:return
          #:nth-value
-         #:shiftf))
+         #:shiftf
+         #:rotatef))
   (:export . #1#))

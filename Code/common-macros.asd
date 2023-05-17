@@ -19,4 +19,5 @@
    (:file "pop")
    (:file "return")
    (:file "nth-value")
-   (:file "shiftf")))
+   (:file "shiftf")
+   (:file "rotatef")))
