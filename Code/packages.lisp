@@ -19,5 +19,7 @@
          #:return
          #:nth-value
          #:shiftf
-         #:rotatef))
+         #:rotatef
+         #:defvar
+         #:defparameter))
   (:export . #1#))

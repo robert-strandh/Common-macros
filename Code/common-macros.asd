@@ -20,4 +20,6 @@
    (:file "return")
    (:file "nth-value")
    (:file "shiftf")
-   (:file "rotatef")))
+   (:file "rotatef")
+   (:file "defvar")
+   (:file "defparameter")))
