@@ -4,8 +4,8 @@
 ;;; Common Lisp standard.
 (defmacro defparameter
     (name initial-value &optional (documentation nil documentation-p))
-  `(progn (declaim (special ,name))
-          (setf (symbol-value ',name) ,initial-value)
-          ,(when documentation-p
-             `(setf (documentation ',name 'variable) ',documentation))
+  `(progn (cl:declaim (special ,name))
+          (cl:setf (symbol-value ',name) ,initial-value)
+          ,(cl:when documentation-p
+             `(cl:setf (documentation ',name 'variable) ',documentation))
           ',name))
