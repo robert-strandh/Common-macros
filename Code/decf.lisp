@@ -1,6 +1,6 @@
 (cl:in-package #:common-macros)
 
-(defmacro decf (&environment env place &optional (delta-form 1))
+(defmacro cmd:decf (&environment env place &optional (delta-form 1))
   (multiple-value-bind (vars vals store-vars writer-form reader-form)
       (get-setf-expansion place env)
     (if (null vars)

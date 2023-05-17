@@ -2,14 +2,14 @@
 
 ;;; This code is taken from the dictionary page on DEFVAR in the
 ;;; Common Lisp standard.
-(defmacro defvar
+(defmacro cmd:defvar
     (name &optional
             (initial-value nil initial-value-p)
             (documentation nil documentation-p))
-  `(progn (cl:declaim (special ,name))
-          ,(cl:when initial-value-p
-             `(cl:unless (boundp ',name)
-                (cl:setf (symbol-value ',name) ,initial-value)))
-          ,(cl:when documentation-p
-             `(cl:setf (documentation ',name 'variable) ',documentation))
+  `(progn (declaim (special ,name))
+          ,(when initial-value-p
+             `(unless (boundp ',name)
+                (setf (symbol-value ',name) ,initial-value)))
+          ,(when documentation-p
+             `(setf (documentation ',name 'variable) ',documentation))
           ',name))

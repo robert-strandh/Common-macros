@@ -1,4 +1,4 @@
 (cl:in-package #:common-macros)
 
-(defmacro return (form)
+(defmacro cmd:return (form)
   `(return-from nil ,form))

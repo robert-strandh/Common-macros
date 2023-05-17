@@ -1,26 +1,26 @@
 (cl:in-package #:common-macros)
 
-(defmacro rotatef (&rest places)
+(defmacro cmd:rotatef (&rest places)
   (let* ((setf-expansions
            ;; Collect the SETF-EXPANSION of each place as a list of the
            ;; values returned by GET-SETF-EXPANSION. 
-           (cl:loop for place in places
-                    collect (multiple-value-list
-                             (get-setf-expansion place))))
+           (loop for place in places
+                 collect (multiple-value-list
+                          (get-setf-expansion place))))
          (result
            ;; We start by creating the body of the result, which
            ;; contains all the STORE-FORMs, storing the
            ;; STORE-VARIABLEs in the respective place.
-           `(progn ,@(cl:loop for setf-expansion in setf-expansions
-                              for store-form = (fourth setf-expansion)
-                              collect store-form)
+           `(progn ,@(loop for setf-expansion in setf-expansions
+                           for store-form = (fourth setf-expansion)
+                           collect store-form)
                    ;; The HyperSpec says that ROTATEF returns NIL, so
                    ;; we make NIL the last element in the body of the
                    ;; result.
                    nil)))
-    (cl:loop for right-hand-side
-             in (reverse (append (last setf-expansions)
-                                 (butlast setf-expansions)))
+    (loop for right-hand-side
+            in (reverse (append (last setf-expansions)
+                                (butlast setf-expansions)))
           for store-variables = (third right-hand-side)
           for (temporary-variables
                value-forms
@@ -28,10 +28,10 @@
                nil
                accessing-form)
             in (reverse setf-expansions)
-          do (cl:setf result
-                     `(let* ,(cl:loop for var in temporary-variables
-                                      for form in value-forms
-                                      collect `(,var ,form))
-                      (cl:multiple-value-bind ,store-variables ,accessing-form
+          do (setf result
+                   `(let* ,(loop for var in temporary-variables
+                                 for form in value-forms
+                                 collect `(,var ,form))
+                      (multiple-value-bind ,store-variables ,accessing-form
                         ,result))))
     result))

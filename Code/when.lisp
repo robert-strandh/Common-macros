@@ -1,5 +1,5 @@
 (cl:in-package #:common-macros)
 
-(defmacro when (test &rest forms)
+(defmacro cmd:when (test &rest forms)
   `(if ,test
        (progn ,@forms)))

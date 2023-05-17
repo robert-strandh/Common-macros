@@ -1,6 +1,6 @@
 (cl:in-package #:common-macros)
 
-(defmacro push (item place &environment environment)
+(defmacro cmd:push (item place &environment environment)
   (multiple-value-bind (vars vals store-vars writer-form reader-form)
       (get-setf-expansion place environment)
     (let ((item-var (gensym)))

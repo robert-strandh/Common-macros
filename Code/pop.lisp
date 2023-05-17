@@ -1,6 +1,6 @@
 (cl:in-package #:common-macros)
 
-(defmacro pop (place &environment environment)
+(defmacro cmd:pop (place &environment environment)
   (multiple-value-bind (vars vals store-vars writer-form reader-form)
       (get-setf-expansion place environment)
     `(let* (,(mapcar #'list vars vals)

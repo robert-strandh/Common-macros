@@ -1,6 +1,6 @@
 (cl:in-package #:common-macros)
 
-(defmacro or (&rest forms)
+(defmacro cmd:or (&rest forms)
   (labels ((aux (forms)
              (if (null (cdr forms))
                  (car forms)

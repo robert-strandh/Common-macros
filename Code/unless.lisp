@@ -1,6 +1,6 @@
 (cl:in-package #:common-macros)
 
-(defmacro unless (test &rest forms)
+(defmacro cmd:unless (test &rest forms)
   `(if ,test
        nil
        (progn ,@forms)))
