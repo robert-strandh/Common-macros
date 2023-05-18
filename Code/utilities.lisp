@@ -17,3 +17,21 @@
     (if (null pos)
         (values body '())
         (values (subseq body 0 pos) (subseq body pos)))))
+
+(defun extract-bindings (variable-clauses)
+  (mapcar
+   (lambda (clause)
+     (cond ((symbolp clause) clause)
+           ((null (cdr clause)) (car clause))
+           (t (list (car clause) (cadr clause)))))
+   variable-clauses))
+
+(defun extract-updates (variable-clauses)
+  (if (null variable-clauses) '()
+      (let ((clause (car variable-clauses)))
+        (if (and (consp clause)
+                 (not (null (cddr clause))))
+            (list* (car clause)
+                   (caddr clause)
+                   (extract-updates (cdr variable-clauses)))
+            (extract-updates (cdr variable-clauses))))))
