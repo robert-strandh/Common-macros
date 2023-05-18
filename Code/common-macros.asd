@@ -23,4 +23,5 @@
    (:file "rotatef")
    (:file "defvar")
    (:file "defparameter")
-   (:file "defun")))
+   (:file "defun")
+   (:file "declaim")))

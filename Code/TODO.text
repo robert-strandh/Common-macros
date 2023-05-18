@@ -9,7 +9,7 @@ ccase
 check-type
 * cond
 ctypecase
-declaim
+* declaim
 * decf
 defclass
 defconstant
@@ -27,7 +27,7 @@ defpackage
 defsetf
 x defstruct
 x deftype
-defun
+* defun
 * defvar
 destructuring-bind
 do

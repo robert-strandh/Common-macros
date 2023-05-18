@@ -19,7 +19,8 @@
    #:rotatef
    #:defvar
    #:defparameter
-   #:defun))
+   #:defun
+   #:declaim))
 
 (defpackage #:common-macros
   (:use #:common-lisp)
