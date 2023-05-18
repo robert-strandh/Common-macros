@@ -21,31 +21,23 @@
 ;;; the syntax checking is going to be skimpy.
 
 (defmacro cmd:dolist ((var list-form &optional result-form) &body body)
-  (let ((boundary (position-if (lambda (item)
-                                 (and (consp item) (eq (first item) 'declare)))
-                               body)))
-    (multiple-value-bind (declarations forms)
-        (values (if (null boundary)
-                    '()
-                    (subseq body 0 boundary))
-                (if (null boundary)
-                    body
-                    (subseq body boundary)))
-      (let ((start-tag (gensym))
-            (end-tag (gensym))
-            (list-var (gensym)))
-        `(let ((,list-var ,list-form))
-           (block nil
-             (tagbody
-                ,start-tag
-                (when (endp ,list-var)
-                  (go ,end-tag))
-                (let ((,var (car ,list-var)))
-                  ,@declarations
-                  (tagbody ,@forms))
-                (pop ,list-var)
-                (go ,start-tag)
-                ,end-tag)
-             (let ((,var nil))
-               (declare (ignorable ,var))
-               ,result-form)))))))
+  (multiple-value-bind (declarations forms)
+      (separate-ordinary-body body)
+    (let ((start-tag (gensym))
+          (end-tag (gensym))
+          (list-var (gensym)))
+      `(let ((,list-var ,list-form))
+         (block nil
+           (tagbody
+              ,start-tag
+              (when (endp ,list-var)
+                (go ,end-tag))
+              (let ((,var (car ,list-var)))
+                ,@declarations
+                (tagbody ,@forms))
+              (pop ,list-var)
+              (go ,start-tag)
+              ,end-tag)
+           (let ((,var nil))
+             (declare (ignorable ,var))
+             ,result-form))))))
