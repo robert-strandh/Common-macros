@@ -35,4 +35,5 @@
    (:file "in-package")
    (:file "check-type")
    (:file "dolist")
-   (:file "dotimes")))
+   (:file "dotimes")
+   (:file "do")))

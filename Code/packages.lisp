@@ -31,7 +31,8 @@
    #:in-package
    #:check-type
    #:dolist
-   #:dotimes))
+   #:dotimes
+   #:do))
 
 (defpackage #:common-macros
   (:use #:common-lisp)
