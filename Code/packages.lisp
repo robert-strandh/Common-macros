@@ -20,7 +20,8 @@
    #:defvar
    #:defparameter
    #:defun
-   #:declaim))
+   #:declaim
+   #:lambda))
 
 (defpackage #:common-macros
   (:use #:common-lisp)

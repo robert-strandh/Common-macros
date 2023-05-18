@@ -24,4 +24,5 @@
    (:file "defvar")
    (:file "defparameter")
    (:file "defun")
-   (:file "declaim")))
+   (:file "declaim")
+   (:file "lambda")))
