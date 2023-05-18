@@ -36,4 +36,5 @@
    (:file "check-type")
    (:file "dolist")
    (:file "dotimes")
-   (:file "do")))
+   (:file "do")
+   (:file "dostar")))
