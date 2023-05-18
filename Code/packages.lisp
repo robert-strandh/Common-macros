@@ -27,7 +27,8 @@
    #:prog1
    #:prog2
    #:pushnew
-   #:remf))
+   #:remf
+   #:in-package))
 
 (defpackage #:common-macros
   (:use #:common-lisp)

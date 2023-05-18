@@ -31,4 +31,5 @@
    (:file "prog1")
    (:file "prog2")
    (:file "pushnew")
-   (:file "remf")))
+   (:file "remf")
+   (:file "in-package")))
