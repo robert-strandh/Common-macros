@@ -30,8 +30,8 @@ x deftype
 * defun
 * defvar
 destructuring-bind
-do
-do*
+* do
+* do*
 x do-all-symbols
 x do-external-symbols
 x do-symbols
