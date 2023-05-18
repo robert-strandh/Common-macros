@@ -30,7 +30,8 @@
    #:remf
    #:in-package
    #:check-type
-   #:dolist))
+   #:dolist
+   #:dotimes))
 
 (defpackage #:common-macros
   (:use #:common-lisp)
