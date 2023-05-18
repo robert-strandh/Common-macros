@@ -1,8 +1,5 @@
 (cl:in-package #:common-macros)
 
-;; (let ((builder (make-instance 'builder)))
-;;   (s-expression-syntax:parse builder t expression)))
-
 (defmacro cmd:case (&whole form keyform &rest clauses)
   (declare (ignore keyform clauses))
   (let* ((builder (make-instance 'bld:builder))

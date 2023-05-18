@@ -9,6 +9,8 @@
    #:or
    #:cond
    #:case
+   #:ecase
+   #:ccase
    #:incf
    #:decf
    #:push

@@ -13,6 +13,7 @@
    (:file "or")
    (:file "cond")
    (:file "case")
+   (:file "ecase")
    (:file "incf")
    (:file "decf")
    (:file "push")

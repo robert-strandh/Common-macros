@@ -37,7 +37,7 @@ x do-external-symbols
 x do-symbols
 dolist
 dotimes
-ecase
+* ecase
 etypecase
 x formatter
 handler-bind
@@ -45,7 +45,7 @@ handler-case
 ignore-errors
 in-package
 * incf
-lambda
+* lambda
 x loop
 x loop-finish
 multiple-value-bind
