@@ -23,7 +23,9 @@
    #:defparameter
    #:defun
    #:declaim
-   #:lambda))
+   #:lambda
+   #:prog1
+   #:prog2))
 
 (defpackage #:common-macros
   (:use #:common-lisp)
