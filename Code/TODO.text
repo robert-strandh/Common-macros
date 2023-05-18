@@ -3,7 +3,7 @@ x = not included
 
 * and
 assert
-call-method
+x call-method
 * case
 ccase
 check-type
@@ -32,9 +32,9 @@ defun
 destructuring-bind
 do
 do*
-do-all-symbols
-do-external-symbols
-do-symbols
+x do-all-symbols
+x do-external-symbols
+x do-symbols
 dolist
 dotimes
 ecase
