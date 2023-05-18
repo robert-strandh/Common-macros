@@ -29,4 +29,5 @@
    (:file "declaim")
    (:file "lambda")
    (:file "prog1")
-   (:file "prog2")))
+   (:file "prog2")
+   (:file "pushnew")))

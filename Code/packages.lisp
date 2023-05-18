@@ -25,7 +25,8 @@
    #:declaim
    #:lambda
    #:prog1
-   #:prog2))
+   #:prog2
+   #:pushnew))
 
 (defpackage #:common-macros
   (:use #:common-lisp)

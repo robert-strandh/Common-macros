@@ -65,7 +65,7 @@ prog*
 psetf
 psetq
 * push
-pushnew
+* pushnew
 remf
 restart-bind
 restart-case
