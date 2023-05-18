@@ -26,7 +26,8 @@
    #:lambda
    #:prog1
    #:prog2
-   #:pushnew))
+   #:pushnew
+   #:remf))
 
 (defpackage #:common-macros
   (:use #:common-lisp)

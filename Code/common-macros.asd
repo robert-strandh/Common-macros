@@ -30,4 +30,5 @@
    (:file "lambda")
    (:file "prog1")
    (:file "prog2")
-   (:file "pushnew")))
+   (:file "pushnew")
+   (:file "remf")))
