@@ -6,7 +6,7 @@ assert
 x call-method
 * case
 ccase
-check-type
+* check-type
 * cond
 ctypecase
 * declaim

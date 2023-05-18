@@ -32,4 +32,5 @@
    (:file "prog2")
    (:file "pushnew")
    (:file "remf")
-   (:file "in-package")))
+   (:file "in-package")
+   (:file "check-type")))

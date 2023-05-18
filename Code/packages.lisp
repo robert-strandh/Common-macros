@@ -28,7 +28,8 @@
    #:prog2
    #:pushnew
    #:remf
-   #:in-package))
+   #:in-package
+   #:check-type))
 
 (defpackage #:common-macros
   (:use #:common-lisp)
