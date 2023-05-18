@@ -29,7 +29,8 @@
    #:pushnew
    #:remf
    #:in-package
-   #:check-type))
+   #:check-type
+   #:dolist))
 
 (defpackage #:common-macros
   (:use #:common-lisp)
