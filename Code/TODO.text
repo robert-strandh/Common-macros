@@ -60,8 +60,8 @@ x pprint-pop
 print-unreadable-object
 prog
 prog*
-prog1
-prog2
+* prog1
+* prog2
 psetf
 psetq
 * push
