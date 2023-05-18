@@ -22,4 +22,5 @@
    (:file "shiftf")
    (:file "rotatef")
    (:file "defvar")
-   (:file "defparameter")))
+   (:file "defparameter")
+   (:file "defun")))

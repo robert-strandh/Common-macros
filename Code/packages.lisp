@@ -18,7 +18,8 @@
    #:shiftf
    #:rotatef
    #:defvar
-   #:defparameter))
+   #:defparameter
+   #:defun))
 
 (defpackage #:common-macros
   (:use #:common-lisp)
