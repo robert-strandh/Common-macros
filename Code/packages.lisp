@@ -22,6 +22,7 @@
    #:defvar
    #:defparameter
    #:defun
+   #:defclass
    #:declaim
    #:lambda
    #:prog1
