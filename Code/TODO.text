@@ -13,7 +13,7 @@ ctypecase
 * decf
 * defclass
 defconstant
-defgeneric
+* defgeneric
 define-compiler-macro
 define-condition
 define-method-combination

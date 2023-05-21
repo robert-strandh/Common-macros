@@ -27,6 +27,7 @@
    (:file "defparameter")
    (:file "defun")
    (:file "defclass")
+   (:file "defgeneric")
    (:file "declaim")
    (:file "lambda")
    (:file "prog1")

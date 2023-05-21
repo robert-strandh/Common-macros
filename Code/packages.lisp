@@ -23,6 +23,7 @@
    #:defparameter
    #:defun
    #:defclass
+   #:defgeneric
    #:declaim
    #:lambda
    #:prog1
