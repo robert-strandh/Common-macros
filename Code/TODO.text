@@ -11,7 +11,7 @@ ccase
 ctypecase
 * declaim
 * decf
-defclass
+* defclass
 defconstant
 defgeneric
 define-compiler-macro
