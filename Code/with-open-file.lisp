@@ -19,10 +19,9 @@
              (subseq body 0 (1+ position)))
        (unwind-protect
             (multiple-value-prog1
-                (progn ,(if (null position)
-                            body
-                            (subseq body (1+ position))))
+                (progn ,@(if (null position)
+                             body
+                             (subseq body (1+ position))))
               (setq ,abort-variable nil))
          (unless (null ,stream-variable)
            (close ,stream-variable :abort ,abort-variable))))))
-    
