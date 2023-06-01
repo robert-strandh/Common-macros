@@ -58,8 +58,8 @@ x pprint-exit-if-list-exhausted
 x pprint-logical-block
 x pprint-pop
 _ print-unreadable-object
-_ prog
-_ prog*
+* prog
+* prog*
 * prog1
 * prog2
 _ psetf
