@@ -22,6 +22,7 @@
    (:file "return")
    (:file "multiple-value-bind")
    (:file "multiple-value-list")
+   (:file "multiple-value-setq")
    (:file "nth-value")
    (:file "shiftf")
    (:file "rotatef")

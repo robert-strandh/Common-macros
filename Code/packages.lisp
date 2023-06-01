@@ -18,6 +18,7 @@
    #:return
    #:multiple-value-bind
    #:multiple-value-list
+   #:multiple-value-setq
    #:nth-value
    #:shiftf
    #:rotatef
