@@ -12,7 +12,7 @@ _ ctypecase
 * declaim
 * decf
 * defclass
-_ defconstant
+x defconstant
 * defgeneric
 _ define-compiler-macro
 _ define-condition
@@ -48,7 +48,7 @@ _ ignore-errors
 * lambda
 x loop
 x loop-finish
-_ multiple-value-bind
+* multiple-value-bind
 _ multiple-value-list
 _ multiple-value-setq
 * nth-value

@@ -20,6 +20,7 @@
    (:file "push")
    (:file "pop")
    (:file "return")
+   (:file "multiple-value-bind")
    (:file "nth-value")
    (:file "shiftf")
    (:file "rotatef")

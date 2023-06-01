@@ -16,6 +16,7 @@
    #:push
    #:pop
    #:return
+   #:multiple-value-bind
    #:nth-value
    #:shiftf
    #:rotatef
