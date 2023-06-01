@@ -33,6 +33,8 @@
    (:file "defgeneric")
    (:file "declaim")
    (:file "lambda")
+   (:file "prog")
+   (:file "progstar")
    (:file "prog1")
    (:file "prog2")
    (:file "pushnew")

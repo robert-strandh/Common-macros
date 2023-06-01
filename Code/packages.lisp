@@ -29,6 +29,8 @@
    #:defgeneric
    #:declaim
    #:lambda
+   #:prog
+   #:prog*
    #:prog1
    #:prog2
    #:pushnew
