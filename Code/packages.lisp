@@ -36,6 +36,7 @@
    #:dotimes
    #:do
    #:do*
+   #:with-accessors
    #:with-slots))
 
 (defpackage #:common-macros

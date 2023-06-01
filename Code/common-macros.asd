@@ -40,4 +40,5 @@
    (:file "dotimes")
    (:file "do")
    (:file "dostar")
+   (:file "with-accessors")
    (:file "with-slots")))

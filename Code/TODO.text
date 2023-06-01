@@ -2,34 +2,34 @@
 x = not included
 
 * and
-assert
+_ assert
 x call-method
 * case
-ccase
+_ ccase
 * check-type
 * cond
-ctypecase
+_ ctypecase
 * declaim
 * decf
 * defclass
-defconstant
+_ defconstant
 * defgeneric
-define-compiler-macro
-define-condition
-define-method-combination
-define-modify-macro
-define-setf-expander
-define-symbol-macro
-defmacro
-defmethod
-defpackage
+_ define-compiler-macro
+_ define-condition
+_ define-method-combination
+_ define-modify-macro
+_ define-setf-expander
+_ define-symbol-macro
+_ defmacro
+_ defmethod
+_ defpackage
 * defparameter
-defsetf
+_ defsetf
 x defstruct
 x deftype
 * defun
 * defvar
-destructuring-bind
+_ destructuring-bind
 * do
 * do*
 x do-all-symbols
@@ -38,57 +38,57 @@ x do-symbols
 * dolist
 * dotimes
 * ecase
-etypecase
+_ etypecase
 x formatter
-handler-bind
-handler-case
-ignore-errors
+_ handler-bind
+_ handler-case
+_ ignore-errors
 * in-package
 * incf
 * lambda
 x loop
 x loop-finish
-multiple-value-bind
-multiple-value-list
-multiple-value-setq
+_ multiple-value-bind
+_ multiple-value-list
+_ multiple-value-setq
 * nth-value
 * or
 * pop
 x pprint-exit-if-list-exhausted
 x pprint-logical-block
 x pprint-pop
-print-unreadable-object
-prog
-prog*
+_ print-unreadable-object
+_ prog
+_ prog*
 * prog1
 * prog2
-psetf
-psetq
+_ psetf
+_ psetq
 * push
 * pushnew
 * remf
-restart-bind
-restart-case
+_ restart-bind
+_ restart-case
 * return
 * rotatef
-setf
+_ setf
 * shiftf
 x step
 x time
 x trace
-typecase
+_ typecase
 * unless
 x untrace
 * when
-with-accessors
+* with-accessors
 x with-compilation-unit
-with-condition-restarts
+_ with-condition-restarts
 x with-hash-table-iterator
-with-input-from-string
-with-open-file
-with-open-stream
-with-output-to-string
-with-package-iterator
-with-simple-restart
+_ with-input-from-string
+_ with-open-file
+_ with-open-stream
+_ with-output-to-string
+_ with-package-iterator
+_ with-simple-restart
 * with-slots
 x with-standard-io-syntax
