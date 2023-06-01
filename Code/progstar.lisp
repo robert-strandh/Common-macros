@@ -19,4 +19,3 @@
                      ,@(if (null position)
                            body
                            (subseq body (1+ position))))))))
-                                              
