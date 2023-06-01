@@ -90,5 +90,5 @@ with-open-stream
 with-output-to-string
 with-package-iterator
 with-simple-restart
-with-slots
+* with-slots
 x with-standard-io-syntax

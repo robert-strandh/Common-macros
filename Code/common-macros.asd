@@ -39,4 +39,5 @@
    (:file "dolist")
    (:file "dotimes")
    (:file "do")
-   (:file "dostar")))
+   (:file "dostar")
+   (:file "with-slots")))

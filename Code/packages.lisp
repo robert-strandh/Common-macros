@@ -35,7 +35,8 @@
    #:dolist
    #:dotimes
    #:do
-   #:do*))
+   #:do*
+   #:with-slots))
 
 (defpackage #:common-macros
   (:use #:common-lisp)
