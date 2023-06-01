@@ -47,4 +47,6 @@
    (:file "do")
    (:file "dostar")
    (:file "with-accessors")
+   (:file "with-open-file")
+   (:file "with-open-stream")
    (:file "with-slots")))
