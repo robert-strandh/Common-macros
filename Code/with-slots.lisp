@@ -1,6 +1,6 @@
 (cl:in-package #:common-macros)
 
-(defmacro cmd:with-slots ((slot-entries) instance-form &body forms)
+(defmacro cmd:with-slots ((&rest slot-entries) instance-form &body forms)
   (let ((instance-var (gensym)))
     `(let ((,instance-var ,instance-form))
        (symbol-macrolet
