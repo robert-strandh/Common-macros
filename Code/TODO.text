@@ -49,7 +49,7 @@ _ ignore-errors
 x loop
 x loop-finish
 * multiple-value-bind
-_ multiple-value-list
+* multiple-value-list
 _ multiple-value-setq
 * nth-value
 * or

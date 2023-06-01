@@ -17,6 +17,7 @@
    #:pop
    #:return
    #:multiple-value-bind
+   #:multiple-value-list
    #:nth-value
    #:shiftf
    #:rotatef

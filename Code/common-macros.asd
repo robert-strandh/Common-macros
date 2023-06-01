@@ -21,6 +21,7 @@
    (:file "pop")
    (:file "return")
    (:file "multiple-value-bind")
+   (:file "multiple-value-list")
    (:file "nth-value")
    (:file "shiftf")
    (:file "rotatef")
