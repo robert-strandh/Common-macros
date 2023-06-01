@@ -40,9 +40,9 @@ x do-symbols
 * ecase
 _ etypecase
 x formatter
-_ handler-bind
+x handler-bind
 _ handler-case
-_ ignore-errors
+* ignore-errors
 * in-package
 * incf
 * lambda

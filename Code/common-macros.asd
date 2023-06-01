@@ -37,6 +37,7 @@
    (:file "prog2")
    (:file "pushnew")
    (:file "remf")
+   (:file "ignore-errors")
    (:file "in-package")
    (:file "check-type")
    (:file "dolist")

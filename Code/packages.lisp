@@ -33,6 +33,7 @@
    #:prog2
    #:pushnew
    #:remf
+   #:ignore-errors
    #:in-package
    #:check-type
    #:dolist
