@@ -43,6 +43,7 @@
    #:do
    #:do*
    #:with-accessors
+   #:with-open-file
    #:with-slots))
 
 (defpackage #:common-macros

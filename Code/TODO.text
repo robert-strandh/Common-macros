@@ -85,7 +85,7 @@ x with-compilation-unit
 _ with-condition-restarts
 x with-hash-table-iterator
 _ with-input-from-string
-_ with-open-file
+* with-open-file
 _ with-open-stream
 _ with-output-to-string
 _ with-package-iterator
