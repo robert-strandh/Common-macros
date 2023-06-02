@@ -47,6 +47,7 @@
    (:file "do")
    (:file "dostar")
    (:file "with-accessors")
+   (:file "with-input-from-string")
    (:file "with-open-file")
    (:file "with-open-stream")
    (:file "with-output-to-string")

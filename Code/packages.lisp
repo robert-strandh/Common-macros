@@ -43,6 +43,7 @@
    #:do
    #:do*
    #:with-accessors
+   #:with-input-from-string
    #:with-open-file
    #:with-open-stream
    #:with-output-to-string
