@@ -87,7 +87,7 @@ x with-hash-table-iterator
 _ with-input-from-string
 * with-open-file
 * with-open-stream
-_ with-output-to-string
+* with-output-to-string
 _ with-package-iterator
 _ with-simple-restart
 * with-slots

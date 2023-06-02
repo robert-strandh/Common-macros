@@ -45,6 +45,7 @@
    #:with-accessors
    #:with-open-file
    #:with-open-stream
+   #:with-output-to-string
    #:with-slots))
 
 (defpackage #:common-macros
