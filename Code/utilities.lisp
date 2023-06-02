@@ -10,13 +10,14 @@
 ;;; part of the executable forms.
 
 (defun separate-ordinary-body (body)
-  (let ((pos (position-if-not (lambda (item)
-                                (and (consp item)
-                                     (eq (car item) 'declare)))
-                              body)))
+  (let ((pos (position-if (lambda (item)
+                            (and (consp item)
+                                 (eq (car item) 'declare)))
+                          body
+                          :from-end t)))
     (if (null pos)
-        (values body '())
-        (values (subseq body 0 pos) (subseq body pos)))))
+        (values '() body)
+        (values (subseq body 0 (1+ pos)) (subseq body (1+ pos))))))
 
 (defun extract-bindings (variable-clauses)
   (mapcar
