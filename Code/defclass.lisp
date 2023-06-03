@@ -1,8 +1,5 @@
 (cl:in-package #:common-macros)
 
-;;; FIXME: figure out how to let the client determine
-;;; the ENSURE-CLASS function of hte expansion.
-
 ;;; FIXME: Include :TYPE slot option in canonical slot specifier.
 
 (defun canonicalize-slot-specifier-ast (ast)
@@ -47,7 +44,7 @@
   (let* ((builder (make-instance 'bld:builder))
          (syntax (ses:find-syntax 'defclass))
          (ast (ses:parse builder syntax form)))
-    `(ensure-class
+    `(cmm:ensure-class
       ,(ico:name (ico:name-ast ast))
       ,@(if (null (ico:metaclass-ast ast))
             '()
