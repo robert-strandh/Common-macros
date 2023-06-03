@@ -51,7 +51,9 @@
 
 (defpackage #:common-macros
   (:use #:common-lisp)
-  (:local-nicknames (#:ico #:iconoclast)
-                    (#:bld #:iconoclast-builder)
-                    (#:ses #:s-expression-syntax)
-                    (#:cmd #:common-macro-definitions)))
+  (:local-nicknames
+   (#:ico #:iconoclast)
+   (#:bld #:iconoclast-builder)
+   (#:ses #:s-expression-syntax)
+   (#:cmd #:common-macro-definitions)
+   (#:cmm #.(locally (declare (special #1=*common-macros-mop-package*)) #1#))))
