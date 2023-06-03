@@ -21,7 +21,7 @@ _ define-modify-macro
 _ define-setf-expander
 _ define-symbol-macro
 _ defmacro
-_ defmethod
+* defmethod
 _ defpackage
 * defparameter
 _ defsetf

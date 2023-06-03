@@ -22,6 +22,7 @@
    #:nth-value
    #:shiftf
    #:rotatef
+   #:defmethod
    #:defvar
    #:defparameter
    #:defun
