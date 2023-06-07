@@ -49,6 +49,7 @@
    #:with-open-file
    #:with-open-stream
    #:with-output-to-string
+   #:with-simple-restart
    #:with-slots))
 
 (defpackage #:common-macros
