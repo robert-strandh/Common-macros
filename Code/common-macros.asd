@@ -47,6 +47,7 @@
    (:file "dotimes")
    (:file "do")
    (:file "dostar")
+   (:file "typecase")
    (:file "with-accessors")
    (:file "with-input-from-string")
    (:file "with-open-file")

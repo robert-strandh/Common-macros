@@ -43,6 +43,7 @@
    #:dotimes
    #:do
    #:do*
+   #:typecase
    #:with-accessors
    #:with-input-from-string
    #:with-open-file

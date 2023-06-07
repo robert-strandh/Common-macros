@@ -19,7 +19,7 @@ _ define-condition
 _ define-method-combination
 _ define-modify-macro
 _ define-setf-expander
-_ define-symbol-macro
+x define-symbol-macro
 _ defmacro
 * defmethod
 _ defpackage
@@ -67,7 +67,7 @@ _ psetq
 * push
 * pushnew
 * remf
-_ restart-bind
+x restart-bind
 _ restart-case
 * return
 * rotatef
@@ -76,7 +76,7 @@ _ setf
 x step
 x time
 x trace
-_ typecase
+* typecase
 * unless
 x untrace
 * when
@@ -88,7 +88,7 @@ _ with-input-from-string
 * with-open-file
 * with-open-stream
 * with-output-to-string
-_ with-package-iterator
+x with-package-iterator
 _ with-simple-restart
 * with-slots
 x with-standard-io-syntax
