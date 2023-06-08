@@ -27,6 +27,7 @@
    #:defparameter
    #:defun
    #:defclass
+   #:define-condition
    #:defgeneric
    #:declaim
    #:lambda

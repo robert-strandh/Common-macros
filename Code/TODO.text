@@ -15,7 +15,7 @@ _ ctypecase
 x defconstant
 * defgeneric
 _ define-compiler-macro
-_ define-condition
+* define-condition
 _ define-method-combination
 _ define-modify-macro
 _ define-setf-expander

@@ -31,6 +31,7 @@
    (:file "defparameter")
    (:file "defun")
    (:file "defclass")
+   (:file "define-condition")
    (:file "defgeneric")
    (:file "declaim")
    (:file "lambda")
