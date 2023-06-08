@@ -2,6 +2,14 @@
 
 (defvar *condition-class-metaclass-name*)
 
+(defun generate-lambda-expression (lambda-expression-ast)
+  `(lambda ,(generate-ordinary-lambda-list
+             (ico:lambda-list-ast lambda-expression-ast))
+     ;; FIXME: generate declarations.
+     ,@(loop for form-ast in (ico:form-asts lambda-expression-ast)
+             for form = (ico:form form-ast)
+             collect form)))
+
 (defmacro cmd:define-condition
     (&whole form
      class-name
@@ -44,5 +52,6 @@
                    ,(if (typep argument-ast 'ico:unparsed-form-ast)
                         `(write-string
                           ,(ico:form argument-ast) ,stream-variable)
-                        ;; FIXME: generate the lambda expression
-                        nil))))))))
+                        `(funcall ,(generate-lambda-expression
+                                    (ico:argument-ast report-ast))
+                                  ,condition-variable ,stream-variable)))))))))
