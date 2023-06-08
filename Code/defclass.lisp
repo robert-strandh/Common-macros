@@ -48,7 +48,7 @@
       ,(ico:name (ico:name-ast ast))
       ,@(if (null (ico:metaclass-ast ast))
             '()
-            (list (ico:metaclass-ast ast)))
+            (list :metaclass (ico:metaclass-ast ast)))
       :direct-superclasses
       ',(mapcar #'ico:name (ico:superclass-asts ast))
       :direct-slots
