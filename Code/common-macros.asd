@@ -6,6 +6,7 @@
   :components
   ((:file "packages")
    (:file "utilities")
+   (:file "destructuring")
    (:file "conditions")
    (:file "when")
    (:file "unless")
@@ -48,6 +49,7 @@
    (:file "dotimes")
    (:file "do")
    (:file "dostar")
+   (:file "setf")
    (:file "typecase")
    (:file "with-accessors")
    (:file "with-input-from-string")

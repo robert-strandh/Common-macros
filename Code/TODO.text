@@ -71,7 +71,7 @@ x restart-bind
 _ restart-case
 * return
 * rotatef
-_ setf
+* setf
 * shiftf
 x step
 x time
