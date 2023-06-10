@@ -45,6 +45,7 @@
    #:do
    #:do*
    #:setf
+   #:psetf
    #:typecase
    #:with-accessors
    #:with-input-from-string
