@@ -28,6 +28,7 @@
    (:file "shiftf")
    (:file "rotatef")
    (:file "defmethod")
+   (:file "defpackage")
    (:file "defvar")
    (:file "defparameter")
    (:file "defun")

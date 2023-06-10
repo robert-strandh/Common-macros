@@ -24,6 +24,7 @@
    #:rotatef
    #:defmethod
    #:defvar
+   #:defpackage
    #:defparameter
    #:defun
    #:defclass

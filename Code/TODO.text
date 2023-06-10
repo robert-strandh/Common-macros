@@ -22,7 +22,7 @@ _ define-setf-expander
 x define-symbol-macro
 _ defmacro
 * defmethod
-_ defpackage
+* defpackage
 * defparameter
 _ defsetf
 x defstruct
