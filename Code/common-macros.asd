@@ -51,6 +51,7 @@
    (:file "dostar")
    (:file "setf")
    (:file "psetf")
+   (:file "psetq")
    (:file "typecase")
    (:file "with-accessors")
    (:file "with-input-from-string")
