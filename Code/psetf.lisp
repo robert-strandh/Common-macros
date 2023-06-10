@@ -3,7 +3,7 @@
 (defmacro cmd:psetf (&environment environment &rest pairs)
   (let* ((setf-expansions
            ;; Collect the SETF-EXPANSION of each place as a list of the
-           ;; values returned by GET-SETF-EXPANSION. 
+           ;; values returned by GET-SETF-EXPANSION.
            (loop for place in pairs by #'cddr
                  collect (multiple-value-list
                           (get-setf-expansion place environment))))
