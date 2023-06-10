@@ -63,8 +63,4 @@
    (#:bld #:iconoclast-builder)
    (#:ses #:s-expression-syntax)
    (#:cmd #:common-macro-definitions)
-   (#:cmm #.(locally (declare (special #1=*common-macros-mop-package*)) #1#)))
-  ;; It is very unlikely that the host version of the function
-  ;; GET-SETF-EXPANSION does the right thing, so client code needs to
-  ;; set this function.
-  (:shadow #:get-setf-expasion))
+   (#:cmm #.(locally (declare (special #1=*common-macros-mop-package*)) #1#))))
