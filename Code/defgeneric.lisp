@@ -1,11 +1,5 @@
 (cl:in-package #:common-macros)
 
-(defun generate-generic-function-lambda-list (lambda-list-ast)
-  (append (generate-required (ico:required-section-ast lambda-list-ast))
-          (generate-optional (ico:optional-section-ast lambda-list-ast))
-          (generate-rest (ico:rest-section-ast lambda-list-ast))
-          (generate-key (ico:key-section-ast lambda-list-ast))))
-
 ;;; FIXME: include declarations.
 ;;; FIXME: include argument precedence order
 ;;; FIXME: handle method combination
