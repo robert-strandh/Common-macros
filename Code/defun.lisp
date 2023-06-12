@@ -1,14 +1,14 @@
 (cl:in-package #:common-macros)
 
-(defun generate-required (required-asts)
-  (loop for required-ast in required-asts
-        collect (ico:name (ico:name-ast required-ast))))
+(defun generate-required (required-section-ast)
+  (loop for ast in (ico:parameter-asts required-section-ast)
+        collect (ico:name (ico:name-ast ast))))
 
-(defun generate-optional (optional-asts)
-  (if (null optional-asts)
+(defun generate-optional (optional-section-ast)
+  (if (null optional-section-ast)
       '()
       (cons '&optional
-            (loop for ast in optional-asts
+            (loop for ast in (ico:parameter-asts optional-section-ast)
                   for name = (ico:name (ico:name-ast ast))
                   for init-form-ast = (ico:init-form-ast ast)
                   for supplied-p-ast = (ico:supplied-p-parameter-ast ast)
@@ -21,16 +21,16 @@
                               '()
                               (list (ico:name supplied-p-ast))))))))
 
-(defun generate-rest (rest-ast)
-  (if (null rest-ast)
+(defun generate-rest (rest-section-ast)
+  (if (null rest-section-ast)
       '()
-      (cons '&rest (ico:name rest-ast))))
+      (cons '&rest (ico:name (ico:parameter-ast rest-section-ast)))))
 
-(defun generate-key (key-asts)
-  (if (null key-asts)
+(defun generate-key (key-section-ast)
+  (if (null key-section-ast)
       '()
       (cons '&key
-            (loop for ast in key-asts
+            (loop for ast in (ico:parameter-asts key-section-ast)
                   for name = (ico:name (ico:name-ast ast))
                   for keyword-name-ast = (ico:keyword-name-ast ast)
                   for init-form-ast = (ico:init-form-ast ast)
@@ -47,11 +47,11 @@
                               ,(ico:form init-form-ast)
                               ,(ico:name supplied-p-ast))))))))
           
-(defun generate-aux (aux-asts)
-  (if (null aux-asts)
+(defun generate-aux (aux-section-ast)
+  (if (null aux-section-ast)
       '()
       (cons '&aux
-            (loop for ast in aux-asts
+            (loop for ast in (ico:parameter-asts aux-section-ast)
                   for name = (ico:name (ico:name-ast ast))
                   for init-form-ast = (ico:init-form-ast ast)
                   collect
@@ -61,11 +61,11 @@
                             (list (ico:form init-form-ast))))))))
 
 (defun generate-ordinary-lambda-list (lambda-list-ast)
-  (append (generate-required (ico:required-parameter-asts lambda-list-ast))
-          (generate-optional (ico:optional-parameter-asts lambda-list-ast))
-          (generate-rest (ico:rest-parameter-ast lambda-list-ast))
-          (generate-key (ico:key-parameter-asts lambda-list-ast))
-          (generate-aux (ico:aux-parameter-asts lambda-list-ast))))
+  (append (generate-required (ico:required-section-ast lambda-list-ast))
+          (generate-optional (ico:optional-section-ast lambda-list-ast))
+          (generate-rest (ico:rest-section-ast lambda-list-ast))
+          (generate-key (ico:key-section-ast lambda-list-ast))
+          (generate-aux (ico:aux-section-ast lambda-list-ast))))
 
 (defmacro cmd:defun (&whole form name lambda-list &rest body)
   (declare (ignore name lambda-list body))
