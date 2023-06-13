@@ -13,8 +13,7 @@
     `(ensure-generic-function
       ,(ico:name (ico:name-ast ast))
       :lambda-list
-      ',(generate-generic-function-lambda-list
-         (ico:lambda-list-ast ast))
+      ',(ico:unparse-lambda-list-ast (ico:lambda-list-ast ast))
       ,@(let ((documentation-ast (ico:documentation-ast ast)))
           (if (null documentation-ast)
               '()

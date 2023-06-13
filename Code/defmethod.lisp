@@ -20,7 +20,7 @@
          (qualifier-asts (ico:method-qualifier-asts ast))
          (qualifiers (mapcar #'ico:name qualifier-asts))
          (lambda-list-ast (ico:lambda-list-ast ast))
-         (lambda-list (generate-specialized-lambda-list lambda-list-ast))
+         (lambda-list (ico:unparse-lambda-list-ast lambda-list-ast))
          (specializers (extract-specializers lambda-list-ast))
          (declarations '())
          (forms (mapcar #'ico:form (ico:form-asts ast))))
