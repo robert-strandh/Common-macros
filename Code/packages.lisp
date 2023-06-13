@@ -48,6 +48,7 @@
    #:setf
    #:psetf
    #:psetq
+   #:restart-case
    #:typecase
    #:with-accessors
    #:with-input-from-string

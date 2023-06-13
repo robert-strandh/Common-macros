@@ -68,7 +68,7 @@ _ print-unreadable-object
 * pushnew
 * remf
 x restart-bind
-_ restart-case
+* restart-case
 * return
 * rotatef
 * setf
