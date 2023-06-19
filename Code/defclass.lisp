@@ -43,20 +43,19 @@
            (ignore slot-specifiers class-options))
   (let* ((builder (make-instance 'bld:builder))
          (syntax (ses:find-syntax 'defclass))
-         (ast (ses:parse builder syntax form)))
-    `(cmm:ensure-class
-      ,(ico:name (ico:name-ast ast))
-      ,@(if (null (ico:metaclass-ast ast))
-            '()
-            (list :metaclass (ico:metaclass-ast ast)))
-      :direct-superclasses
-      ',(mapcar #'ico:name (ico:superclass-asts ast))
-      :direct-slots
-      (list ,@(mapcar #'canonicalize-slot-specifier-ast
-                      (ico:slot-specifier-asts ast)))
-      ,@(let ((default-initarg-asts (ico:default-initarg-asts ast)))
-          (if (null default-initarg-asts)
-              '()
-              `(:direct-default-initargs
-                (list ,@(mapcar #'canonicalize-default-initarg-ast
-                                default-initarg-asts))))))))
+         (ast (ses:parse builder syntax form))
+         (name (ico:name (ico:name-ast ast))))
+    `(setf (find-class ,name)
+           (make-instance 'standard-class
+             :name ,name
+             :direct-superclasses
+             (mapcar #'find-class ,superclass-names)
+             :direct-slots
+             (list ,@(mapcar #'canonicalize-slot-specifier-ast
+                             (ico:slot-specifier-asts ast)))
+             ,@(let ((default-initarg-asts (ico:default-initarg-asts ast)))
+                 (if (null default-initarg-asts)
+                     '()
+                     `(:direct-default-initargs
+                       (list ,@(mapcar #'canonicalize-default-initarg-ast
+                                       default-initarg-asts)))))))))
