@@ -64,5 +64,4 @@
    (#:ico #:iconoclast)
    (#:bld #:iconoclast-builder)
    (#:ses #:s-expression-syntax)
-   (#:cmd #:common-macro-definitions)
-   (#:cmm #.(locally (declare (special #1=*common-macros-mop-package*)) #1#))))
+   (#:cmd #:common-macro-definitions)))
