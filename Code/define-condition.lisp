@@ -21,11 +21,11 @@
   (let* ((builder (make-instance 'bld:builder))
          (syntax (ses:find-syntax 'define-condition))
          (ast (ses:parse builder syntax form))
-         (name (ico:name (ico:name-ast ast)))
+         (name (ico:name (ico:name-ast ast))))
     `(progn   
-       (make-instance (class-of (find-class 'condition))
+       (make-instance (find-class 'condition)
          :name ,name
-         :metaclass (class-of (class-of (find-class 'condition)))
+         :metaclass (class-of (find-class 'condition))
          :direct-superclasses
          ',(mapcar #'ico:name (ico:superclass-asts ast))
          :direct-slots
@@ -54,4 +54,4 @@
                           ,(ico:form argument-ast) ,stream-variable)
                         `(funcall ,(generate-lambda-expression
                                     (ico:argument-ast report-ast))
-                                  ,condition-variable ,stream-variable))))))))))
+                                  ,condition-variable ,stream-variable)))))))))
