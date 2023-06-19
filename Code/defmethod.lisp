@@ -35,7 +35,7 @@
            (method-lambda
              (let ((arguments (gensym))
                    (next-methods (gensym)))
-               `(lambda ,(arguments ,next-methods)
+               `(lambda (,arguments ,next-methods)
                   (flet ((next-method-p ()
                            (not (null ,next-methods)))
                          (call-next-method (&rest args)
