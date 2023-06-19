@@ -24,37 +24,34 @@
          (specializers (extract-specializers lambda-list-ast))
          (declarations '())
          (forms (mapcar #'ico:form (ico:form-asts ast))))
-    (multiple-value-bind
-          (generic-function-class-name method-class-name)
-        (cmm:generic-function-class-names function-name environment)
-      ;; FIXME: generate declarations and documentation
-      (let* ((lambda-expression
-               `(lambda ,lambda-list
-                  ,@declarations
-                  (block ,(if (consp function-name)
-                              (second function-name)
-                              function-name)
-                    ,@forms)))
-             (method-lambda
-               (let ((arguments (gensym))
-                     (next-methods (gensym)))
-                 `(lambda ,(arguments ,next-methods)
-                    (flet ((next-method-p ()
-                             (not (null ,next-methods)))
-                           (call-next-method (&rest args)
-                             (when (null ,next-methods)
-                               (error "no next method"))
-                             (funcall (method-function (car ,next-methods))
-                                      (or args ,args)
-                                      (cdr ,next-methods))))
-                      (declare (ignorable #'next-method-p
-                                          #'call-next-method))
-                      (apply ,lambda-expression
-                             ,args))))))
-        `(add-method (ensure-generic-function ',function-name)
-                     `(make-instance 'standard-method
-                        :function ,method-lambda
-                        :lambda-list ,lambda-list
-                        :qualifiers ,qualifiers
-                        :specializers ,specializers
-                        :declarations ,declarations))))))
+    ;; FIXME: generate declarations and documentation
+    (let* ((lambda-expression
+             `(lambda ,lambda-list
+                ,@declarations
+                (block ,(if (consp function-name)
+                            (second function-name)
+                            function-name)
+                  ,@forms)))
+           (method-lambda
+             (let ((arguments (gensym))
+                   (next-methods (gensym)))
+               `(lambda ,(arguments ,next-methods)
+                  (flet ((next-method-p ()
+                           (not (null ,next-methods)))
+                         (call-next-method (&rest args)
+                           (when (null ,next-methods)
+                             (error "no next method"))
+                           (funcall (method-function (car ,next-methods))
+                                    (or args ,args)
+                                    (cdr ,next-methods))))
+                    (declare (ignorable #'next-method-p
+                                        #'call-next-method))
+                    (apply ,lambda-expression
+                           ,args))))))
+      `(add-method (ensure-generic-function ',function-name)
+                   `(make-instance 'standard-method
+                      :function ,method-lambda
+                      :lambda-list ,lambda-list
+                      :qualifiers ,qualifiers
+                      :specializers ,specializers
+                      :declarations ,declarations)))))
