@@ -21,12 +21,12 @@
   (let* ((builder (make-instance 'bld:builder))
          (syntax (ses:find-syntax 'define-condition))
          (ast (ses:parse builder syntax form))
-         (name (ico:name (ico:name-ast ast))))
+         (name (ico:name (ico:name-ast ast)))
     `(progn   
-       (cmm:ensure-class
-        ,name
-        :metaclass ,*condition-class-metaclass-name*
-        :direct-superclasse s
+       (make-instance (class-of (find-class 'condition))
+         :name ,name
+         :metaclass (class-of (class-of (find-class 'condition)))
+         :direct-superclasses
         ',(mapcar #'ico:name (ico:superclass-asts ast))
         :direct-slots
         (list ,@(mapcar #'canonicalize-slot-specifier-ast
