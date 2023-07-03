@@ -63,5 +63,6 @@
   (:local-nicknames
    (#:ico #:iconoclast)
    (#:bld #:iconoclast-builder)
+   (#:abp #:architecture.builder-protocol)
    (#:ses #:s-expression-syntax)
    (#:cmd #:common-macro-definitions)))
