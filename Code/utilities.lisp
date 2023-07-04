@@ -55,6 +55,6 @@
 
 (defun wrap-in-block-ast (origin block-name form-asts)
   (abp:node* (:block)
-    (1 :block-name
+    (1 :name
        (abp:node* (:block-name :source origin :name block-name)))
     (* :form form-asts)))
