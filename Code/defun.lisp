@@ -1,9 +1,9 @@
-(cl:in-package #:sicl-expression-to-ast)
+(cl:in-package #:common-macros)
 
 (defmethod expand ((ast ico:defun-ast))
   (let* ((name (ico:name (ico:name-ast ast)))
          (block-name (if (symbolp name) name (second name))))
-    (abp:with-builder (make-instance 'builder)
+    (abp:with-builder ((make-instance 'builder))
       (abp:node* (:progn)
         (* :form
            (abp:node* (:eval-when)
@@ -25,7 +25,8 @@
                                (abp:node* (:function-name :name 'fdefinitions)))
                             (* :argument
                                (abp:node* (:quote)
-                                 (1 :object (abp:node* (:literal name)))))))))
+                                 (1 :object
+                                    (abp:node* (:literal :value name)))))))))
                   (* :new-value 
                      (abp:node* (:lambda
                                   :lambda-list-ast (ico:lambda-list-ast ast)
