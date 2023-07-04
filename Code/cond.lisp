@@ -1,4 +1,4 @@
-(cl:in-package #:iconoclast-builder)
+(cl:in-package #:common-macros)
 
 (defmethod expand ((ast ico:cond-ast))
   (let ((clause-asts (ico:clause-asts ast)))
