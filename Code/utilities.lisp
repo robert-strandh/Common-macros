@@ -36,3 +36,25 @@
                    (caddr clause)
                    (extract-updates (cdr variable-clauses)))
             (extract-updates (cdr variable-clauses))))))
+
+(defun make-let-binding-ast (origin name-ast value-ast)
+  (abp:node* (:value-binding :source origin)
+    (1 :name name-ast)
+    (1 :value value-ast)))
+
+(defun make-eval-when-situation-asts (origin &rest situations)
+  (loop for situation in situations
+        collect (abp:node* (:eval-when-situation
+                            :source origin
+                            :situation situation))))
+
+(defun make-quote-ast (origin object)
+  (abp:node* (:quote)
+    (1 :object
+       (abp:node* (:literal :source origin :value object)))))
+
+(defun wrap-in-block-ast (origin block-name form-asts)
+  (abp:node* (:block)
+    (1 :block-name
+       (abp:node* (:block-name :source origin :name block-name)))
+    (* :form form-asts)))
