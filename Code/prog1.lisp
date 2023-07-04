@@ -13,5 +13,5 @@
              (abp:node* (:value-binding :source origin)
                (1 :name (make-variable-name-ast))
                (1 :value (ico:first-form-ast ast))))
-          (* :form (form-asts ast))
+          (* :form (ico:form-asts ast))
           (1 :form (make-variable-name-ast)))))))
