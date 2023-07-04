@@ -13,9 +13,8 @@
              )
            (abp:node* (:eval-when)
              (* :situation
-                (list 
-                 (abp:node* (:eval-when-situation :situation :load-toplevel))
-                 (abp:node* (:eval-when-situation :situation :execute))))
+                (make-eval-when-situation-asts
+                 origin :load-toplevel :execute))
              (* :form
                 (list 
                  (abp:node* (:setf)
@@ -25,17 +24,13 @@
                            (abp:node* (:application)
                              (1 :function-name
                                 (abp:node* (:function-name :name 'fdefinitions)))
-                             (* :argument
-                                (abp:node* (:quote)
-                                  (1 :object
-                                     (abp:node* (:literal :value name)))))))))
+                             (* :argument (make-quote-ast origin name))))))
                    (1 :new-value 
                       (abp:node* (:lambda
                                    :lambda-list-ast (ico:lambda-list-ast ast)
                                    :declaration-asts (ico:declaration-asts ast)
                                    :documentation-ast (ico:documentation-ast ast))
                         (1 :form
-                           (abp:node* (:block :form-asts (ico:form-asts ast))
-                             (1 :block-name
-                                (abp:node* (:block-name :name block-name))))))))
+                           (wrap-in-block-ast
+                            origin block-name (ico:form-asts ast))))))
                  (abp:node* (:literal :literal name))))))))))
