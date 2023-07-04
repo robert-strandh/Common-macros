@@ -16,9 +16,8 @@
                                     :name variable-name))))
                  (abp:node* (:let :source origin)
                    (1 :binding
-                      (abp:node* (:value-binding :source origin)
-                        (1 :name (make-variable-name-ast))
-                        (1 :value (first form-asts))))
+                      (make-let-binding-ast
+                       origin (make-variable-name-ast) (first form-asts)))
                    (1 :form
                       (abp:node* (:if)
                         (1 :test (make-variable-name-ast))
