@@ -31,7 +31,7 @@
    (:file "defpackage")
    (:file "defvar")
    (:file "defparameter")
-;;   (:file "defun")
+   (:file "defun")
 ;;   (:file "defclass")
 ;;   (:file "define-condition")
 ;;   (:file "defgeneric")
