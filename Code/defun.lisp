@@ -9,7 +9,7 @@
            (abp:node* (:eval-when)
              (* :situation
                 (make-eval-when-situation-asts origin :compile-toplevel))
-                ;; Add compile-time stuff here.
+             ;; Add compile-time stuff here.
              )
            (abp:node* (:eval-when)
              (* :situation
