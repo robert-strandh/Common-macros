@@ -2,16 +2,14 @@
 
 (defmethod expand ((ast ico:prog1-ast) environment)
   (declare (ignore environment))
-  (let ((origin (ico:origin ast))
+  (let ((*origin* (ico:origin ast))
         (variable-name (gensym)))
     (flet ((make-variable-name-ast ()
-             (abp:node* (:variable-name
-                         :source origin
-                         :name variable-name))))
+             (node* (:variable-name :name variable-name))))
       (abp:with-builder ((make-instance 'bld:builder))
-        (abp:node* (:let :source origin)
+        (node* (:let)
           (1 :binding
-             (abp:node* (:value-binding :source origin)
+             (node* (:value-binding)
                (1 :name (make-variable-name-ast))
                (1 :value (ico:first-form-ast ast))))
           (* :form (ico:form-asts ast))

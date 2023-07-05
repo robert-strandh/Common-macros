@@ -39,26 +39,28 @@
                    (extract-updates (cdr variable-clauses)))
             (extract-updates (cdr variable-clauses))))))
 
-(defun make-let-binding-ast (origin name-ast value-ast)
-  (abp:node* (:value-binding :source origin)
+(defmacro node* (initargs &body body)
+  `(abp:node* (,@initargs :source *origin*)
+     ,@body))
+
+(defun make-let-binding-ast (name-ast value-ast)
+  (node* (:value-binding)
     (1 :name name-ast)
     (1 :value value-ast)))
 
-(defun make-eval-when-situation-asts (origin &rest situations)
+(defun make-eval-when-situation-asts (&rest situations)
   (loop for situation in situations
-        collect (abp:node* (:eval-when-situation
-                            :source origin
-                            :situation situation))))
+        collect (node* (:eval-when-situation :situation situation))))
 
-(defun make-quote-ast (origin object)
-  (abp:node* (:quote)
+(defun make-quote-ast (object)
+  (node* (:quote)
     (1 :object
-       (abp:node* (:literal :source origin :value object)))))
+       (node* (:literal :value object)))))
 
-(defun wrap-in-block-ast (origin block-name form-asts)
-  (abp:node* (:block :source origin)
+(defun wrap-in-block-ast (block-name form-asts)
+  (node* (:block)
     (1 :name
-       (abp:node* (:block-name :source origin :name block-name)))
+       (node* (:block-name :name block-name)))
     (* :form form-asts)))
 
 (defun expand-place-ast (place-ast)
@@ -69,22 +71,19 @@
      (loop for variable in variables
            for value-form in value-forms
            for variable-name-ast
-             = (abp:node* (:variable-name :name variable :source *origin*))
+             = (node* (:variable-name :name variable))
            for value-ast
-             = (abp:node* (:unparsed
-                           :source *origin*
-                           :context :form
-                           :expression value-form))
-           collect (make-let-binding-ast *origin* variable-name-ast value-ast))
+             = (node* (:unparsed
+                       :context :form
+                       :expression value-form))
+           collect (make-let-binding-ast variable-name-ast value-ast))
      (loop for store-variable in store-variables
            collect
-           (abp:node* (:variable-name :name store-variable :source *origin*)))
-     (abp:node* (:unparsed
-                 :source *origin*
-                 :context :form
-                 :expression store-form))
-     (abp:node* (:unparsed
-                 :source *origin*
-                 :context :form
-                 :expression read-form)))))
+           (node* (:variable-name :name store-variable)))
+     (node* (:unparsed
+             :context :form
+             :expression store-form))
+     (node* (:unparsed
+             :context :form
+             :expression read-form)))))
            

@@ -2,11 +2,11 @@
 
 (defmethod expand ((ast ico:when-ast) environment)
   (declare (ignore environment))
-  (let ((origin (ico:origin ast)))
+  (let ((*origin* (ico:origin ast)))
     (abp:with-builder ((make-instance 'builder))
-      (abp:node* (:if :source origin)
+      (node* (:if)
         (1 :test (ico:test-ast ast))
-        (1 :then (abp:node* (:progn :source origin)
+        (1 :then (node* (:progn)
                    (* :form (ico:form-asts ast))))
         (1 :else
-           (abp:node* (:unparsed :expression 'nil :source origin)))))))
+           (node* (:unparsed :expression 'nil)))))))
