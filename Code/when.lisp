@@ -1,6 +1,7 @@
 (cl:in-package #:common-macros)
 
-(defmethod expand ((ast ico:when-ast))
+(defmethod expand ((ast ico:when-ast) environment)
+  (declare (ignore environment))
   (let ((origin (ico:origin ast)))
     (abp:with-builder ((make-instance 'builder))
       (abp:node* (:if :source origin)

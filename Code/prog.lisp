@@ -1,6 +1,7 @@
 (cl:in-package #:common-macros)
 
-(defmethod expand ((ast ico:prog-ast))
+(defmethod expand ((ast ico:prog-ast) environment)
+  (declare (ignore environment))
   (let ((origin (ico:origin ast)))
     (abp:with-builder ((make-instance 'bld:builder))
       (wrap-in-block-ast

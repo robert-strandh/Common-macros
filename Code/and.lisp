@@ -1,6 +1,7 @@
 (cl:in-package #:common-macros)
 
-(defmethod expand ((ast ico:and-ast))
+(defmethod expand ((ast ico:and-ast) environment)
+  (declare (ignore environment))
   (let ((form-asts (ico:form-asts ast))
         (origin (ico:origin ast)))
     (abp:with-builder ((make-instance 'bld:builder))

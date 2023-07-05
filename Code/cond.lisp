@@ -1,6 +1,7 @@
 (cl:in-package #:common-macros)
 
-(defmethod expand ((ast ico:cond-ast))
+(defmethod expand ((ast ico:cond-ast) environment)
+  (declare (ignore environment))
   (let ((clause-asts (ico:clause-asts ast)))
     (abp:with-builder ((make-instance 'builder))
       (if (null clause-asts)

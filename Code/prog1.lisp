@@ -1,6 +1,7 @@
 (cl:in-package #:common-macros)
 
-(defmethod expand ((ast ico:prog1-ast))
+(defmethod expand ((ast ico:prog1-ast) environment)
+  (declare (ignore environment))
   (let ((origin (ico:origin ast))
         (variable-name (gensym)))
     (flet ((make-variable-name-ast ()

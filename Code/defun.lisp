@@ -1,6 +1,7 @@
 (cl:in-package #:common-macros)
 
-(defmethod expand ((ast ico:defun-ast))
+(defmethod expand ((ast ico:defun-ast) environment)
+  (declare (ignore environment))
   (let* ((name (ico:name (ico:name-ast ast)))
          (origin (ico:origin ast))
          (block-name (if (symbolp name) name (second name))))
