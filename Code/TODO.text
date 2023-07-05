@@ -71,7 +71,7 @@ _ print-unreadable-object
 * remf
 x restart-bind
 * restart-case
-* return
++ return
 * rotatef
 * setf
 * shiftf
