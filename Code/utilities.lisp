@@ -66,6 +66,9 @@
     (1 :object
        (node* (:literal :value object)))))
 
+(defun make-variable-name-ast (name)
+  (node* (:variable-name :name name)))
+
 (defun wrap-in-block-ast (block-name form-asts)
   (node* (:block)
     (1 :name
