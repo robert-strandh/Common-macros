@@ -6,7 +6,7 @@
     (let ((variable-name (gensym)))
       (flet ((make-variable-name-ast ()
                (node* (:variable-name :name variable-name))))
-        (abp:with-builder ((make-instance 'bld:builder))
+        (with-builder
           (node* (:let)
             (1 :binding
                (node* (:value-binding)

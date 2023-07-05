@@ -4,7 +4,7 @@
   (declare (ignore environment))
   (let ((clause-asts (ico:clause-asts ast)))
     (with-ast-origin ast
-      (abp:with-builder ((make-instance 'builder))
+      (with-builder
         (if (null clause-asts)
             (node* (:unparsed :expression 'nil))
             (with-ast-origin (first clause-asts)

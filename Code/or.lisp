@@ -4,7 +4,7 @@
   (declare (ignore environment))
   (with-ast-origin ast
     (let ((form-asts (ico:form-asts ast)))
-      (abp:with-builder ((make-instance 'bld:builder))
+      (with-builder
         (cond ((null form-asts)
                (node* (:literal :literal 'nil)))
               ((null (rest form-asts))

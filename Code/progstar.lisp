@@ -3,7 +3,7 @@
 (defmethod expand ((ast ico:prog-ast) environment)
   (declare (ignore environment))
   (with-ast-origin ast
-    (abp:with-builder ((make-instance 'bld:builder))
+    (with-builder
       (wrap-in-block-ast
        'nil
        (list (node* (:let*)

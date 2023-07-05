@@ -3,7 +3,7 @@
 (defmethod expand ((ast ico:decf-ast) environment)
   (let ((place (ico:place (ico:place-ast ast))))
     (with-ast-origin ast
-      (abp:with-builder ((make-instance 'bld:builder))
+      (with-builder
         (multiple-value-bind (vars vals store-vars writer-form reader-form)
             (get-setf-expansion place environment)
           (let* ((variable-name-ast

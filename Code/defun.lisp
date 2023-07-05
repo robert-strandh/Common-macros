@@ -5,7 +5,7 @@
   (with-ast-origin ast
     (let* ((name (ico:name (ico:name-ast ast)))
            (block-name (if (symbolp name) name (second name))))
-      (abp:with-builder ((make-instance 'bld:builder))
+      (with-builder
         (node* (:progn)
           (1 :form
              (node* (:eval-when)

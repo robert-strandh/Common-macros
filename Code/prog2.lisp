@@ -6,7 +6,7 @@
     (let ((variable-name (gensym)))
       (flet ((make-variable-name-ast ()
                (node* (:variable-name :name variable-name))))
-        (abp:with-builder ((make-instance 'bld:builder))
+        (with-builder
           (node* (:progn)
             (1 :form (ico:first-form-ast ast))
             (1 :form
