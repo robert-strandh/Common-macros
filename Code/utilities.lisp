@@ -91,3 +91,6 @@
              :context :form
              :expression read-form)))))
            
+(defmacro with-builder (&body body)
+  `(abp:with-builder ((make-instance 'bld:builder))
+     ,@body))
