@@ -54,7 +54,7 @@
        (abp:node* (:literal :source origin :value object)))))
 
 (defun wrap-in-block-ast (origin block-name form-asts)
-  (abp:node* (:block)
+  (abp:node* (:block :source origin)
     (1 :name
        (abp:node* (:block-name :source origin :name block-name)))
     (* :form form-asts)))
