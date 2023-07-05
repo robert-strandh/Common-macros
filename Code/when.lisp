@@ -2,9 +2,8 @@
 
 (defmethod expand ((ast ico:when-ast) environment)
   (declare (ignore environment))
-  (with-ast-origin ast
-    (with-builder
-      (node* (:if)
-        (1 :test (ico:test-ast ast))
-        (1 :then (node* (:progn) (* :form (ico:form-asts ast))))
-        (1 :else (node* (:unparsed :expression 'nil)))))))
+  (with-builder
+    (node* (:if)
+      (1 :test (ico:test-ast ast))
+      (1 :then (node* (:progn) (* :form (ico:form-asts ast))))
+      (1 :else (node* (:unparsed :expression 'nil))))))

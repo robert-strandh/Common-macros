@@ -2,18 +2,17 @@
 
 (defmethod expand ((ast ico:prog2-ast) environment)
   (declare (ignore environment))
-  (with-ast-origin ast
-    (let ((variable-name (gensym)))
-      (flet ((make-variable-name-ast ()
-               (node* (:variable-name :name variable-name))))
-        (with-builder
-          (node* (:progn)
-            (1 :form (ico:first-form-ast ast))
-            (1 :form
-               (node* (:let)
-                 (1 :binding
-                    (node* (:value-binding)
-                      (1 :name (make-variable-name-ast))
-                      (1 :value (ico:second-form-ast ast))))
-                 (* :form (ico:form-asts ast))
-                 (1 :form (make-variable-name-ast))))))))))
+  (let ((variable-name (gensym)))
+    (flet ((make-variable-name-ast ()
+             (node* (:variable-name :name variable-name))))
+      (with-builder
+        (node* (:progn)
+          (1 :form (ico:first-form-ast ast))
+          (1 :form
+             (node* (:let)
+               (1 :binding
+                  (node* (:value-binding)
+                    (1 :name (make-variable-name-ast))
+                    (1 :value (ico:second-form-ast ast))))
+               (* :form (ico:form-asts ast))
+               (1 :form (make-variable-name-ast)))))))))

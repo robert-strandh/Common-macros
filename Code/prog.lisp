@@ -2,13 +2,12 @@
 
 (defmethod expand ((ast ico:prog-ast) environment)
   (declare (ignore environment))
-  (with-ast-origin ast
-    (with-builder
-      (wrap-in-block-ast
-       'nil
-       (list (node* (:let)
-               (* :binding (ico:binding-asts ast))
-               (* :declaration (ico:declaration-asts ast))
-               (1 :form
-                  (node* (:tagbody)
-                    (* :segment (ico:segment-asts ast))))))))))
+  (with-builder
+    (wrap-in-block-ast
+     'nil
+     (list (node* (:let)
+             (* :binding (ico:binding-asts ast))
+             (* :declaration (ico:declaration-asts ast))
+             (1 :form
+                (node* (:tagbody)
+                  (* :segment (ico:segment-asts ast)))))))))

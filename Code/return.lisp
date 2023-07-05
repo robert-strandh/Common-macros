@@ -2,8 +2,7 @@
 
 (defmethod expand ((ast ico:return-ast) environment)
   (declare (ignore environment))
-  (with-ast-origin ast
-    (with-builder
-      (node* (:return-from)
-        (1 :name (node* (:block-name :name 'nil)))
-        (abp:? :result (ico:result-ast ast))))))
+  (with-builder
+    (node* (:return-from)
+      (1 :name (node* (:block-name :name 'nil)))
+      (abp:? :result (ico:result-ast ast)))))
