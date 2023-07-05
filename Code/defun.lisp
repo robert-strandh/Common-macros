@@ -16,25 +16,24 @@
            (node* (:eval-when)
              (* :situation
                 (make-eval-when-situation-asts :load-toplevel :execute))
-             (* :form
-                (list 
-                 (node* (:setf)
-                   (1 :place
-                      (node* (:unparsed
-                              :context :place
-                              :expression 
-                              (node* (:application)
-                                (1 :function-name
-                                   (node* (:function-name
-                                           :name 'fdefinitions)))
-                                (1 :argument
-                                   (make-quote-ast name))))))
-                   (1 :value 
-                      (node* (:lambda)
-                        (1 :lambda-list (ico:lambda-list-ast ast))
-                        (* :declaration (ico:declaration-asts ast))
-                        (abp:? :documentation (ico:documentation-ast ast))
-                        (1 :form
-                           (wrap-in-block-ast
-                            block-name (ico:form-asts ast))))))
-                 (node* (:literal :literal name))))))))))
+             (1 :form
+                (node* (:setf)
+                  (1 :place
+                     (node* (:unparsed
+                             :context :place
+                             :expression 
+                             (node* (:application)
+                               (1 :function-name
+                                  (node* (:function-name
+                                          :name 'fdefinitions)))
+                               (1 :argument
+                                  (make-quote-ast name))))))
+                  (1 :value 
+                     (node* (:lambda)
+                       (1 :lambda-list (ico:lambda-list-ast ast))
+                       (* :declaration (ico:declaration-asts ast))
+                       (abp:? :documentation (ico:documentation-ast ast))
+                       (1 :form
+                          (wrap-in-block-ast
+                           block-name (ico:form-asts ast)))))))
+             (1 :form (node* (:literal :literal name)))))))))

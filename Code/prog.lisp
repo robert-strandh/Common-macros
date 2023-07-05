@@ -9,5 +9,4 @@
              (* :binding (ico:binding-asts ast))
              (* :declaration (ico:declaration-asts ast))
              (1 :form
-                (node* (:tagbody)
-                  (* :segment (ico:segment-asts ast)))))))))
+                (node* (:tagbody) (* :segment (ico:segment-asts ast)))))))))

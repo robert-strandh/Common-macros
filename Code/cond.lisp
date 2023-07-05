@@ -13,8 +13,7 @@
                    (remaining-cond-ast
                      (node* (:cond) (* :clause (rest clause-asts)))))
               (if (null form-asts)
-                  (node* (:or)
-                    (* :form (list test-ast remaining-cond-ast)))
+                  (node* (:or) (* :form (list test-ast remaining-cond-ast)))
                   (node* (:if)
                     (1 :test test-ast)
                     (1 :then (node* (:progn) (* :form form-asts)))

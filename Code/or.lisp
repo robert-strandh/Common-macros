@@ -9,16 +9,14 @@
             ((null (rest form-asts))
              (first form-asts))
             (t
-             (let ((variable-name (gensym)))
-               (flet ((make-variable-name-ast ()
-                        (node* (:variable-name :name variable-name))))
-                 (node* (:let)
-                   (1 :binding
-                      (make-let-binding-ast
-                       (make-variable-name-ast) (first form-asts)))
-                   (1 :form
-                      (node* (:if)
-                        (1 :test (make-variable-name-ast))
-                        (1 :then (make-variable-name-ast))
-                        (1 :else (node* (:or)
-                                   (* :form (rest form-asts))))))))))))))
+             (let ((name (gensym)))
+               (node* (:let)
+                 (1 :binding
+                    (make-let-binding-ast
+                     (make-variable-name-ast name) (first form-asts)))
+                 (1 :form
+                    (node* (:if)
+                      (1 :test (make-variable-name-ast name))
+                      (1 :then (make-variable-name-ast name))
+                      (1 :else (node* (:or)
+                                 (* :form (rest form-asts)))))))))))))

@@ -11,8 +11,5 @@
             (t
              (node* (:if)
                (1 :test (first form-asts))
-               (1 :then
-                  (node* (:and)
-                    (* :form (rest form-asts))))
-               (1 :else
-                  (node* (:literal :literal 'nil)))))))))
+               (1 :then (node* (:and) (* :form (rest form-asts))))
+               (1 :else (node* (:literal :literal 'nil)))))))))
