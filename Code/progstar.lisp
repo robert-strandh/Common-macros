@@ -6,9 +6,9 @@
       (wrap-in-block-ast
        origin
        'nil
-       (list (abp:node* (:let*)
+       (list (abp:node* (:let* :source origin)
                (* :binding (ico:binding-asts ast))
                (* :declaration (ico:declaration-asts ast))
                (1 :form
-                  (abp:node* (:tagbody)
+                  (abp:node* (:tagbody :source origin)
                     (* :segment (ico:segment-asts ast))))))))))
