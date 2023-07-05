@@ -1,11 +1,24 @@
 (cl:in-package #:common-macros)
 
-(defmacro cmd:incf (&environment env place &optional (delta-form 1))
-  (multiple-value-bind (vars vals store-vars writer-form reader-form)
-      (get-setf-expansion place env)
-    (if (null vars)
-        `(let ((,(first store-vars) (+ ,reader-form ,delta-form)))
-           ,writer-form)
-        `(let* (,@(mapcar (lambda (var val) `(,var ,val)) vars vals)
-                (,(first store-vars) (+ ,reader-form ,delta-form)))
-           ,writer-form))))
+(defmethod expand ((ast ico:decf-ast) environment)
+  (with-builder
+    (multiple-value-bind
+          (binding-asts store-variable-asts store-ast read-ast)
+        (expand-place-ast (ico:place-ast ast))
+      (let* ((variable-name-ast (first store-variable-asts))
+             (delta-ast
+               (if (null (ico:delta-ast ast))
+                   (node* (:unparsed :context :form :expression '1))
+                   (ico:delta-ast ast)))
+             (application-ast
+               (node* (:application)
+                 (1 :function-name
+                    (node* (:function-name :name '+)))
+                 (1 :argument read-ast)
+                 (1 :argument delta-ast)))
+             (let-binding-ast
+               (make-let-binding-ast variable-name-ast application-ast)))
+        (node* (:let)
+          (1 :binding let-binding-ast)
+          (* :binding binding-asts)
+          (1 :form store-ast))))))
