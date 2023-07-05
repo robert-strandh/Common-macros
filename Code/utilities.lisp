@@ -15,6 +15,11 @@
   `(let ((*origin* (ico:origin ,ast)))
      ,@body))
 
+(defgeneric expand (ast environment))
+
+(defmethod expand :around (ast environment)
+  (with-ast-origin ast (call-next-method)))
+
 (defun separate-ordinary-body (body)
   (let ((pos (position-if (lambda (item)
                             (and (consp item)
