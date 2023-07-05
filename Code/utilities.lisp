@@ -11,6 +11,10 @@
 
 (defvar *origin*)
 
+(defmacro with-ast-origin (ast &body body)
+  `(let ((*origin* (ico:origin ,ast)))
+     ,@body))
+
 (defun separate-ordinary-body (body)
   (let ((pos (position-if (lambda (item)
                             (and (consp item)

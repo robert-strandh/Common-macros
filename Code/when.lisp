@@ -2,7 +2,7 @@
 
 (defmethod expand ((ast ico:when-ast) environment)
   (declare (ignore environment))
-  (let ((*origin* (ico:origin ast)))
+  (with-ast-origin ast
     (abp:with-builder ((make-instance 'builder))
       (node* (:if)
         (1 :test (ico:test-ast ast))
