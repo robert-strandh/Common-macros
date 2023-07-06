@@ -1,7 +1,7 @@
 (cl:in-package #:common-macros)
 
 (defmethod expand (client (ast ico:prog*-ast) environment)
-  (declare (ignore environment))
+  (declare (ignore client environment))
   (wrap-in-block-ast
    'nil
    (list (node* (:let*)

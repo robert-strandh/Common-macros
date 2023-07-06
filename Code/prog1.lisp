@@ -1,7 +1,7 @@
 (cl:in-package #:common-macros)
 
 (defmethod expand (client (ast ico:prog1-ast) environment)
-  (declare (ignore environment))
+  (declare (ignore client environment))
   (let ((name (gensym)))
     (node* (:let)
       (1 :binding

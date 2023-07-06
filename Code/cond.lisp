@@ -1,7 +1,7 @@
 (cl:in-package #:common-macros)
 
 (defmethod expand (client (ast ico:cond-ast) environment)
-  (declare (ignore environment))
+  (declare (ignore client environment))
   (let ((clause-asts (ico:clause-asts ast)))
     (if (null clause-asts)
         (node* (:unparsed :expression 'nil))

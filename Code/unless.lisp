@@ -1,7 +1,7 @@
 (cl:in-package #:common-macros)
 
 (defmethod expand (client (ast ico:unless-ast) environment)
-  (declare (ignore environment))
+  (declare (ignore client environment))
   (node* (:if)
     (1 :test (ico:test-ast ast))
     (1 :then (node* (:unparsed :expression 'nil)))

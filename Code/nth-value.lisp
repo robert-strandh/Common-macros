@@ -1,7 +1,7 @@
 (cl:in-package #:common-macros)
 
 (defmethod expand (client (ast ico:nth-value-ast) environment)
-  (declare (ignore environment))
+  (declare (ignore client environment))
   (node* (:application)
     (1 :function-name (node* (:function-name :name 'nth)))
     (1 :argument (ico:n-ast ast))

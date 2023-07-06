@@ -1,7 +1,7 @@
 (cl:in-package #:common-macros)
 
 (defmethod expand (client (ast ico:defun-ast) environment)
-  (declare (ignore environment))
+  (declare (ignore client environment))
   (let* ((name (ico:name (ico:name-ast ast)))
          (block-name (if (symbolp name) name (second name))))
     (node* (:progn)

@@ -1,7 +1,7 @@
 (cl:in-package #:common-macros)
 
 (defmethod expand (client (ast ico:and-ast) environment)
-  (declare (ignore environment))
+  (declare (ignore client environment))
   (let ((form-asts (ico:form-asts ast)))
     (cond ((null form-asts)
            (node* (:literal :literal 't)))

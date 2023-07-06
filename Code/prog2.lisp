@@ -1,7 +1,7 @@
 (cl:in-package #:common-macros)
 
 (defmethod expand (client (ast ico:prog2-ast) environment)
-  (declare (ignore environment))
+  (declare (ignore client environment))
   (let ((name (gensym)))
     (node* (:progn)
       (1 :form (ico:first-form-ast ast))
