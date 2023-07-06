@@ -34,7 +34,3 @@
                              (1 :argument (node* (:quote :object 'variable)))))))
                    (1 :value documentation-ast))))
       (1 :form variable-name-ast))))
-                           
-                                
-                                
-                                  

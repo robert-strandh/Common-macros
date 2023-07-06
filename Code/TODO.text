@@ -30,7 +30,7 @@ _ defsetf
 x defstruct
 x deftype
 + defun
-* defvar
++ defvar
 _ destructuring-bind
 * do
 * do*
