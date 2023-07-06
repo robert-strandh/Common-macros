@@ -88,7 +88,7 @@ _ with-condition-restarts
 x with-hash-table-iterator
 _ with-input-from-string
 + with-open-file
-* with-open-stream
++ with-open-stream
 * with-output-to-string
 x with-package-iterator
 * with-simple-restart
