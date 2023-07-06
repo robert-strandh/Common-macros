@@ -66,7 +66,7 @@ _ print-unreadable-object
 + prog2
 * psetf
 * psetq
-* push
++ push
 * pushnew
 * remf
 x restart-bind
