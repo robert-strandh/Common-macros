@@ -65,7 +65,7 @@ _ print-unreadable-object
 + prog1
 + prog2
 * psetf
-* psetq
++ psetq
 + push
 * pushnew
 * remf
