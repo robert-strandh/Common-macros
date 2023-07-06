@@ -1,6 +1,6 @@
 (cl:in-package #:common-macros)
 
-(defmethod expand ((ast ico:prog-ast) environment)
+(defmethod expand ((ast ico:prog*-ast) environment)
   (declare (ignore environment))
   (with-builder
     (wrap-in-block-ast
