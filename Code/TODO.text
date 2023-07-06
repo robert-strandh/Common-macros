@@ -45,7 +45,7 @@ x formatter
 x handler-bind
 _ handler-case
 + ignore-errors
-* in-package
++ in-package
 + incf
 * lambda
 x loop
