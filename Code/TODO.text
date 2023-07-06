@@ -52,7 +52,7 @@ x loop
 x loop-finish
 + multiple-value-bind
 + multiple-value-list
-* multiple-value-setq
++ multiple-value-setq
 + nth-value
 + or
 + pop
