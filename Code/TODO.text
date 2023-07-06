@@ -44,7 +44,7 @@ _ etypecase
 x formatter
 x handler-bind
 _ handler-case
-* ignore-errors
++ ignore-errors
 * in-package
 + incf
 * lambda
