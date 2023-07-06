@@ -3,7 +3,7 @@
 (defmethod expand (client (ast ico:push-ast) environment)
   (multiple-value-bind
         (binding-asts store-variable-asts store-ast read-ast)
-      (expand-place-ast (ico:place-ast ast))
+      (expand-place-ast (ico:place-ast ast) environment)
     (let ((item-var (gensym)))
       (node* (:let*)
         (1 :binding

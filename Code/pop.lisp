@@ -1,10 +1,9 @@
 (cl:in-package #:common-macros)
 
 (defmethod expand (client (ast ico:pop-ast) environment)
-  (declare (ignore environment))
   (multiple-value-bind
         (binding-asts store-variable-asts store-ast read-ast)
-      (expand-place-ast (ico:place-ast ast))
+      (expand-place-ast (ico:place-ast ast) environment)
     (node* (:let*)
       (* :binding binding-asts)
       (1 :binding
