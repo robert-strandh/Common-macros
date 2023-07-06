@@ -1,6 +1,6 @@
 (cl:in-package #:common-macros)
 
-(defmethod expand ((ast ico:or-ast) environment)
+(defmethod expand (client (ast ico:or-ast) environment)
   (declare (ignore environment))
   (let ((form-asts (ico:form-asts ast)))
     (cond ((null form-asts)

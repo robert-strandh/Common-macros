@@ -19,9 +19,9 @@
   `(abp:with-builder ((make-instance 'bld:builder))
      ,@body))
 
-(defgeneric expand (ast environment))
+(defgeneric expand (client ast environment))
 
-(defmethod expand :around (ast environment)
+(defmethod expand :around (client ast environment)
   (with-builder (with-ast-origin ast (call-next-method))))
 
 (defun separate-ordinary-body (body)

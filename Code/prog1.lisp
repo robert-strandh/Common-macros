@@ -1,6 +1,6 @@
 (cl:in-package #:common-macros)
 
-(defmethod expand ((ast ico:prog1-ast) environment)
+(defmethod expand (client (ast ico:prog1-ast) environment)
   (declare (ignore environment))
   (let ((name (gensym)))
     (node* (:let)

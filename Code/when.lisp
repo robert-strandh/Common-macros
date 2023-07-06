@@ -1,6 +1,6 @@
 (cl:in-package #:common-macros)
 
-(defmethod expand ((ast ico:when-ast) environment)
+(defmethod expand (client (ast ico:when-ast) environment)
   (declare (ignore environment))
   (node* (:if)
     (1 :test (ico:test-ast ast))

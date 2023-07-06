@@ -1,6 +1,6 @@
 (cl:in-package #:common-macros)
 
-(defmethod expand ((ast ico:ignore-errors-ast) environment)
+(defmethod expand (client (ast ico:ignore-errors-ast) environment)
   (declare (ignore environment))
   (node* (:handler-case)
     (* :form (ico:form-asts ast))

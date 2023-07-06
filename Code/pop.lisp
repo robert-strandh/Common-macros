@@ -1,6 +1,6 @@
 (cl:in-package #:common-macros)
 
-(defmethod expand ((ast ico:pop-ast) environment)
+(defmethod expand (client (ast ico:pop-ast) environment)
   (declare (ignore environment))
   (multiple-value-bind
         (binding-asts store-variable-asts store-ast read-ast)

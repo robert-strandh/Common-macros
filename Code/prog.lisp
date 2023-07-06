@@ -1,6 +1,6 @@
 (cl:in-package #:common-macros)
 
-(defmethod expand ((ast ico:prog-ast) environment)
+(defmethod expand (client (ast ico:prog-ast) environment)
   (declare (ignore environment))
   (wrap-in-block-ast
    'nil

@@ -1,6 +1,6 @@
 (cl:in-package #:common-macros)
 
-(defmethod expand ((ast ico:cond-ast) environment)
+(defmethod expand (client (ast ico:cond-ast) environment)
   (declare (ignore environment))
   (let ((clause-asts (ico:clause-asts ast)))
     (if (null clause-asts)

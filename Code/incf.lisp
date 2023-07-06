@@ -1,6 +1,6 @@
 (cl:in-package #:common-macros)
 
-(defmethod expand ((ast ico:decf-ast) environment)
+(defmethod expand (client (ast ico:decf-ast) environment)
   (multiple-value-bind
         (binding-asts store-variable-asts store-ast read-ast)
       (expand-place-ast (ico:place-ast ast))

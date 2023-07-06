@@ -1,6 +1,6 @@
 (cl:in-package #:common-macros)
 
-(defmethod expand ((ast ico:multiple-value-bind-ast) environment)
+(defmethod expand (client (ast ico:multiple-value-bind-ast) environment)
   (declare (ignore environment))
   (let ((rest (gensym)))
     (node* (:application)
