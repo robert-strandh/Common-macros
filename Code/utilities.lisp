@@ -79,10 +79,10 @@
        (node* (:block-name :name block-name)))
     (* :form form-asts)))
 
-(defun expand-place-ast (place-ast)
+(defun expand-place-ast (place-ast environment)
   (multiple-value-bind
         (variables value-forms store-variables store-form read-form)
-      (ico:place place-ast)
+      (get-setf-expansion (ico:place place-ast) environment)
     (values
      (loop for variable in variables
            for value-form in value-forms
