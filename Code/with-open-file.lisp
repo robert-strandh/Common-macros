@@ -1,18 +1,41 @@
 (cl:in-package #:common-macros)
 
-;;; This definition is brittle.  Use Iconoclast instead.
-
-(defmacro cmd:with-open-file
-    ((stream-variable filespec &rest options) &body body)
+(defmethod expand (client (ast ico:with-open-file-ast) environment)
+  (declare (ignore client environment))
   (let ((abort-variable (gensym)))
-    (multiple-value-bind (declarations forms)
-        (separate-ordinary-body body)
-      `(let ((,stream-variable (open ,filespec ,@options))
-             (,abort-variable t))
-         ,@declarations
-         (unwind-protect
-              (multiple-value-prog1
-                  (progn ,@forms)
-                (setq ,abort-variable nil))
-           (unless (null ,stream-variable)
-             (close ,stream-variable :abort ,abort-variable)))))))
+    (node* (:let)
+      (1 :binding
+         (node* (:value-binding)
+           (1 :variable (ico:stream-ast ast))
+           (1 :value
+              (node* (:application)
+                (1 :function-name (node* (:function-name :name 'open)))
+                (1 :argument (ico:filespec-ast ast))
+                (* :argument (ico:option-asts ast)))))
+         (make-let-binding-ast
+          (make-variable-name-ast abort-variable)
+          (node* (:unparsed :context :form :expression 't))))
+      (* :declaration (ico:declaration-asts ast))
+      (1 :form
+         (node* (:unwind-protect)
+           (1 :protected
+              (node* (:multiple-value-prog1)
+                (1 :values (node* (:progn) (* :form (ico:form-asts ast))))
+                (1 :form
+                   (node* (:setq)
+                     (1 :variable (make-variable-name-ast abort-variable))
+                     (1 :value
+                        (node* (:unparsed :context :form :expression 'nil)))))))
+           (1 :form
+              (node* (:unless)
+                (1 :test
+                   (node* (:applicaton)
+                     (1 :function-name (node* (:function-name :name 'null)))
+                     (1 :argument (ico:stream-ast ast))))
+                (1 :form
+                   (node* (:application)
+                     (1 :function-name (node* (:function-name :name 'close)))
+                     (1 :argument (ico:stream-ast ast))
+                     (1 :argument
+                        (node* (:unparsed :context :form :expression ':abort)))
+                     (1 :argument (make-variable-name-ast abort-variable)))))))))))
