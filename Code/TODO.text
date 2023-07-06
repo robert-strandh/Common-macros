@@ -55,7 +55,7 @@ x loop-finish
 * multiple-value-setq
 + nth-value
 + or
-* pop
++ pop
 x pprint-exit-if-list-exhausted
 x pprint-logical-block
 x pprint-pop

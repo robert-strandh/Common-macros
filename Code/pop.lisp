@@ -1,14 +1,23 @@
 (cl:in-package #:common-macros)
 
-(defmacro cmd:pop (place &environment environment)
-  (multiple-value-bind (vars vals store-vars writer-form reader-form)
-      (get-setf-expansion place environment)
-    `(let* (,(mapcar #'list vars vals)
-            (,(car store-vars) ,reader-form))
-       (if (listp ,(car store-vars))
-           (prog1 (car ,(car store-vars))
-             (setq ,(car store-vars) (cdr ,(car store-vars)))
-             ,writer-form)
-           (error 'type-error
-                  :expected-type 'list
-                  :datum ',(car store-vars))))))
+(defmethod expand ((ast ico:pop-ast) environment)
+  (declare (ignore environment))
+  (with-builder
+    (multiple-value-bind
+          (binding-asts store-variable-asts store-ast read-ast)
+        (expand-place-ast (ico:place-ast ast))
+      (node* (:let*)
+        (* :binding binding-asts)
+        (1 :binding
+           (make-let-binding-ast (first store-variable-asts) read-ast))
+        (1 :form
+           (node* (:prog1)
+             (1 :first (first store-variable-asts))
+             (1 :form
+                (node* (:setq)
+                  (1 :name (first store-variable-asts))
+                  (1 :value
+                     (node* (:application)
+                       (1 :function-name :name 'cdr)
+                       (1 :argument (first store-variable-asts))))))
+             (1 :form store-ast)))))))
