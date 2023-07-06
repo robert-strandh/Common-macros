@@ -15,10 +15,14 @@
   `(let ((*origin* (ico:origin ,ast)))
      ,@body))
 
+(defmacro with-builder (&body body)
+  `(abp:with-builder ((make-instance 'bld:builder))
+     ,@body))
+
 (defgeneric expand (ast environment))
 
 (defmethod expand :around (ast environment)
-  (with-ast-origin ast (call-next-method)))
+  (with-builder (with-ast-origin ast (call-next-method))))
 
 (defun separate-ordinary-body (body)
   (let ((pos (position-if (lambda (item)
@@ -98,7 +102,3 @@
      (node* (:unparsed
              :context :form
              :expression read-form)))))
-           
-(defmacro with-builder (&body body)
-  `(abp:with-builder ((make-instance 'bld:builder))
-     ,@body))
