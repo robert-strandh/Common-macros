@@ -33,7 +33,7 @@ x deftype
 + defvar
 _ destructuring-bind
 + do
-* do*
++ do*
 x do-all-symbols
 x do-external-symbols
 x do-symbols
