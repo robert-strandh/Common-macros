@@ -1,17 +1,41 @@
 (cl:in-package #:common-macros)
 
-(defmacro cmd:do (variable-clauses end-test &body body)
-  (multiple-value-bind (declarations forms)
-      (separate-ordinary-body body)
-    (let ((start-tag (gensym)))
-      `(block nil
-         (let ,(extract-bindings variable-clauses)
-           ,@declarations
-           (tagbody
-              ,start-tag
-              (when ,(car end-test)
-                (return
-                  (progn ,@(cdr end-test))))
-              ,@forms
-              (psetq ,@(extract-updates variable-clauses))
-              (go ,start-tag)))))))
+(defmethod expand (client (ast ico:do-ast) environment)
+  (declare (ignore client environment))
+  (let ((start-tag (gensym))
+        (variable-asts (ico:do-iteration-variable-asts ast)))
+    (wrap-in-block-ast
+     nil
+     (node* (:let)
+       (* :binding
+          (loop for variable-ast in variable-asts
+                collect
+                (make-let-binding-ast
+                 (ico:do-variable-name-ast variable-ast)
+                 (ico:init-form-ast variable-ast))))
+       (* :declaration (ico:declaration-asts ast))
+       (1 :form
+          (node* (:tagbody)
+            (1 :segment
+               (node* (:segment)
+                 (1 :tag (node* (:tag :name start-tag)))
+                 (1 :statement
+                    (node* (:when)
+                      (1 :test (ico:end-test-ast ast))
+                      (1 :form
+                         (node* (:return)
+                           (1 :form
+                              (node* (:progn)
+                                (* :form (ico:result-asts ast))))))))))
+            (* :segment (ico:segment-asts ast))
+            (1 :segment
+               (node* (:segment)
+                 (1 :statement
+                    (node* (:psetq)
+                      (* :variable-name
+                         (mapcar #'ico:do-variable-name-ast variable-asts))
+                      (* :value
+                         (mapcar #'ico:step-form-ast variable-asts))))
+                 (1 :statement
+                    (node* (:go)
+                      (1 :tag (node* (:tag :name start-tag)))))))))))))
