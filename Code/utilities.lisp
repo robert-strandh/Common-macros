@@ -73,6 +73,12 @@
 (defun make-variable-name-ast (name)
   (node* (:variable-name :name name)))
 
+(defun make-unparsed-form-ast (expression)
+  (node* (:unparsed :context :form :expression expression)))
+
+(defun make-function-name-ast (function-name)
+  (node* (:function-name :name function-name)))
+
 (defun wrap-in-block-ast (block-name form-asts)
   (node* (:block)
     (1 :name
