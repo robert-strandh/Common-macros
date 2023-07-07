@@ -9,7 +9,7 @@
            (1 :variable (ico:stream-ast ast))
            (1 :value
               (node* (:application)
-                (1 :function-name (node* (make-function-name-ast 'open)))
+                (1 :function-name (make-function-name-ast 'open))
                 (1 :argument (ico:filespec-ast ast))
                 (* :argument (ico:option-asts ast)))))
          (make-let-binding-ast
