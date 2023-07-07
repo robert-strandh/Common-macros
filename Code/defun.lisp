@@ -18,15 +18,10 @@
            (1 :form
               (node* (:setf)
                 (1 :place
-                   (node* (:unparsed
-                           :context :place
-                           :expression 
-                           (node* (:application)
-                             (1 :function-name
-                                (node* (:function-name
-                                        :name 'fdefinitions)))
-                             (1 :argument
-                                (make-quote-ast name))))))
+                   (node* (:application)
+                     (1 :function-name
+                        (make-function-name-ast 'fdefinition))
+                     (1 :argument (make-quote-ast name))))
                 (1 :value 
                    (node* (:lambda)
                      (1 :lambda-list (ico:lambda-list-ast ast))

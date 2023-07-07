@@ -25,12 +25,10 @@
                  nil
                  (node* (:setf)
                    (1 :place
-                      (node* (:place)
-                        (1 :place
-                           (node* (:application)
-                             (1 :function-name
-                                (node* (:function-name :name 'documentation)))
-                             (1 :argument variable-name-ast)
-                             (1 :argument (node* (:quote :object 'variable)))))))
+                      (node* (:application)
+                        (1 :function-name
+                           (make-function-name-ast 'documentation))
+                        (1 :argument variable-name-ast)
+                        (1 :argument (node* (:quote :object 'variable)))))
                    (1 :value documentation-ast))))
       (1 :form variable-name-ast))))
