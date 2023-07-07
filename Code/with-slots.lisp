@@ -1,14 +1,30 @@
 (cl:in-package #:common-macros)
 
-(defmacro cmd:with-slots ((&rest slot-entries) instance-form &body forms)
+(defmethod expand (client (ast ico:with-slots-ast) environment)
   (let ((instance-var (gensym)))
-    `(let ((,instance-var ,instance-form))
-       (symbol-macrolet
-           ,(loop for entry in slot-entries
-                  collect
-                  (if (symbolp entry)
-                      `(,entry
-                        (slot-value ,instance-var ,entry))
-                      `(,(first entry)
-                        (slot-value ,instance-var ,(second entry)))))
-         ,@forms))))
+    (node* (:let)
+      (1 :binding
+         (make-let-binding-ast
+          (make-variable-name-ast instance-var)
+          (ico:instance-form-ast ast)))
+      (1 :form
+         (node* (:symbol-macrolet)
+           (* :symbol-expansion-asts
+              (loop for slot-entry-ast in (ico:slot-entry-asts ast)
+                    for slot-name-ast
+                      = (ico:slot-name-ast slot-entry-ast)
+                    collect
+                    (node* (:symbol-expansion)
+                      (1 :symbol (ico:variable-name-ast slot-entry-ast))
+                      (1 :expansion
+                         (node* (:application)
+                           (1 :function-name
+                              (make-function-name-ast 'slot-value))
+                           (1 :argument
+                              (make-variable-name-ast instance-var))
+                           (1 :argument
+                              (make-quote-ast
+                               (ico:name slot-name-ast))))))))
+           (* :declaration (ico:declaration-asts ast))
+           (* :form (ico:form-asts ast)))))))
+      

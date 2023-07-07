@@ -92,5 +92,5 @@ _ with-input-from-string
 + with-output-to-string
 x with-package-iterator
 * with-simple-restart
-* with-slots
++ with-slots
 x with-standard-io-syntax
