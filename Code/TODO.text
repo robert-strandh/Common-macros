@@ -8,7 +8,7 @@ _ assert
 x call-method
 * case
 _ ccase
-* check-type
++ check-type
 + cond
 _ ctypecase
 * declaim
