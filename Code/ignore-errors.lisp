@@ -12,7 +12,6 @@
          (1 :variable (make-variable-name-ast 'condition))
          (1 :form
             (node* (:appliation)
-              (1 :function (node* (:function-name :name 'values)))
-              (1 :argument
-                 (node* (:unparsed :context :form :expression nil)))
+              (1 :function (make-function-name-ast 'values))
+              (1 :argument (make-unparsed-form-ast 'nil))
               (1 :argument (make-variable-name-ast 'condition))))))))

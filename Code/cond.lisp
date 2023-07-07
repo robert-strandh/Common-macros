@@ -4,7 +4,7 @@
   (declare (ignore client environment))
   (let ((clause-asts (ico:clause-asts ast)))
     (if (null clause-asts)
-        (node* (:unparsed :expression 'nil))
+        ((make-unparsed-form-ast 'nil)
         (with-ast-origin (first clause-asts)
           (let* ((first-clause-ast (first clause-asts))
                  (test-ast (ico:test-ast first-clause-ast))

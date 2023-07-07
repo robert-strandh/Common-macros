@@ -8,12 +8,11 @@
     (let* ((variable-name-ast (first store-variable-asts))
            (delta-ast
              (if (null (ico:delta-ast ast))
-                 (node* (:unparsed :context :form :expression '1))
+                 (make-unparsed-form-ast '1)
                  (ico:delta-ast ast)))
            (application-ast
              (node* (:application)
-               (1 :function-name
-                  (node* (:function-name :name '-)))
+               (1 :function-name (make-function-name-ast '-))
                (1 :argument read-ast)
                (1 :argument delta-ast)))
            (let-binding-ast
