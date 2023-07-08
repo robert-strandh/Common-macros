@@ -88,12 +88,13 @@
        (node* (:block-name :name block-name)))
     (* :form form-asts)))
 
-(defmacro ablock (name &body form-asts)
+(defmacro ablock (name-form &body form-asts)
   (let ((form-variable (gensym)))
     `(node* (:block)
-       (1 :name ,(if (symbolp ,name)
-                     (node* (:block-name :name ',name))
-                     ,name))
+       (1 :name (let ((,form-variable ,name-form))
+                  (if (symbolp ,form-variable)
+                      (node* (:block-name :name ,form-variable))
+                      ,form-variable)))
        ,@(loop for form-ast-or-list in form-asts
                collect
                `(* :form
