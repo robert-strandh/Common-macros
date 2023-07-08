@@ -79,6 +79,9 @@
 (defun make-function-name-ast (function-name)
   (node* (:function-name :name function-name)))
 
+(defun make-tag-ast (name)
+  (node* (:tag :name name)))
+
 (defun wrap-in-block-ast (block-name form-asts)
   (node* (:block)
     (1 :name
