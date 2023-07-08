@@ -82,12 +82,6 @@
 (defun make-tag-ast (name)
   (node* (:tag :name name)))
 
-(defun wrap-in-block-ast (block-name form-asts)
-  (node* (:block)
-    (1 :name
-       (node* (:block-name :name block-name)))
-    (* :form form-asts)))
-
 (defmacro ablock (name-form &body form-asts)
   (let ((form-variable (gensym)))
     `(node* (:block)
