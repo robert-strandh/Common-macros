@@ -21,28 +21,27 @@
           (ico:var-ast ast)
           (make-unparsed-form-ast '0)))
       (* :declaration (ico:declaration-asts ast))
-      (wrap-in-block-ast
-       nil
-       (node* (:tagbody)
-         (1 :segment
-            (node* (:segment)
-              (1 :tag (make-tag-ast start-tag))
-              (1 :statement
-                 (node* (:when)
-                   (1 :test
-                      (node* (:application)
-                        (1 :function-name (make-function-name-ast '=))
-                        (1 :argument (ico:var-ast ast))
-                        (1 :argument (make-variable-name-ast count-var))))
-                   (1 :form
-                      (node* (:go) (1 :tag (make-tag-ast end-tag))))))
-              (1 :statement
-                 (node* (:tagbody) (* :segment (ico:segment-asts ast))))
-              (1 :statement
-                 (node* (:incf) (1 :place (ico:var-ast ast))))
-              (1 :statement
-                 (node* (:go) (1 :tag (make-tag-ast end-tag))))))
-         (1 :segment
-            (node* (:segment)
-              (1 :tag (make-tag-ast end-tag)))))
+      (ablock 'nil
+        (node* (:tagbody)
+          (1 :segment
+             (node* (:segment)
+               (1 :tag (make-tag-ast start-tag))
+               (1 :statement
+                  (node* (:when)
+                    (1 :test
+                       (node* (:application)
+                         (1 :function-name (make-function-name-ast '=))
+                         (1 :argument (ico:var-ast ast))
+                         (1 :argument (make-variable-name-ast count-var))))
+                    (1 :form
+                       (node* (:go) (1 :tag (make-tag-ast end-tag))))))
+               (1 :statement
+                  (node* (:tagbody) (* :segment (ico:segment-asts ast))))
+               (1 :statement
+                  (node* (:incf) (1 :place (ico:var-ast ast))))
+               (1 :statement
+                  (node* (:go) (1 :tag (make-tag-ast end-tag))))))
+          (1 :segment
+             (node* (:segment)
+               (1 :tag (make-tag-ast end-tag)))))
        (ico:result-ast ast)))))
