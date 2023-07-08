@@ -88,6 +88,18 @@
        (node* (:block-name :name block-name)))
     (* :form form-asts)))
 
+(defmacro ablock (name &body form-asts)
+  (let ((form-variable (gensym)))
+    `(node* (:block)
+       (1 :name (node* (:block-name :name ',name)))
+       ,@(loop for form-ast-or-list in form-asts
+               collect
+               `(* :form
+                   (let ((,form-variable ,form-ast-or-list))
+                     (if (listp ,form-variable)
+                         ,form-variable
+                         (list ,form-variable))))))))
+
 (defun expand-place-ast (place-ast environment)
   (multiple-value-bind
         (variables value-forms store-variables store-form read-form)
