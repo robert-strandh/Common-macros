@@ -37,7 +37,7 @@ _ destructuring-bind
 x do-all-symbols
 x do-external-symbols
 x do-symbols
-* dolist
++ dolist
 * dotimes
 * ecase
 _ etypecase

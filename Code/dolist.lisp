@@ -16,28 +16,56 @@
 ;;; compatible with the declarations.  For that reason, we choose to
 ;;; bind it.
 
-;;; FIXME: use Iconoclast when the s-expression-syntax library has
-;;; DOLIST, so that Iconoclast can define an AST for it.  Until then,
-;;; the syntax checking is going to be skimpy.
-
-(defmacro cmd:dolist ((var list-form &optional result-form) &body body)
-  (multiple-value-bind (declarations forms)
-      (separate-ordinary-body body)
-    (let ((start-tag (gensym))
-          (end-tag (gensym))
-          (list-var (gensym)))
-      `(let ((,list-var ,list-form))
-         (block nil
-           (tagbody
-              ,start-tag
-              (when (endp ,list-var)
-                (go ,end-tag))
-              (let ((,var (car ,list-var)))
-                ,@declarations
-                (tagbody ,@forms))
-              (pop ,list-var)
-              (go ,start-tag)
-              ,end-tag)
-           (let ((,var nil))
-             (declare (ignorable ,var))
-             ,result-form))))))
+(defmethod expand (client (ast ico:dolist-ast) environment)
+  (let ((start-tag (gensym))
+        (end-tag (gensym))
+        (list-var (gensym)))
+    (node* (:let)
+      (1 :binding
+         (make-let-binding-ast
+          (make-variable-name-ast list-var)
+          (ico:list-form-ast ast)))
+      (wrap-in-block-ast
+       nil
+       (node* (:tagbody)
+         (1 :segment
+            (node* (:segment)
+              (1 :tag (node* (:tag :name start-tag)))
+              (1 :statement
+                 (node* (:when)
+                   (1 :test
+                      (node* (:application)
+                        (1 :function-name (make-function-name-ast 'endp))
+                        (1 :argument (make-variable-name-ast list-var))))
+                   (1 :form
+                      (node* (:go) (1 :tag (node* (:tag :name end-tag)))))))
+              (1 :statement
+                 (node* (:let)
+                   (1 :binding
+                      (make-let-binding-ast
+                       (ico:var-ast ast)
+                       (node* (:appliation)
+                         (1 :function-name (make-function-name-ast 'car))
+                         (1 :argument (make-variable-name-ast list-var)))))
+                   (* :declaration (ico:declaration-asts ast))
+                   (1 :form
+                      (node* (:tagbody)
+                        (* :segment (ico:segment-asts ast))))))
+              (1 :statement
+                 (node* (:pop)
+                   (1 :place (make-variable-name-ast list-var))))
+              (1 :statement
+                 (node* (:go) (1 :tag (node* (:tag :name start-tag)))))))
+         (1 :segment
+            (node* (:segment)
+              (1 :tag (node* (:tag :name end-tag))))))
+       (node* (:let)
+         (1 :binding
+            (make-let-binding-ast
+             (ico:var-ast ast) (make-unparsed-form-ast 'nil)))
+         (1 :declaration
+            (node* (:declare)
+              (1 :declaration-specifier
+                 (node* (:declaration-specifier :kind 'ignorable)
+                   (1 :argument (ico:var-ast ast))))))
+         (1 :form (ico:result-ast ast)))))))
