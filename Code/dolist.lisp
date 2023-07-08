@@ -30,7 +30,7 @@
        (node* (:tagbody)
          (1 :segment
             (node* (:segment)
-              (1 :tag (node* (:tag :name start-tag)))
+              (1 :tag (make-tag-ast start-tag))
               (1 :statement
                  (node* (:when)
                    (1 :test
@@ -38,7 +38,7 @@
                         (1 :function-name (make-function-name-ast 'endp))
                         (1 :argument (make-variable-name-ast list-var))))
                    (1 :form
-                      (node* (:go) (1 :tag (node* (:tag :name end-tag)))))))
+                      (node* (:go) (1 :tag (make-tag-ast end-tag))))))
               (1 :statement
                  (node* (:let)
                    (1 :binding
@@ -55,10 +55,10 @@
                  (node* (:pop)
                    (1 :place (make-variable-name-ast list-var))))
               (1 :statement
-                 (node* (:go) (1 :tag (node* (:tag :name start-tag)))))))
+                 (node* (:go) (1 :tag (make-tag-ast start-tag))))))
          (1 :segment
             (node* (:segment)
-              (1 :tag (node* (:tag :name end-tag))))))
+              (1 :tag (make-tag-ast end-tag)))))
        (node* (:let)
          (1 :binding
             (make-let-binding-ast

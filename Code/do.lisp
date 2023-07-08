@@ -18,7 +18,7 @@
           (node* (:tagbody)
             (1 :segment
                (node* (:segment)
-                 (1 :tag (node* (:tag :name start-tag)))
+                 (1 :tag (make-tag-ast start-tag))
                  (1 :statement
                     (node* (:when)
                       (1 :test (ico:end-test-ast ast))
@@ -38,4 +38,4 @@
                          (mapcar #'ico:step-form-ast variable-asts))))
                  (1 :statement
                     (node* (:go)
-                      (1 :tag (node* (:tag :name start-tag)))))))))))))
+                      (1 :tag (make-tag-ast start-tag))))))))))))
