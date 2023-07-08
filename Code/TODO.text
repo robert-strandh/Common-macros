@@ -38,7 +38,7 @@ x do-all-symbols
 x do-external-symbols
 x do-symbols
 + dolist
-* dotimes
++ dotimes
 * ecase
 _ etypecase
 x formatter
