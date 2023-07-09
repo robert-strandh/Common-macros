@@ -165,3 +165,14 @@
                               (list ,form-variable))
                              (t
                               '())))))))))
+
+(defmacro application (function-name-ast-form &rest argument-ast-forms)
+  `(node* (:application)
+     (1 :function-name
+        ,(let ((function-name-variable (gensym)))
+           `(let ((,function-name-variable ,function-name-ast-form))
+              (if (symbolp ,function-name-variable)
+                  (make-function-name-ast ,function-name-variable)
+                  ,function-name-variable))))
+     ,@(loop for argument-ast-form in argument-ast-forms
+             collect `(1 :argument ,argument-ast-form))))
