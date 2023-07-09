@@ -9,7 +9,7 @@
             (if (null (ico:delta-ast ast))
                 (make-unparsed-form-ast '1)
                 (ico:delta-ast ast))))
-      (alet ((b (first store-variable-asts)
-                (application '+ read-ast delta-ast))
-             binding-asts)
+      (alet* (binding-asts
+              (b (first store-variable-asts)
+                 (application '+ read-ast delta-ast)))
         store-ast))))
