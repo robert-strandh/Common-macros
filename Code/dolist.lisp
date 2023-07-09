@@ -25,46 +25,44 @@
          (make-let-binding-ast
           (make-variable-name-ast list-var)
           (ico:list-form-ast ast)))
-      (ablock 'nil
-        (node* (:tagbody)
-          (1 :segment
-             (node* (:segment)
-               (1 :tag (make-tag-ast start-tag))
-               (1 :statement
-                  (node* (:when)
-                    (1 :test
-                       (node* (:application)
-                         (1 :function-name (make-function-name-ast 'endp))
-                         (1 :argument (make-variable-name-ast list-var))))
-                    (1 :form
-                       (node* (:go) (1 :tag (make-tag-ast end-tag))))))
-               (1 :statement
-                  (node* (:let)
-                    (1 :binding
-                       (make-let-binding-ast
-                        (ico:var-ast ast)
-                        (node* (:appliation)
-                          (1 :function-name (make-function-name-ast 'car))
-                          (1 :argument (make-variable-name-ast list-var)))))
-                    (* :declaration (ico:declaration-asts ast))
-                    (1 :form
+      (1 :form
+         (ablock 'nil
+           (node* (:tagbody)
+             (1 :segment
+                (node* (:segment)
+                  (1 :tag (make-tag-ast start-tag))
+                  (1 :statement
+                     (node* (:when)
+                       (1 :test
+                          (node* (:application)
+                            (1 :function-name (make-function-name-ast 'endp))
+                            (1 :argument (make-variable-name-ast list-var))))
+                       (1 :form
+                          (node* (:go) (1 :tag (make-tag-ast end-tag))))))
+                  (1 :statement
+
+                     (alet ((b (ico:var-ast ast)
+                               (node* (:appliation)
+                                 (1 :function-name (make-function-name-ast 'car))
+                                 (1 :argument (make-variable-name-ast list-var)))))
+                       (ico:declaration-asts ast)
                        (node* (:tagbody)
-                         (* :segment (ico:segment-asts ast))))))
-               (1 :statement
-                  (node* (:pop)
-                    (1 :place (make-variable-name-ast list-var))))
-               (1 :statement
-                  (node* (:go) (1 :tag (make-tag-ast start-tag))))))
-          (1 :segment
-             (node* (:segment)
-               (1 :tag (make-tag-ast end-tag)))))
-       (node* (:let)
-         (1 :binding
-            (make-let-binding-ast
-             (ico:var-ast ast) (make-unparsed-form-ast 'nil)))
-         (1 :declaration
-            (node* (:declare)
-              (1 :declaration-specifier
-                 (node* (:declaration-specifier :kind 'ignorable)
-                   (1 :argument (ico:var-ast ast))))))
-         (1 :form (ico:result-ast ast)))))))
+                         (* :segment (ico:segment-asts ast)))))
+                  (1 :statement
+                     (node* (:pop)
+                       (1 :place (make-variable-name-ast list-var))))
+                  (1 :statement
+                     (node* (:go) (1 :tag (make-tag-ast start-tag))))))
+             (1 :segment
+                (node* (:segment)
+                  (1 :tag (make-tag-ast end-tag)))))
+           (node* (:let)
+             (1 :binding
+                (make-let-binding-ast
+                 (ico:var-ast ast) (make-unparsed-form-ast 'nil)))
+             (1 :declaration
+                (node* (:declare)
+                  (1 :declaration-specifier
+                     (node* (:declaration-specifier :kind 'ignorable)
+                       (1 :argument (ico:var-ast ast))))))
+             (1 :form (ico:result-ast ast))))))))
