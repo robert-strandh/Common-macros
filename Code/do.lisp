@@ -20,9 +20,7 @@
                     (1 :test (ico:end-test-ast ast))
                     (1 :form
                        (node* (:return)
-                         (1 :form
-                            (node* (:progn)
-                              (* :form (ico:result-asts ast))))))))))
+                         (1 :form (aprogn (ico:result-asts ast)))))))))
           (* :segment (ico:segment-asts ast))
           (1 :segment
              (node* (:segment)

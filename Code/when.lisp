@@ -4,5 +4,5 @@
   (declare (ignore client environment))
   (node* (:if)
     (1 :test (ico:test-ast ast))
-    (1 :then (node* (:progn) (* :form (ico:form-asts ast))))
+    (1 :then (aprogn (ico:form-asts ast)))
     (1 :else (make-unparsed-form-ast 'nil))))

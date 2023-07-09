@@ -5,4 +5,4 @@
   (node* (:if)
     (1 :test (ico:test-ast ast))
     (1 :then (make-unparsed-form-ast 'nil))
-    (1 :else (node* (:progn) (* :form (ico:form-asts ast))))))
+    (1 :else (aprogn (ico:form-asts ast)))))

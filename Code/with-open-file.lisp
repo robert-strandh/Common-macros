@@ -14,7 +14,7 @@
       (node* (:unwind-protect)
         (1 :protected
            (node* (:multiple-value-prog1)
-             (1 :values (node* (:progn) (* :form (ico:form-asts ast))))
+             (1 :values (aprogn (ico:form-asts ast)))
              (1 :form
                 (node* (:setq)
                   (1 :variable (make-variable-name-ast abort-variable))
