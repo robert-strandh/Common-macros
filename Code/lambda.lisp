@@ -1,7 +1,6 @@
 (cl:in-package #:common-macros)
 
-;;; FIXME: define this macro using Iconoclast for better syntax
-;;; verification.
-(defmacro cmd:lambda (&whole form &rest arguments)
-  (declare (ignore arguments))
-  `(function ,form))
+(defmethod expand (client (ast ico:lambda-ast) environment)
+  (declare (ignore client environment))
+  (node* (:function)
+    (1 :name ast)))
