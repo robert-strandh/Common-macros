@@ -9,13 +9,9 @@
            (first form-asts))
           (t
            (let ((name (gensym)))
-             (node* (:let)
-               (1 :binding
-                  (make-let-binding-ast
-                   (make-variable-name-ast name) (first form-asts)))
-               (1 :form
-                  (node* (:if)
-                    (1 :test (make-variable-name-ast name))
-                    (1 :then (make-variable-name-ast name))
-                    (1 :else (node* (:or)
-                               (* :form (rest form-asts))))))))))))
+             (alet ((b (make-variable-name-ast name) (first form-asts)))
+               (node* (:if)
+                 (1 :test (make-variable-name-ast name))
+                 (1 :then (make-variable-name-ast name))
+                 (1 :else (node* (:or)
+                            (* :form (rest form-asts)))))))))))

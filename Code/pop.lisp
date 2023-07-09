@@ -5,16 +5,13 @@
   (multiple-value-bind
         (binding-asts store-variable-asts store-ast read-ast)
       (expand-place-ast (ico:place-ast ast) environment)
-    (node* (:let*)
-      (* :binding binding-asts)
-      (1 :binding
-         (make-let-binding-ast (first store-variable-asts) read-ast))
-      (1 :form
-         (node* (:prog1)
-           (1 :first (first store-variable-asts))
-           (1 :form
-              (node* (:setq)
-                (1 :name (first store-variable-asts))
-                (1 :value
-                   (application 'cdr (first store-variable-asts)))))
-           (1 :form store-ast))))))
+    (alet* (binding-asts
+            (b (first store-variable-asts) read-ast))
+      (node* (:prog1)
+        (1 :first (first store-variable-asts))
+        (1 :form
+           (node* (:setq)
+             (1 :name (first store-variable-asts))
+             (1 :value
+                (application 'cdr (first store-variable-asts)))))
+        (1 :form store-ast)))))

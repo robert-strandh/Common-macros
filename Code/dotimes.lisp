@@ -11,16 +11,9 @@
   (let ((start-tag (gensym))
         (end-tag (gensym))
         (count-var (gensym)))
-    (node* (:let)
-      (1 :binding
-         (make-let-binding-ast
-          (make-variable-name-ast count-var)
-          (ico:count-form-ast ast)))
-      (1 :binding
-         (make-let-binding-ast
-          (ico:var-ast ast)
-          (make-unparsed-form-ast '0)))
-      (* :declaration (ico:declaration-asts ast))
+    (alet ((b (make-variable-name-ast count-var) (ico:count-form-ast ast))
+           (b (ico:var-ast ast) (make-unparsed-form-ast '0)))
+      (ico:declaration-asts ast)
       (ablock 'nil
         (node* (:tagbody)
           (1 :segment
@@ -29,7 +22,7 @@
                (1 :statement
                   (node* (:when)
                     (1 :test
-                       (application '= (ico-var-ast ast)
+                       (application '= (ico:var-ast ast)
                                     (make-variable-name-ast count-var)))
                     (1 :form
                        (node* (:go) (1 :tag (make-tag-ast end-tag))))))
@@ -42,4 +35,4 @@
           (1 :segment
              (node* (:segment)
                (1 :tag (make-tag-ast end-tag)))))
-       (ico:result-ast ast)))))
+        (ico:result-ast ast)))))

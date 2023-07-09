@@ -3,8 +3,6 @@
 (defmethod expand (client (ast ico:prog*-ast) environment)
   (declare (ignore client environment))
   (ablock 'nil
-    (node* (:let*)
-      (* :binding (ico:binding-asts ast))
-      (* :declaration (ico:declaration-asts ast))
-      (1 :form
-         (node* (:tagbody) (* :segment (ico:segment-asts ast)))))))
+    (alet ((ico:binding-asts ast))
+      (ico:declaration-asts ast)
+      (node* (:tagbody) (* :segment (ico:segment-asts ast))))))
