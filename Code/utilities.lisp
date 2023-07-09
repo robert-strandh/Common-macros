@@ -120,3 +120,48 @@
      (node* (:unparsed
              :context :form
              :expression read-form)))))
+
+(defmacro alet (binding-ast-forms &body body-ast-forms)
+  `(flet ((b (x y)
+            (make-let-binding-ast x y)))
+     (declare (ignorable (function b)))
+     (node* (:let)
+       ,@(loop for binding-ast-form in binding-ast-forms
+               collect
+               (let ((form-variable (gensym)))
+                 `(* :binding
+                     (let ((,form-variable ,binding-ast-form))
+                       (if (listp ,form-variable)
+                           ,form-variable
+                           (list ,form-variable))))))
+       ,@(loop for body-ast-form in body-ast-forms
+               collect
+               (let ((form-variable (gensym)))
+                 `(* :form
+                     (let ((,form-variable ,body-ast-form))
+                       (cond ((null ,form-variable)
+                              '())
+                             ((consp ,form-variable)
+                              (if (typep (car ,form-variable)
+                                         'ico:declaration-ast)
+                                  '()
+                                  ,form-variable))
+                             ((typep ,form-variable 'ico:declaration-ast)
+                              '())
+                             (t
+                              (list ,form-variable))))))
+               collect
+               (let ((form-variable (gensym)))
+                 `(* :declaration
+                     (let ((,form-variable ,body-ast-form))
+                       (cond ((null ,form-variable)
+                              '())
+                             ((consp ,form-variable)
+                              (if (typep (car ,form-variable)
+                                         'ico:declaration-ast)
+                                  ,form-variable
+                                  '()))
+                             ((typep ,form-variable 'ico:declaration-ast)
+                              (list ,form-variable))
+                             (t
+                              '())))))))))
