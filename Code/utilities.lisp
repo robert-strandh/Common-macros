@@ -195,6 +195,12 @@
                          ,form-variable
                          (list ,form-variable))))))))
 
+(defmacro aif (test-ast-form then-ast-form else-ast-form)
+  `(node* (:if)
+     (1 :test ,test-ast-form)
+     (1 :then ,then-ast-form)
+     (1 :else ,else-ast-form)))
+
 (defmacro application (function-name-ast-form &rest argument-ast-forms)
   `(node* (:application)
      (1 :function-name
