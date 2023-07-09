@@ -166,6 +166,12 @@
                              (t
                               '())))))))))
 
+(defmacro alet (binding-ast-forms &body body-ast-forms)
+  (alet-or-alet* :LET binding-ast-forms body-ast-forms))
+
+(defmacro alet* (binding-ast-forms &body body-ast-forms)
+  (alet-or-alet* :LET* binding-ast-forms body-ast-forms))
+
 (defmacro aprogn (&rest body-ast-forms)
   `(node* (:progn)
      ,@(loop for body-ast-form in body-ast-forms
@@ -177,11 +183,17 @@
                          ,form-variable
                          (list ,form-variable))))))))
 
-(defmacro alet (binding-ast-forms &body body-ast-forms)
-  (alet-or-alet* :LET binding-ast-forms body-ast-forms))
-
-(defmacro alet* (binding-ast-forms &body body-ast-forms)
-  (alet-or-alet* :LET* binding-ast-forms body-ast-forms))
+(defmacro awhen (test-ast-form &rest body-ast-forms)
+  `(node* (:when)
+     (1 :test ,test-ast-form)
+     ,@(loop for body-ast-form in body-ast-forms
+             collect
+             (let ((form-variable (gensym)))
+               `(* :form
+                   (let ((,form-variable ,body-ast-form))
+                     (if (listp ,form-variable)
+                         ,form-variable
+                         (list ,form-variable))))))))
 
 (defmacro application (function-name-ast-form &rest argument-ast-forms)
   `(node* (:application)
