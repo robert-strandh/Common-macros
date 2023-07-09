@@ -121,11 +121,11 @@
              :context :form
              :expression read-form)))))
 
-(defmacro alet (binding-ast-forms &body body-ast-forms)
+(defun alet-or-alet* (which-one binding-ast-forms body-ast-forms)
   `(flet ((b (x y)
             (make-let-binding-ast x y)))
      (declare (ignorable (function b)))
-     (node* (:let)
+     (node* (,which-one)
        ,@(loop for binding-ast-form in binding-ast-forms
                collect
                (let ((form-variable (gensym)))
@@ -165,6 +165,12 @@
                               (list ,form-variable))
                              (t
                               '())))))))))
+
+(defmacro alet (binding-ast-forms &body body-ast-forms)
+  (alet-or-alet* :LET binding-ast-forms body-ast-forms))
+
+(defmacro alet* (binding-ast-forms &body body-ast-forms)
+  (alet-or-alet* :LET* binding-ast-forms body-ast-forms))
 
 (defmacro application (function-name-ast-form &rest argument-ast-forms)
   `(node* (:application)
