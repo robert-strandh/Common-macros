@@ -20,12 +20,10 @@
              (node* (:segment)
                (1 :tag (make-tag-ast start-tag))
                (1 :statement
-                  (node* (:when)
-                    (1 :test
-                       (application '= (ico:var-ast ast)
-                                    (make-variable-name-ast count-var)))
-                    (1 :form
-                       (node* (:go) (1 :tag (make-tag-ast end-tag))))))
+                  (awhen 
+                      (application '= (ico:var-ast ast)
+                                   (make-variable-name-ast count-var))
+                    (node* (:go) (1 :tag (make-tag-ast end-tag)))))
                (1 :statement
                   (node* (:tagbody) (* :segment (ico:segment-asts ast))))
                (1 :statement

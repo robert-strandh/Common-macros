@@ -27,10 +27,8 @@
              (node* (:segment)
                (1 :tag (make-tag-ast start-tag))
                (1 :statement
-                  (node* (:when)
-                    (1 :test (application 'endp list-var))
-                    (1 :form
-                       (node* (:go) (1 :tag (make-tag-ast end-tag))))))
+                  (awhen (application 'endp list-var)
+                    (node* (:go) (1 :tag (make-tag-ast end-tag)))))
                (1 :statement
 
                   (alet ((b (ico:var-ast ast)
