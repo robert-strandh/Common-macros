@@ -18,5 +18,5 @@
                        (make-variable-name-ast instance-var)
                        (make-quote-ast (ico:name slot-name-ast)))))))
         (* :declaration (ico:declaration-asts ast))
-        (* :form (ico:form-asts ast)))))))
+        (* :form (ico:form-asts ast))))))
       
