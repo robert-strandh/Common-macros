@@ -2,11 +2,7 @@
 
 (defmethod expand (client (ast ico:nth-value-ast) environment)
   (declare (ignore client environment))
-  (node* (:application)
-    (1 :function-name (node* (:function-name :name 'nth)))
-    (1 :argument (ico:n-ast ast))
-    (1 :argument
-       (node* (:application)
-         (1 :function-name
-            (node* (:function-name :name 'multiple-value-list)))
-         (1 :argument (ico:form-ast ast))))))
+  (application
+   'nth
+   (ico:n-ast ast)
+   (application 'multiple-value-list (ico:form-ast ast))))

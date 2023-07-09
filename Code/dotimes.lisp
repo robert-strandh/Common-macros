@@ -29,10 +29,8 @@
                (1 :statement
                   (node* (:when)
                     (1 :test
-                       (node* (:application)
-                         (1 :function-name (make-function-name-ast '=))
-                         (1 :argument (ico:var-ast ast))
-                         (1 :argument (make-variable-name-ast count-var))))
+                       (application '= (ico-var-ast ast)
+                                    (make-variable-name-ast count-var)))
                     (1 :form
                        (node* (:go) (1 :tag (make-tag-ast end-tag))))))
                (1 :statement

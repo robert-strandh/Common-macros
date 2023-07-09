@@ -14,8 +14,5 @@
         (1 :binding
            (make-let-binding-ast
             (first store-variable-asts)
-            (node* (:application)
-              (1 :function-name (node* (:function-name :name 'cons)))
-              (1 :argument (make-variable-name-ast item-var))
-              (1 :argument read-ast))))
+            (application 'cons (make-variable-name-ast item-var) read-ast)))
         (1 :form store-ast)))))

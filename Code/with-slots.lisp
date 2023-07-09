@@ -17,14 +17,10 @@
                     (node* (:symbol-expansion)
                       (1 :symbol (ico:variable-name-ast slot-entry-ast))
                       (1 :expansion
-                         (node* (:application)
-                           (1 :function-name
-                              (make-function-name-ast 'slot-value))
-                           (1 :argument
-                              (make-variable-name-ast instance-var))
-                           (1 :argument
-                              (make-quote-ast
-                               (ico:name slot-name-ast))))))))
+                         (application
+                          'slot-value
+                          (make-variable-name-ast instance-var)
+                          (make-quote-ast (ico:name slot-name-ast)))))))
            (* :declaration (ico:declaration-asts ast))
            (* :form (ico:form-asts ast)))))))
       

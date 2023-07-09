@@ -32,8 +32,8 @@
                      (1 :function-name (make-function-name-ast 'null))
                      (1 :argument (ico:stream-ast ast))))
                 (1 :form
-                   (node* (:application)
-                     (1 :function-name (make-function-name-ast 'close))
-                     (1 :argument (ico:stream-ast ast))
-                     (1 :argument (make-unparsed-form-ast ':abort))
-                     (1 :argument (make-variable-name-ast abort-variable)))))))))))
+                   (application
+                    'close
+                    (ico:stream-ast ast)
+                    (make-unparsed-form-ast ':abort)
+                    (make-variable-name-ast abort-variable))))))))))

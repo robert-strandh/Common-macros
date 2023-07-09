@@ -12,7 +12,4 @@
        (node* (:unwind-protect)
          (1 :protected
             (node* (:progn) (* :form (ico:form-asts ast))))
-         (1 :form
-            (node* (:application)
-              (1 :function-name (node* (:function-name :name 'close)))
-              (1 :argument (ico:var-ast ast))))))))
+         (1 :form (application 'close (ico:var-ast ast)))))))

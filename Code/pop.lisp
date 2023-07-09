@@ -16,7 +16,5 @@
               (node* (:setq)
                 (1 :name (first store-variable-asts))
                 (1 :value
-                   (node* (:application)
-                     (1 :function-name :name 'cdr)
-                     (1 :argument (first store-variable-asts))))))
+                   (application 'cdr (first store-variable-asts)))))
            (1 :form store-ast))))))

@@ -10,9 +10,6 @@
        (node* (:setq)
          (1 :variable-name (make-variable-name-ast '*package*))
          (1 :value
-            (node* (:application)
-              (1 :function-name
-                 (node* (:function-name :name 'find-package)))
-              (1 :argument
-                 (node* (:quote)
-                   (1 :object (ico:name (ico:name-ast ast)))))))))))
+            (application
+             'find-package
+             (make-quote-ast (ico:name (ico:name-ast ast)))))))))

@@ -33,10 +33,7 @@
                   (1 :tag (make-tag-ast start-tag))
                   (1 :statement
                      (node* (:when)
-                       (1 :test
-                          (node* (:application)
-                            (1 :function-name (make-function-name-ast 'endp))
-                            (1 :argument (make-variable-name-ast list-var))))
+                       (1 :test (application 'endp list-var))
                        (1 :form
                           (node* (:go) (1 :tag (make-tag-ast end-tag))))))
                   (1 :statement
