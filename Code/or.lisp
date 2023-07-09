@@ -10,8 +10,6 @@
           (t
            (let ((name (gensym)))
              (alet ((b (make-variable-name-ast name) (first form-asts)))
-               (node* (:if)
-                 (1 :test (make-variable-name-ast name))
-                 (1 :then (make-variable-name-ast name))
-                 (1 :else (node* (:or)
-                            (* :form (rest form-asts)))))))))))
+               (aif (make-variable-name-ast name)
+                    (make-variable-name-ast name)
+                    (node* (:or) (* :form (rest form-asts))))))))))

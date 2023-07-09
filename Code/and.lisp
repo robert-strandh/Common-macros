@@ -8,7 +8,6 @@
           ((null (rest form-asts))
            (first form-asts))
           (t
-           (node* (:if)
-             (1 :test (first form-asts))
-             (1 :then (node* (:and) (* :form (rest form-asts))))
-             (1 :else (node* (:literal :literal 'nil))))))))
+           (aif (first form-asts)
+                (node* (:and) (* :form (rest form-asts)))
+                (node* (:literal :literal 'nil)))))))
