@@ -1,7 +1,7 @@
 (cl:in-package #:common-lisp-user)
 
 (defpackage #:common-macros-test
-  (:use #:common-lisp)
+  (:use #:common-lisp #:parachute)
   (:local-nicknames
    (#:ico #:iconoclast)
    (#:bld #:iconoclast-builder)
