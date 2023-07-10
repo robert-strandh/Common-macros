@@ -7,6 +7,7 @@
   :components
   ((:file "packages")
    (:file "utilities")
+   (:file "and")
    (:file "decf")
    (:file "incf")
    (:file "unless")
