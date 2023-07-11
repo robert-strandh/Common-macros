@@ -9,6 +9,7 @@
    (:file "utilities")
    (:file "and")
    (:file "decf")
+   (:file "defvar")
    (:file "incf")
    (:file "or")
    (:file "pop")

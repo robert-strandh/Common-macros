@@ -29,7 +29,7 @@ _ defsetf
 x defstruct
 x deftype
 _ defun
-_ defvar
++ defvar
 _ destructuring-bind
 _ do
 _ do_
