@@ -22,31 +22,21 @@
         (list-var (gensym)))
     (alet ((b (make-variable-name-ast list-var) (ico:list-form-ast ast)))
       (ablock 'nil
-        (node* (:tagbody)
-          (1 :segment
-             (node* (:tagbody-segment)
-               (1 :label (make-tag-ast start-tag))
-               (1 :statement
-                  (awhen (application
-                          'endp (make-variable-name-ast list-var))
-                    (node* (:go) (1 :tag (make-tag-ast end-tag)))))
-               (1 :statement
-
-                  (alet ((b (ico:variable-name-ast ast)
-                            (node* (:application)
-                              (1 :function-name (make-function-name-ast 'car))
-                              (1 :argument (make-variable-name-ast list-var)))))
-                    (ico:declaration-asts ast)
-                    (node* (:tagbody)
-                      (* :segment (ico:segment-asts ast)))))
-               (1 :statement
-                  (node* (:pop)
-                    (1 :place (make-variable-name-ast list-var))))
-               (1 :statement
-                  (node* (:go) (1 :tag (make-tag-ast start-tag))))))
-          (1 :segment
-             (node* (:tagbody-segment)
-               (1 :label (make-tag-ast end-tag)))))
+        (atagbody
+         (make-tag-ast start-tag)
+         (awhen (application
+                 'endp (make-variable-name-ast list-var))
+           (node* (:go) (1 :tag (make-tag-ast end-tag))))
+         (alet ((b (ico:variable-name-ast ast)
+                   (node* (:application)
+                     (1 :function-name (make-function-name-ast 'car))
+                     (1 :argument (make-variable-name-ast list-var)))))
+           (ico:declaration-asts ast)
+           (node* (:tagbody) (* :segment  (ico:segment-asts ast))))
+         (node* (:pop)
+           (1 :place (make-variable-name-ast list-var)))
+         (node* (:go) (1 :tag (make-tag-ast start-tag)))
+         (make-tag-ast end-tag))
         (alet ((b (ico:variable-name-ast ast) (make-unparsed-form-ast 'nil)))
           (node* (:declaration)
             (1 :declaration-specifier
