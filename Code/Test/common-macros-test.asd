@@ -15,6 +15,7 @@
    (:file "or")
    (:file "pop")
    (:file "prog1")
+   (:file "prog2")
    (:file "push")
    (:file "unless")
    (:file "when")))
