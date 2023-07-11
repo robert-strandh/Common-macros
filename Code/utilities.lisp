@@ -79,7 +79,7 @@
 (defun make-function-name-ast (function-name)
   (node* (:function-name :name function-name)))
 
-(defun make-tag-ast (name)
+(defun atag (name)
   (node* (:tag :name name)))
 
 (defmacro ablock (name-form &body form-asts)
