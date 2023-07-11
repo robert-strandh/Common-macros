@@ -13,15 +13,15 @@
         (ico:declaration-asts ast)
         (node* (:tagbody)
           (1 :segment
-             (node* (:segment)
-               (1 :tag (make-tag-ast start-tag))
+             (node* (:tagbody-segment)
+               (1 :label (make-tag-ast start-tag))
                (1 :statement
                   (awhen (ico:end-test-ast ast)
                     (node* (:return)
                       (1 :form (aprogn (ico:result-asts ast))))))))
           (* :segment (ico:segment-asts ast))
           (1 :segment
-             (node* (:segment)
+             (node* (:tagbody-segment)
                (1 :statement
                   (node* (:psetq)
                     (* :variable-name
