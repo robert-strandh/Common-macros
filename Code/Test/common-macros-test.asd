@@ -12,5 +12,6 @@
    (:file "incf")
    (:file "or")
    (:file "pop")
+   (:file "push")
    (:file "unless")
    (:file "when")))
