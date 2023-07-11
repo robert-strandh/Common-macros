@@ -17,8 +17,8 @@
       (ablock 'nil
         (node* (:tagbody)
           (1 :segment
-             (node* (:segment)
-               (1 :tag (make-tag-ast start-tag))
+             (node* (:tagbody-segment)
+               (1 :label (make-tag-ast start-tag))
                (1 :statement
                   (awhen 
                       (application '= (ico:var-ast ast)
@@ -31,6 +31,6 @@
                (1 :statement
                   (node* (:go) (1 :tag (make-tag-ast end-tag))))))
           (1 :segment
-             (node* (:segment)
-               (1 :tag (make-tag-ast end-tag)))))
+             (node* (:tagbody-segment)
+               (1 :label (make-tag-ast end-tag)))))
         (ico:result-ast ast)))))
