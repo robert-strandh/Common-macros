@@ -36,7 +36,7 @@ _ do_
 x do-all-symbols
 x do-external-symbols
 x do-symbols
-_ dolist
++ dolist
 _ dotimes
 _ ecase
 _ etypecase

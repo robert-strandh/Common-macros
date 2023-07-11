@@ -11,6 +11,7 @@
    (:file "decf")
    (:file "defparameter")
    (:file "defvar")
+   (:file "dolist")
    (:file "incf")
    (:file "or")
    (:file "pop")
