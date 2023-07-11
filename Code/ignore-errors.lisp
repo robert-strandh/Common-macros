@@ -11,7 +11,7 @@
               (1 :name (node* (:name :name 'error)))))
          (1 :variable (make-variable-name-ast 'condition))
          (1 :form
-            (node* (:appliation)
+            (node* (:application)
               (1 :function (make-function-name-ast 'values))
               (1 :argument (make-unparsed-form-ast 'nil))
               (1 :argument (make-variable-name-ast 'condition))))))))
