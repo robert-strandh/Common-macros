@@ -24,8 +24,7 @@
       (ablock 'nil
         (atagbody
          (atag start-tag)
-         (awhen (application
-                 'endp (make-variable-name-ast list-var))
+         (awhen (application 'endp (make-variable-name-ast list-var))
            (node* (:go) (1 :tag (atag end-tag))))
          (alet ((b (ico:variable-name-ast ast)
                    (node* (:application)
