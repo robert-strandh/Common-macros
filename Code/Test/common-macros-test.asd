@@ -11,5 +11,6 @@
    (:file "decf")
    (:file "incf")
    (:file "or")
+   (:file "pop")
    (:file "unless")
    (:file "when")))
