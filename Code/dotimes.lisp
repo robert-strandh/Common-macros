@@ -20,9 +20,9 @@
          (awhen 
              (application '= (ico:var-ast ast)
                           (make-variable-name-ast count-var))
-           (node* (:go) (1 :tag (atag end-tag))))
+           (ago (atag end-tag)))
          (node* (:tagbody) (* :segment (ico:segment-asts ast)))
          (node* (:incf) (1 :place (ico:var-ast ast)))
-         (node* (:go) (1 :tag (atag start-tag)))
+         (ago (atag start-tag))
          (atag end-tag)))
       (ico:result-ast ast))))

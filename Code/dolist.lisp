@@ -25,7 +25,7 @@
         (atagbody
          (atag start-tag)
          (awhen (application 'endp (make-variable-name-ast list-var))
-           (node* (:go) (1 :tag (atag end-tag))))
+           (ago (atag end-tag)))
          (alet ((b (ico:variable-name-ast ast)
                    (node* (:application)
                      (1 :function-name (make-function-name-ast 'car))
@@ -34,7 +34,7 @@
            (node* (:tagbody) (* :segment  (ico:segment-asts ast))))
          (node* (:pop)
            (1 :place (make-variable-name-ast list-var)))
-         (node* (:go) (1 :tag (atag start-tag)))
+         (ago (atag start-tag))
          (atag end-tag))
         (alet ((b (ico:variable-name-ast ast) (make-unparsed-form-ast 'nil)))
           (node* (:declaration)

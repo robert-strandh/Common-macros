@@ -29,5 +29,4 @@
                     (* :value
                        (mapcar #'ico:step-form-ast variable-asts))))
                (1 :statement
-                  (node* (:go)
-                    (1 :tag (atag start-tag)))))))))))
+                  (ago (atag start-tag))))))))))
