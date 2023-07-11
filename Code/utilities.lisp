@@ -211,3 +211,50 @@
                   ,function-name-variable))))
      ,@(loop for argument-ast-form in argument-ast-forms
              collect `(1 :argument ,argument-ast-form))))
+
+(defun atagbody (&rest items)
+  (let ((tagbody-ast (make-instance 'ico:tagbody-ast))
+        (current-segment-ast nil))
+    (loop for item in items
+          do (if (typep item 'ico:tag-ast)
+                 (progn
+                   ;; We need to start a new segment AST.  So if we
+                   ;; have a current segment AST then add it to the
+                   ;; TAGBODY AST.
+                   (unless (null current-segment-ast)
+                     (reinitialize-instance tagbody-ast
+                       :segment-asts
+                       (append (ico:segment-asts tagbody-ast)
+                               (list current-segment-ast))))
+                   ;; Then start a new segment AST
+                   (setf current-segment-ast
+                         (make-instance 'ico:tagbody-segment-ast
+                           :tag-ast item)))
+                 (progn
+                   ;; If the item is not a tag, then we must first
+                   ;; make sure that we do have a current segment.  It
+                   ;; is possible that we don't have one if the first
+                   ;; item in the tagbody is a statement.
+                   (when (null current-segment-ast)
+                     (setf current-segment-ast
+                           (make-instance 'ico:tagbody-segment-ast)))
+                   (if (listp item)
+                       ;; We have a list of statements, so append them
+                       ;; to the current segment AST.
+                       (reinitialize-instance current-segment-ast
+                         :statement-asts 
+                         (append (ico:statement-asts current-segment-ast)
+                                 item))
+                       ;; We have a single statement.
+                       (reinitialize-instance current-segment-ast
+                         :statement-asts
+                         (append (ico:statement-asts current-segment-ast)
+                          (list item)))))))
+    ;; We are out of items.  If there is a current segment, it needs
+    ;; to be added to the TAGBODY-AST.
+    (unless (null current-segment-ast)
+      (reinitialize-instance tagbody-ast
+        :segment-asts
+        (append (ico:segment-asts tagbody-ast)
+                (list current-segment-ast))))
+    tagbody-ast))
