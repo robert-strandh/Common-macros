@@ -24,15 +24,15 @@
       (ablock 'nil
         (node* (:tagbody)
           (1 :segment
-             (node* (:segment)
-               (1 :tag (make-tag-ast start-tag))
+             (node* (:tagbody-segment)
+               (1 :label (make-tag-ast start-tag))
                (1 :statement
                   (awhen (application 'endp list-var)
                     (node* (:go) (1 :tag (make-tag-ast end-tag)))))
                (1 :statement
 
-                  (alet ((b (ico:var-ast ast)
-                            (node* (:appliation)
+                  (alet ((b (ico:variable-name-ast ast)
+                            (node* (:application)
                               (1 :function-name (make-function-name-ast 'car))
                               (1 :argument (make-variable-name-ast list-var)))))
                     (ico:declaration-asts ast)
@@ -44,11 +44,11 @@
                (1 :statement
                   (node* (:go) (1 :tag (make-tag-ast start-tag))))))
           (1 :segment
-             (node* (:segment)
-               (1 :tag (make-tag-ast end-tag)))))
-        (alet ((b (ico:var-ast ast) (make-unparsed-form-ast 'nil)))
-          (node* (:declare)
+             (node* (:tagbody-segment)
+               (1 :label (make-tag-ast end-tag)))))
+        (alet ((b (ico:variable-name-ast ast) (make-unparsed-form-ast 'nil)))
+          (node* (:declaration)
             (1 :declaration-specifier
                (node* (:declaration-specifier :kind 'ignorable)
-                 (1 :argument (ico:var-ast ast)))))
+                 (1 :argument (ico:variable-name-ast ast)))))
           (ico:result-ast ast))))))
