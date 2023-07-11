@@ -27,7 +27,8 @@
              (node* (:tagbody-segment)
                (1 :label (make-tag-ast start-tag))
                (1 :statement
-                  (awhen (application 'endp list-var)
+                  (awhen (application
+                          'endp (make-variable-name-ast list-var))
                     (node* (:go) (1 :tag (make-tag-ast end-tag)))))
                (1 :statement
 
