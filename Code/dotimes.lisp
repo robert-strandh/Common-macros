@@ -15,22 +15,14 @@
            (b (ico:var-ast ast) (make-unparsed-form-ast '0)))
       (ico:declaration-asts ast)
       (ablock 'nil
-        (node* (:tagbody)
-          (1 :segment
-             (node* (:tagbody-segment)
-               (1 :label (atag start-tag))
-               (1 :statement
-                  (awhen 
-                      (application '= (ico:var-ast ast)
-                                   (make-variable-name-ast count-var))
-                    (node* (:go) (1 :tag (atag end-tag)))))
-               (1 :statement
-                  (node* (:tagbody) (* :segment (ico:segment-asts ast))))
-               (1 :statement
-                  (node* (:incf) (1 :place (ico:var-ast ast))))
-               (1 :statement
-                  (node* (:go) (1 :tag (atag end-tag))))))
-          (1 :segment
-             (node* (:tagbody-segment)
-               (1 :label (atag end-tag)))))
-        (ico:result-ast ast)))))
+        (atagbody
+         (atag start-tag)
+         (awhen 
+             (application '= (ico:var-ast ast)
+                          (make-variable-name-ast count-var))
+           (node* (:go) (1 :tag (atag end-tag))))
+         (node* (:tagbody) (* :segment (ico:segment-asts ast)))
+         (node* (:incf) (1 :place (ico:var-ast ast)))
+         (node* (:go) (1 :tag (atag start-tag)))
+         (atag end-tag)))
+      (ico:result-ast ast))))
