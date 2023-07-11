@@ -61,8 +61,8 @@ x pprint-pop
 _ print-unreadable-object
 _ prog
 _ prog_
-_ prog1
-_ prog2
++ prog1
++ prog2
 _ psetf
 _ psetq
 + push
