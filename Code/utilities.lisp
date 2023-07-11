@@ -258,3 +258,6 @@
         (append (ico:segment-asts tagbody-ast)
                 (list current-segment-ast))))
     tagbody-ast))
+
+(defun ago (tag-ast)
+  (node* (:go) (1 :tag tag-ast)))
