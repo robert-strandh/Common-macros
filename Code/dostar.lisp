@@ -11,22 +11,15 @@
                      (ico:do-variable-name-ast variable-ast)
                      (ico:init-form-ast variable-ast))))
         (ico:declaration-asts ast)
-        (node* (:tagbody)
-          (1 :segment
-             (node* (:tagbody-segment)
-               (1 :label (atag start-tag))
-               (1 :statement
-                  (awhen (ico:end-test-ast ast)
-                    (node* (:return)
-                      (1 :form (aprogn (ico:result-asts ast))))))))
-          (* :segment (ico:segment-asts ast))
-          (1 :segment
-             (node* (:tagbody-segment)
-               (1 :statement
-                  (node* (:psetq)
-                    (* :variable-name
-                       (mapcar #'ico:do-variable-name-ast variable-asts))
-                    (* :value
-                       (mapcar #'ico:step-form-ast variable-asts))))
-               (1 :statement
-                  (ago (atag start-tag))))))))))
+        (atagbody
+         (atag start-tag)
+         (awhen (ico:end-test-ast ast)
+           (node* (:return)
+             (1 :form (aprogn (ico:result-asts ast)))))
+         (node* (:tagbody) (* :segment (ico:segment-asts ast)))
+         (node* (:psetq)
+           (* :variable-name
+              (mapcar #'ico:do-variable-name-ast variable-asts))
+           (* :value
+              (mapcar #'ico:step-form-ast variable-asts)))
+         (ago (atag start-tag)))))))
