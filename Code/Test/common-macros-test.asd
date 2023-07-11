@@ -14,6 +14,7 @@
    (:file "incf")
    (:file "or")
    (:file "pop")
+   (:file "prog1")
    (:file "push")
    (:file "unless")
    (:file "when")))
