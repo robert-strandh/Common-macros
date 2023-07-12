@@ -82,7 +82,7 @@ x trace
 + unless
 x untrace
 + when
-* with-accessors
++ with-accessors
 x with-compilation-unit
 _ with-condition-restarts
 x with-hash-table-iterator
