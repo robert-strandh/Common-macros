@@ -50,7 +50,7 @@ _ lambda
 x loop
 x loop-finish
 + multiple-value-bind
-_ multiple-value-list
++ multiple-value-list
 _ multiple-value-setq
 _ nth-value
 + or

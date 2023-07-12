@@ -15,6 +15,7 @@
    (:file "dotimes")
    (:file "incf")
    (:file "multiple-value-bind")
+   (:file "multiple-value-list")
    (:file "or")
    (:file "pop")
    (:file "prog1")
