@@ -32,3 +32,17 @@
   (is #'equal
       #1=(multiple-value-bind (x y) 234 (list x y))
       (eval (expand-expression '#1#))))
+
+(define-test multiple-value-bind-two-vars-two-values
+  :parent multiple-value-bind
+  :depends-on (multiple-value-bind-empty)
+  (is #'equal
+      #1=(multiple-value-bind (x y) (values 234 345) (list x y))
+      (eval (expand-expression '#1#))))
+
+(define-test multiple-value-bind-three-vars-two-values
+  :parent multiple-value-bind
+  :depends-on (multiple-value-bind-empty)
+  (is #'equal
+      #1=(multiple-value-bind (x y z) (values 234 345) (list x y z))
+      (eval (expand-expression '#1#))))
