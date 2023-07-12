@@ -90,6 +90,6 @@ _ with-open-file
 _ with-open-stream
 _ with-output-to-string
 x with-package-iterator
-_ with-simple-restart
++ with-simple-restart
 + with-slots
 x with-standard-io-syntax

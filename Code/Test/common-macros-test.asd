@@ -23,5 +23,6 @@
    (:file "prog2")
    (:file "push")
    (:file "unless")
+   (:file "with-simple-restart")
    (:file "with-slots")
    (:file "when")))
