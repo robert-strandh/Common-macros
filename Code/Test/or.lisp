@@ -5,51 +5,51 @@
 (define-test or-empty
   :parent or
   (is #'eql
-      (or)
-      (eval (expand-expression '(or)))))
+      #1=(or)
+      (eval (expand-expression '#1#))))
 
 (define-test or-one-argument-false
   :parent or
   (is #'eql
-      (let ((x nil)) (or x))
-      (eval `(let ((x nil))
-               ,(expand-expression '(or x))))))
+      (let #2=((x nil)) #1=(or x))
+      (eval `(let #2#
+               ,(expand-expression '#1#)))))
 
 (define-test or-one-argument-true
   :parent or
   (is #'eql
-      (let ((x 'x)) (or x))
-      (eval `(let ((x 'x))
-               ,(expand-expression '(or x))))))
+      (let #2=((x 'x)) #1=(or x))
+      (eval `(let #2#
+               ,(expand-expression '#1#)))))
 
 (define-test or-two-arguments-true-false
   :parent or
   (is #'eql
-      (let ((x 'x) (y nil)) (or x y))
-      (eval `(let ((x 'x) (y nil))
-               ,(expand-expression '(or x y))))))
+      (let #2=((x 'x) (y nil)) #1=(or x y))
+      (eval `(let #2#
+               ,(expand-expression '#1#)))))
 
 (define-test or-two-arguments-true-true
   :parent or
   (is #'eql
-      (let ((x 'x) (y 'y)) (or x y))
-      (eval `(let ((x 'x) (y 'y))
-               ,(expand-expression '(or x y))))))
+      (let #2=((x 'x) (y 'y)) #1=(or x y))
+      (eval `(let #2#
+               ,(expand-expression '#1#)))))
 
 (define-test or-two-arguments-false-values
   :parent or
   (is #'equal
-      (let ((x nil) (y 'y))
-        (multiple-value-list (or x (values y 234))))
-      (eval `(let ((x nil) (y 'y))
+      (let #2=((x nil) (y 'y))
+        (multiple-value-list #1=(or x (values y 234))))
+      (eval `(let #2#
                (multiple-value-list
-                ,(expand-expression '(or x (values y 234))))))))
+                ,(expand-expression '#1#))))))
 
 (define-test or-two-arguments-values-false
   :parent or
   (is #'equal
-      (let ((x nil) (y 'y))
-        (multiple-value-list (or (values y 234) x)))
-      (eval `(let ((x nil) (y 'y))
+      (let #2=((x nil) (y 'y))
+        (multiple-value-list #1=(or (values y 234) x)))
+      (eval `(let #2#
                (multiple-value-list
-                ,(expand-expression '(or (values y 234) x)))))))
+                ,(expand-expression '#1#))))))
