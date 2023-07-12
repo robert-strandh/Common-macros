@@ -4,12 +4,13 @@
 
 (define-test with-slots-empty
   :parent with-slots
-    (is #'equal
-        #1=(with-slots () #'print-object)
-        (eval (expand-expression #1#))))
+  (is #'equal
+      #1=(with-slots () #'print-object)
+      (eval (expand-expression '#1#))))
 
-(define-test with-slots-empty
+(define-test with-slots-one-slot
   :parent with-slots
+  :depends-on (with-slots-empty)
   (let ((class-name (gensym))
         (slot-name (gensym)))
     (is #'equal
