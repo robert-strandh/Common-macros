@@ -12,6 +12,7 @@
    (:file "defparameter")
    (:file "defvar")
    (:file "dolist")
+   (:file "dotimes")
    (:file "incf")
    (:file "or")
    (:file "pop")
