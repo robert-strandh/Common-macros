@@ -16,6 +16,7 @@
    (:file "incf")
    (:file "multiple-value-bind")
    (:file "multiple-value-list")
+   (:file "multiple-value-setq")
    (:file "or")
    (:file "pop")
    (:file "prog1")
