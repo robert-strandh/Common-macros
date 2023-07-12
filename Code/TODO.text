@@ -6,7 +6,7 @@ _ = not yet done, may be included or not.
 + and
 _ assert
 x call-method
-* case
++ case
 _ ccase
 + check-type
 + cond
