@@ -6,9 +6,9 @@
   :parent defparameter
   (let ((name (gensym)))
     (is #'equal
-        (eval `(progn (defparameter ,name 234)
-                      (defparameter ,name 345)
+        (eval `(progn #2=(defparameter ,name 234)
+                      #1=(defparameter ,name 345)
                       ,name))
         (eval `(progn
-                 (defparameter ,name 234)
-                 ,(expand-expression `(defparameter ,name 345)) ,name)))))
+                 #2#(defparameter ,name 234)
+                 ,(expand-expression `#1#) ,name)))))

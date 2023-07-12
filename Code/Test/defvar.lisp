@@ -6,24 +6,23 @@
   :parent defvar
   (let ((name (gensym)))
     (is #'equal
-        (eval `(progn (defvar ,name) (boundp ',name)))
-        (eval `(progn ,(expand-expression `(defvar ,name))
-                      (boundp ',name))))))
+        (eval `(progn #1=(defvar ,name) #2=(boundp ',name)))
+        (eval `(progn ,(expand-expression `#1#) #2#)))))
 
 (define-test defvar-with-initial-value
   :parent defvar
   (let ((name (gensym)))
     (is #'equal
-        (eval `(progn (defvar ,name 234) ,name))
-        (eval `(progn ,(expand-expression `(defvar ,name)) ,name)))))
+        (eval `(progn #1=(defvar ,name 234) ,name))
+        (eval `(progn ,(expand-expression `#1#) ,name)))))
 
 (define-test defvar-check-update
   :parent defvar
   (let ((name (gensym)))
     (is #'equal
-        (eval `(progn (defvar ,name 234)
-                      (defvar ,name 345)
+        (eval `(progn #2=(defvar ,name 234)
+                      #1=(defvar ,name 345)
                       ,name))
         (eval `(progn
-                 (defvar ,name 234)
-                 ,(expand-expression `(defvar ,name 345)) ,name)))))
+                 #2#
+                 ,(expand-expression `#1#) ,name)))))
