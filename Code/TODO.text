@@ -91,6 +91,6 @@ _ with-input-from-string
 + with-open-stream
 + with-output-to-string
 x with-package-iterator
-* with-simple-restart
++ with-simple-restart
 + with-slots
 x with-standard-io-syntax
