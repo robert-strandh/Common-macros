@@ -78,7 +78,7 @@ x restart-bind
 x step
 x time
 x trace
-* typecase
++ typecase
 + unless
 x untrace
 + when
