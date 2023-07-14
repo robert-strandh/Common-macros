@@ -2,12 +2,18 @@
 
 (defvar *origin*)
 
+(defvar *builder*)
+
+(defun ensure-builder ()
+  (defvar *builder* (make-instance 'bld:builder))
+  *builder*)
+
 (defmacro with-ast-origin (ast &body body)
   `(let ((*origin* (ico:origin ,ast)))
      ,@body))
 
 (defmacro with-builder (&body body)
-  `(abp:with-builder ((make-instance 'bld:builder))
+  `(abp:with-builder ((ensure-builder))
      ,@body))
 
 (defgeneric expand (client ast environment))
