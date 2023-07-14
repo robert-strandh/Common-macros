@@ -248,3 +248,6 @@
 
 (defun ago (tag-ast)
   (node* (:go) (1 :tag tag-ast)))
+
+(defun unparse (ast)
+  (ses:unparse (ensure-builder) t ast))
