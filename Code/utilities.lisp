@@ -1,13 +1,4 @@
 (cl:in-package #:common-macros)
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;
-;;; Separate an ordinary body such as a let or let* body that may
-;;; contain declarations (but no documentation) into the declarations
-;;; and the executable forms.
-;;;
-;;; If there are declarations after the first executable form (which
-;;; is a syntax error), then those declarations will be considered
-;;; part of the executable forms.
 
 (defvar *origin*)
 
@@ -23,16 +14,6 @@
 
 (defmethod expand :around (client ast environment)
   (with-builder (with-ast-origin ast (call-next-method))))
-
-(defun separate-ordinary-body (body)
-  (let ((pos (position-if (lambda (item)
-                            (and (consp item)
-                                 (eq (car item) 'declare)))
-                          body
-                          :from-end t)))
-    (if (null pos)
-        (values '() body)
-        (values (subseq body 0 (1+ pos)) (subseq body (1+ pos))))))
 
 (defun extract-bindings (variable-clauses)
   (mapcar
