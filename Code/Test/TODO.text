@@ -3,7 +3,7 @@ x = not included
 _ = not yet done, may be included or not.
 
 + and
-_ assert
++ assert
 x call-method
 _ case
 _ ccase
