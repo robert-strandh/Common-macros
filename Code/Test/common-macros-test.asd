@@ -9,6 +9,7 @@
    (:file "utilities")
    (:file "and")
    (:file "decf")
+   (:file "defclass")
    (:file "defparameter")
    (:file "defvar")
    (:file "dolist")
