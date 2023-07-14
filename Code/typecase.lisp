@@ -2,13 +2,11 @@
 
 (defmethod expand (client (ast ico:typecase-ast) environment)
   (declare (ignore client environment))
-  (let ((variable-name (gensym))
-        ;; FIXME: store the builder in a special variable.
-        (builder (make-instance 'bld:builder)))
+  (let ((variable-name (gensym)))
     (flet ((make-cond-clause-ast (typecase-clause-ast)
              (if (typep typecase-clause-ast 'ico:typecase-normal-clause-ast)
                  (let* ((typespec-ast (ico:typespec-ast typecase-clause-ast))
-                        (typespec (ses:unparse builder t typespec-ast)))
+                        (typespec (unparse typespec-ast)))
                    (node* (:cond-clause)
                      (1 :test
                         (application

@@ -3,10 +3,7 @@
 ;;; This definition is from the Common Lisp standard.  The STRING
 ;;; argument is not used.
 (defmethod expand (client (ast ico:check-type-ast) environment)
-  ;; FIXME: store the builder in a special variable.
-  (let ((typespec-ast
-          (ses:unparse
-           (make-instance 'bld:builder) t (ico:typespec-ast ast))))
+  (let ((typespec-ast (unparse (ico:typespec-ast ast))))
     (node* (:assert)
       (1 :test-form
          (application 'typep (ico:place-ast ast) typespec-ast))
