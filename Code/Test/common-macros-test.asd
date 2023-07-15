@@ -8,6 +8,7 @@
   ((:file "packages")
    (:file "utilities")
    (:file "and")
+   (:file "case")
    (:file "decf")
    (:file "defclass")
    (:file "defparameter")
