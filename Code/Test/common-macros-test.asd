@@ -18,6 +18,7 @@
    (:file "multiple-value-bind")
    (:file "multiple-value-list")
    (:file "multiple-value-setq")
+   (:file "nth-value")
    (:file "or")
    (:file "pop")
    (:file "prog1")
