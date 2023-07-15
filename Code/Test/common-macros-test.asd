@@ -9,6 +9,7 @@
    (:file "utilities")
    (:file "and")
    (:file "case")
+   (:file "cond")
    (:file "decf")
    (:file "defclass")
    (:file "defparameter")

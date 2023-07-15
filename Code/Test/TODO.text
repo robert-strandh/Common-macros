@@ -8,7 +8,7 @@ x call-method
 + case
 _ ccase
 _ check-type
-_ cond
++ cond
 _ ctypecase
 _ declaim
 + decf
