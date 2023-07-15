@@ -67,7 +67,7 @@ _ psetf
 _ psetq
 + push
 _ pushnew
-_ remf
++ remf
 x restart-bind
 _ restart-case
 + return

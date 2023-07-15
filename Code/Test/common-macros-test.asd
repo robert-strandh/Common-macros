@@ -24,6 +24,7 @@
    (:file "prog1")
    (:file "prog2")
    (:file "push")
+   (:file "remf")
    (:file "return")
    (:file "shiftf")
    (:file "unless")
