@@ -32,7 +32,7 @@ _ defun
 + defvar
 _ destructuring-bind
 _ do
-_ do_
+_ do*
 x do-all-symbols
 x do-external-symbols
 x do-symbols
@@ -60,7 +60,7 @@ x pprint-logical-block
 x pprint-pop
 _ print-unreadable-object
 _ prog
-_ prog_
+_ prog*
 + prog1
 + prog2
 _ psetf
@@ -70,7 +70,7 @@ _ pushnew
 _ remf
 x restart-bind
 _ restart-case
-_ return
++ return
 _ rotatef
 _ setf
 _ shiftf
