@@ -25,6 +25,7 @@
    (:file "prog2")
    (:file "push")
    (:file "return")
+   (:file "shiftf")
    (:file "unless")
    (:file "with-simple-restart")
    (:file "with-slots")

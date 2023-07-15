@@ -73,7 +73,7 @@ _ restart-case
 + return
 _ rotatef
 _ setf
-_ shiftf
++ shiftf
 x step
 x time
 x trace
