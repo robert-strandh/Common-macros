@@ -14,30 +14,48 @@
                            (error "no such symbol")
                            symbol)))))
 
-(defmacro cmd:defpackage (&whole form name &rest options)
-  (declare (ignore name options))
-  (let* ((builder (make-instance 'bld:builder))
-         (syntax (ses:find-syntax 'cl:defpackage))
-         (modified-form (cons 'cl:defpackage (cdr form)))
-         (ast (ses:parse builder syntax modified-form))
-         (name (ico:name (ico:name-ast ast))))
-    `(progn
-       (make-package
-        ',name
-        :nicknames 
-        '`(,(mapcar #'ico:designated-string (ico:nickname-asts ast)))
-        :use '())
-       (shadow
-        '`(,(mapcar #'ico:designated-string (ico:shadow-asts ast)))
-        ',name)
-       (shadowing-import
-        '`(find-symbols (ico:shadowing-import-from-asts ast)))
-       (use-package
-        '`(,(mapcar #'ico:designated-string (ico:use-asts ast)))
-        ',name)
-       (import
-        '`(find-symbols (ico:import-from-asts ast)))
-        :intern
-        '`(,(mapcar #'ico:designated-string (ico:intern-asts ast)))
-        :export
-        '`(,(mapcar #'ico:designated-string (ico:export-asts ast))))))
+(defmethod expand (client (ast ico:defpackage-ast) environment)
+  (declare (ignore client environment))
+  (let ((name (ico:name (ico:name-ast ast))))
+    (node* (:progn)
+      (1 :form
+         (application
+          'make-package
+          (node* (:quote :object name))
+          (node* (:literal :value ':nicknames))
+          (node* (:quote
+                  :object
+                  (mapcar #'ico:designated-string (ico:nickname-asts ast))))
+          (node* (:literal :value ':use))
+          (node* (:literal :value '()))))
+      (1 :form
+         (application
+          'shadow
+          (node* (:quote
+                  :object
+                  (mapcar #'ico:designated-string (ico:shadow-asts ast))))
+          (node* (:quote :object name))))
+      (1 :form
+         (application
+          'shadowing-import
+          (node* (:quote
+                  :object (find-symbols (ico:shadowing-import-from-asts ast))))))
+      (1 :form
+         (application
+          'use-package
+          (node* (:quote
+                  :object
+                  (mapcar #'ico:designated-string (ico:use-asts ast))))
+          (node* (:quote :object name))))
+      (1 :form
+         (application
+          'import
+          (node* (:quote :object (find-symbols (ico:import-from-asts ast))))
+          (node* (:literal :value ':intern))
+          (node* (:quote
+                  :object
+                  (mapcar #'ico:designated-string (ico:intern-asts ast))))
+          (node* (:literal :value ':export))
+          (node* (:quote
+                  :object
+                  (mapcar #'ico:designated-string (ico:export-asts ast)))))))))
