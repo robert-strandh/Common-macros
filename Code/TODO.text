@@ -15,7 +15,7 @@ _ ctypecase
 + decf
 + defclass
 x defconstant
-* defgeneric
++ defgeneric
 _ define-compiler-macro
 * define-condition
 _ define-method-combination
