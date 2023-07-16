@@ -21,41 +21,30 @@
       (1 :form
          (application
           'make-package
-          (node* (:quote :object name))
-          (node* (:literal :value ':nicknames))
-          (node* (:quote
-                  :object
-                  (mapcar #'ico:designated-string (ico:nickname-asts ast))))
-          (node* (:literal :value ':use))
-          (node* (:literal :value '()))))
+          (aquote name)
+          (aliteral ':nicknames)
+          (aquote (mapcar #'ico:designated-string (ico:nickname-asts ast)))
+          (aliteral ':use)
+          (aliteral '())))
       (1 :form
          (application
           'shadow
-          (node* (:quote
-                  :object
-                  (mapcar #'ico:designated-string (ico:shadow-asts ast))))
-          (node* (:quote :object name))))
+          (aquote (mapcar #'ico:designated-string (ico:shadow-asts ast)))
+          (aquote name)))
       (1 :form
          (application
           'shadowing-import
-          (node* (:quote
-                  :object (find-symbols (ico:shadowing-import-from-asts ast))))))
+          (aquote (find-symbols (ico:shadowing-import-from-asts ast)))))
       (1 :form
          (application
           'use-package
-          (node* (:quote
-                  :object
-                  (mapcar #'ico:designated-string (ico:use-asts ast))))
-          (node* (:quote :object name))))
+          (aquote (mapcar #'ico:designated-string (ico:use-asts ast)))
+          (aquote name)))
       (1 :form
          (application
           'import
-          (node* (:quote :object (find-symbols (ico:import-from-asts ast))))
-          (node* (:literal :value ':intern))
-          (node* (:quote
-                  :object
-                  (mapcar #'ico:designated-string (ico:intern-asts ast))))
-          (node* (:literal :value ':export))
-          (node* (:quote
-                  :object
-                  (mapcar #'ico:designated-string (ico:export-asts ast)))))))))
+          (aquote (find-symbols (ico:import-from-asts ast)))
+          (aliteral ':intern)
+          (aquote (mapcar #'ico:designated-string (ico:intern-asts ast)))
+          (aliteral ':export)
+          (aquote (mapcar #'ico:designated-string (ico:export-asts ast))))))))
