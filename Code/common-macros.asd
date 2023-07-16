@@ -51,6 +51,7 @@
    (:file "do")
    (:file "dostar")
    (:file "setf")
+   (:file "print-unreadable-object")
    (:file "psetf")
    (:file "psetq")
    (:file "typecase")
