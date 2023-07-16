@@ -67,7 +67,7 @@ _ print-unreadable-object
 * psetf
 + psetq
 + push
-* pushnew
++ pushnew
 * remf
 x restart-bind
 * restart-case

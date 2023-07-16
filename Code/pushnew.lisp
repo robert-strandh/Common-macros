@@ -1,21 +1,59 @@
 (cl:in-package #:common-macros)
 
-(defmacro cmd:pushnew
-    (item place
-     &environment environment
-     &key
-       (key nil key-supplied-p)
-       (test nil test-supplied-p)
-       (test-not nil test-not-supplied-p))
-  (if (and test-supplied-p test-not-supplied-p)
-      (progn (warn 'warn-both-test-and-test-not-given)
-             `(error 'both-test-and-test-not-given))
-      (multiple-value-bind (vars vals store-vars writer-form reader-form)
-          (get-setf-expansion place environment)
-        `(let (,@(mapcar #'list vars vals))
-           (let ((,(car store-vars)
-                   (adjoin-core ,item ,reader-form
-                                ,key ,key-supplied-p
-                                ,test ,test-supplied-p
-                                ,test-not ,test-not-supplied-p)))
-             ,writer-form)))))
+(defmethod expand (client (ast ico:pushnew-ast) environment)
+  (declare (ignore client))
+  (multiple-value-bind
+        (binding-asts store-variable-asts store-ast read-ast)
+      (expand-place-ast (ico:place-ast ast) environment)
+    (let ((item-var (gensym)))
+      (alet* ((b (make-variable-name-ast item-var) (ico:item-ast ast))
+              binding-asts
+              (b (first store-variable-asts)
+                 (if (null (ico:key-ast ast))
+                     (if (null (ico:test-ast ast))
+                         (if (null (ico:test-not-ast ast))
+                             (application
+                              'adjoin
+                              (make-variable-name-ast item-var)
+                              read-ast)
+                             (application
+                              'adjoin
+                              (make-variable-name-ast item-var)
+                              read-ast
+                              (aliteral ':test-not)
+                              (unparse (ico:test-not-ast ast))))
+                         ;; TEST-AST is not NULL, so TEST-NOT-AST must
+                         ;; be NULL.
+                         (application
+                          'adjoin
+                          (make-variable-name-ast item-var)
+                          read-ast
+                          (aliteral ':test)
+                          (unparse (ico:test-ast ast))))
+                     (if (null (ico:test-ast ast))
+                         (if (null (ico:test-not-ast ast))
+                             (application
+                              'adjoin
+                              (make-variable-name-ast item-var)
+                              read-ast
+                              (aliteral ':key)
+                              (unparse (ico:key-ast ast)))
+                             (application
+                              'adjoin
+                              (make-variable-name-ast item-var)
+                              read-ast
+                              (aliteral ':key)
+                              (unparse (ico:key-ast ast))
+                              (aliteral ':test-not)
+                              (unparse (ico:test-not-ast ast))))
+                         ;; TEST-AST is not NULL, so TEST-NOT-AST must
+                         ;; be NULL.
+                         (application
+                          'adjoin
+                          (make-variable-name-ast item-var)
+                          read-ast
+                          (aliteral ':key)
+                          (unparse (ico:key-ast ast))
+                          (aliteral ':test)
+                          (unparse (ico:test-ast ast)))))))
+        store-ast))))
