@@ -21,6 +21,6 @@
          (node* (:setf)
            (1 :place
               (application 'documentation variable-name-ast
-                           (node* (:quote :object 'variable))))
+                           (aquote 'variable)))
            (1 :value documentation-ast)))
       variable-name-ast)))

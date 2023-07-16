@@ -52,11 +52,6 @@
   (loop for situation in situations
         collect (node* (:eval-when-situation :situation situation))))
 
-(defun make-quote-ast (object)
-  (node* (:quote)
-    (1 :object
-       (node* (:literal :value object)))))
-
 (defun make-variable-name-ast (name)
   (node* (:variable-name :name name)))
 

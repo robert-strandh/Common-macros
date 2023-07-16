@@ -16,7 +16,7 @@
        (1 :form
           (node* (:setf)
             (1 :place
-               (application 'fdefinition (make-quote-ast name)))
+               (application 'fdefinition (aquote name)))
             (1 :value 
                (node* (:lambda)
                  (1 :lambda-list (ico:lambda-list-ast ast))

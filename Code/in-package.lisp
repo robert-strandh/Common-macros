@@ -12,4 +12,4 @@
          (1 :value
             (application
              'find-package
-             (make-quote-ast (ico:name (ico:name-ast ast)))))))))
+             (aquote (ico:name (ico:name-ast ast)))))))))

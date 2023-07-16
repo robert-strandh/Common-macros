@@ -12,10 +12,10 @@
                         (application
                          'typep
                          (make-variable-name-ast variable-name)
-                         (node* (:quote :object typespec))))
+                         (aquote typespec)))
                      (* :form (ico:form-asts typecase-clause-ast))))
                  (node* (:cond-clause)
-                   (1 :test (node* (:quote :object t)))
+                   (1 :test (aquote 't))
                    (* :form (ico:form-asts typecase-clause-ast))))))
       (alet ((b (make-variable-name-ast variable-name)
                 (ico:keyform-ast ast)))

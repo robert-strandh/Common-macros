@@ -14,10 +14,10 @@
                                  (application
                                   'eql
                                   (make-variable-name-ast variable-name)
-                                  (node* (:quote :object (ico:key key-ast))))))))
+                                  (aquote (ico:key key-ast)))))))
                    (* :form (ico:form-asts case-clause-ast)))
                  (node* (:cond-clause)
-                   (1 :test (node* (:quote :object t)))
+                   (1 :test (aquote 't))
                    (* :form (ico:form-asts case-clause-ast))))))
       (alet ((b (make-variable-name-ast variable-name)
                 (ico:keyform-ast ast)))
