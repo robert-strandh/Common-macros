@@ -7,35 +7,29 @@
        (node* (:application)
          (1 :function-name (make-function-name-ast 'ensure-generic-function))
          (* :argument
-            (list (node* (:literal :value ':lambda-list))
-                  (node* (:quote :object (unparse (ico:lambda-list-ast ast))))))
+            (list (aliteral ':lambda-list)
+                  (aquote (unparse (ico:lambda-list-ast ast)))))
          (* :argument
             (if (null (ico:argument-precedence-order-asts ast))
                 '()
-                (list (node* (:literal :value ':argument-precedence-order))
-                      (node* (:quote
-                              :object
-                              (mapcar #'unparse
-                                      (ico:argument-precedence-order-asts ast)))))))
+                (list (aliteral ':argument-precedence-order)
+                      (aquote (mapcar #'unparse
+                                      (ico:argument-precedence-order-asts ast))))))
          (* :argument
             (if (null (ico:documentation-ast ast))
                 '()
-                (list (node* (:literal :value ':documentation))
+                (list (aliteral ':documentation)
                       (unparse (ico:documentation-ast ast)))))
          (* :argument
             (if (null (ico:generic-function-class-ast ast))
                 '()
-                (list (node* (:literal :value ':generic-function-class))
-                      (node* (:quote
-                              :object
-                              (unparse (ico:generic-function-class-ast ast)))))))
+                (list (aliteral ':generic-function-class)
+                      (aquote (unparse (ico:generic-function-class-ast ast))))))
          (* :argument
             (if (null (ico:method-class-ast ast))
                 '()
-                (list (node* (:literal :value ':method-class))
-                      (node* (:quote
-                              :object
-                              (unparse (ico:method-class-ast ast)))))))
+                (list (aliteral ':method-class)
+                      (aquote (unparse (ico:method-class-ast ast))))))
          ;; The AMOP version of ENSURE-GENERIC-FUNCTION has a keyword
          ;; parameter DECLARATIONS, but the version in the Common Lisp
          ;; standard has a keyword parameter DECLARE.  Either way, we don't
@@ -45,15 +39,13 @@
                     (ico:method-combination-name-and-arguments-ast ast)))
               (if (null name-and-arguments)
                   '()
-                  (list (node* (:literal :value ':method-combination))
+                  (list (aliteral ':method-combination)
                         (application
                          'find-method-combination
                          ;; We do not include the GENERIC-FUNCTION argument.
-                         (node* (:quote :object (ico:name name-and-arguments)))
-                         (node* (:quote
-                                 :object
-                                 (ico:method-combination-arguments
-                                  name-and-arguments))))))))))
+                         (aquote (ico:name name-and-arguments))
+                         (aquote (ico:method-combination-arguments
+                                  name-and-arguments)))))))))
     (* :argument
        ;; This is not quite right.  We also need to register the
        ;; methods as having been defined as part of the DEFGENERIC
