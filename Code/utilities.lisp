@@ -251,3 +251,9 @@
 
 (defun unparse (ast)
   (ses:unparse (ensure-builder) t ast))
+
+(defun aquote (object)
+  (node* (:quote :object object)))
+
+(defun aliteral (object)
+  (node* (:literal :value object)))
