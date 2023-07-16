@@ -4,7 +4,7 @@
   (declare (ignore client environment))
   (let ((form-asts (ico:form-asts ast)))
     (cond ((null form-asts)
-           (node* (:literal :literal 'nil)))
+           (aliteral 'nil))
           ((null (rest form-asts))
            (first form-asts))
           (t

@@ -6,40 +6,36 @@
   (node* (:application)
     (1 :function-name (make-function-name-ast 'list))
     (* :argument
-       (list (node* (:literal :value ':name))
+       (list (aliteral ':name)
              (ico:name-ast slot-specifier-ast)))
     (* :argument
        (if (null (ico:initform-ast slot-specifier-ast))
            '()
-           (list (node* (:literal :value ':initform))
+           (list (aliteral ':initform)
                  (ico:initform-ast slot-specifier-ast)
-                 (node* (:literal :value ':initfunction))
+                 (aliteral ':initfunction)
                  (node* (:lambda)
                    (1 :lambda-list (node* (:ordinary-lambda-list)))
                    (1 :form (ico:initform-ast slot-specifier-ast))))))
     (* :argument
        (if (null (ico:initarg-name-asts slot-specifier-ast))
            '()
-           (list (node* (:literal :value ':initargs))
-                 (node* (:quote
-                         :object
-                         (mapcar #'unparse
-                                 (ico:initarg-name-asts slot-specifier-ast)))))))
+           (list (aliteral ':initargs)
+                 (aquote (mapcar #'unparse
+                                 (ico:initarg-name-asts slot-specifier-ast))))))
     (* :argument
-       (list (node* (:literal :value ':readers))
-             (node* (:quote
-                     :object
-                     (append (mapcar #'unparse
+       (list (aliteral ':readers)
+             (aquote (append (mapcar #'unparse
                                      (ico:reader-asts slot-specifier-ast))
                              (mapcar #'unparse
-                                     (ico:accessor-asts slot-specifier-ast)))))))
+                                     (ico:accessor-asts slot-specifier-ast))))))
     (* :argument
-       (list (node* (:literal :value ':writers))
+       (list (aliteral ':writers)
              (node* (:application)
                (1 :function-name (make-function-name-ast 'list))
                (* :argument
                   (loop for writer-ast in (ico:writer-asts slot-specifier-ast)
-                        collect (node* (:quote :object (unparse writer-ast)))))
+                        collect (aquote (unparse writer-ast))))
                ;; We cant quote this argument because we must
                ;; construct names such as (SETF FOO) using NODE*.
                (* :argument
@@ -47,13 +43,12 @@
                         collect
                         (node* (:application)
                           (1 :function-name (make-function-name-ast 'list))
-                          (1 :argument (node* (:quote :object 'setf)))
-                          (1 :argument
-                             (node* (:quote :object (unparse accessor-ast))))))))))
+                          (1 :argument (aquote 'setf))
+                          (1 :argument (aquote (unparse accessor-ast)))))))))
     (* :argument
        (if (null (ico:documentation-ast slot-specifier-ast))
            '()
-           (list (node* (:literal :value ':documentation))
+           (list (aliteral ':documentation)
                  (ico:documentation-ast slot-specifier-ast))))))
 
 (defmethod expand (client (ast ico:defclass-ast) environment)
@@ -61,21 +56,19 @@
     (1 :function-name (make-function-name-ast 'ensure-class))
     (1 :argument (ico:name-ast ast))
     (* :argument
-       (list (node* (:literal :value ':direct-superclasses))
-             (node* (:quote :object
-                            (mapcar #'unparse
-                                    (ico:superclass-asts ast))))))
+       (list (aliteral ':direct-superclasses)
+             (aquote (mapcar #'unparse (ico:superclass-asts ast)))))
     (* :argument
-       (list (node* (:literal :value ':direct-slots))
+       (list (aliteral ':direct-slots)
              (canonicalize-slot-specifier-ast (ico:slot-specifier-asts ast))))
     (* :argument
        (if (null (ico:default-initarg-asts ast))
            '()
-           (list (node* (:literal :value ':direct-default-initargs))
+           (list (aliteral ':direct-default-initargs)
                  (node* (:application)
                    (1 :function-name (make-function-name-ast 'list))
                    (* :argument
-                      (loop for default-initarg-ast in (ico:default-initargs ast)
+                      (loop for default-initarg-ast in (ico:default-initarg-asts ast)
                             collect
                             (node* (:application)
                               (1 :function-name (make-function-name-ast 'list))
@@ -87,12 +80,12 @@
                                    (1 :form
                                       (ico:initform-ast default-initarg-ast)))))))))))
     (* :argument
-       (if (null (ico:metaclass-asts ast))
+       (if (null (ico:metaclass-ast ast))
            '()
-           (list (node* (:literal :value ':metaclass))
-                 (node* (:quote :object (unparse (ico:metaclass-ast ast)))))))
+           (list (aliteral ':metaclass)
+                 (aquote (unparse (ico:metaclass-ast ast))))))
     (* :argument
-       (if (null (ico:documentation ast))
+       (if (null (ico:documentation-ast ast))
            '()
-           (list (node* (:literal :value ':documentation))
+           (list (aliteral ':documentation)
                  (ico:documentation-ast ast))))))

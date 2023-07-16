@@ -9,10 +9,10 @@
           (application
            'make-string-input-stream
            (if (null (ico:start-ast ast))
-               (node* (:literal :literal 0))
+               (aliteral 0)
                (ico:start-ast ast))
            (if (null (ico:end-ast ast))
-               (node* (:literal :literal 'nil))
+               (aliteral 'nil)
                (ico:end-ast ast)))))
   (if (null (ico:index-ast ast))
       (node* (:with-open-stream)

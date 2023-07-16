@@ -23,4 +23,4 @@
                  (* :declaration (ico:declaration-asts ast))
                  (abp:? :documentation (ico:documentation-ast ast))
                  (1 :form (ablock block-name (ico:form-asts ast)))))))
-       (1 :form (node* (:literal :literal name)))))))
+       (1 :form (aliteral name))))))
