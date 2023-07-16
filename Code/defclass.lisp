@@ -89,7 +89,7 @@
     (* :argument
        (if (null (ico:metaclass-asts ast))
            '()
-           (list (node* (:literal :value ':metaclass-initargs))
+           (list (node* (:literal :value ':metaclass))
                  (node* (:quote :object (unparse (ico:metaclass-ast ast)))))))
     (* :argument
        (if (null (ico:documentation ast))
