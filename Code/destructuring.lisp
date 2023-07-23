@@ -57,41 +57,35 @@
        (not (null (first remaining)))
        (eq (first (first remaining)) lambda-list-keyword)))
 
-;;; Destructure a list of required parameters.  A required parameter
-;;; may be a variable or a pattern.  Return a list of bindings and a
-;;; list of variables to ignore.
-(defun destructure-required
-    (required variable canonicalized-lambda-list invoking-form-variable)
-  (let ((bindings '())
-        (ignored-variables '())
-        (not-enough-arguments-form
-          `(error 'too-few-arguments
-                  :lambda-list
-                  ',(reduce #'append canonicalized-lambda-list)
-                  :invoking-form ,invoking-form-variable)))
-    (loop for pattern in required
-          do (if (symbolp pattern)
-                 (progn (push `(,pattern (if (null ,variable)
-                                             ,not-enough-arguments-form
-                                             (first ,variable)))
-                              bindings)
-                        (push `(,variable (rest ,variable))
-                              bindings))
-                 (let ((temp (gensym)))
-                   (push `(,temp (if (null ,variable)
-                                     ,not-enough-arguments-form
-                                     (first ,variable)))
-                         bindings)
-                   (push `(,variable (rest ,variable))
-                         bindings)
-                   (multiple-value-bind
-                         (nested-bindings nested-ignored-variables)
-                       (destructure-lambda-list pattern temp invoking-form-variable)
-                     (setf bindings
-                           (append nested-bindings bindings))
-                     (setf ignored-variables
-                           (append nested-ignored-variables ignored-variables))))))
-    (values bindings ignored-variables)))
+;;; Destructure a list of REQUIRED-PARAMETER-ASTs.
+(defun destructure-required (required-asts variable-ast let*-ast)
+  (let ((not-enough-arguments-ast
+          (application 'error (aquote 'too-few-arguments)))
+        (binding-asts '()))
+    (loop for pattern-ast in required-asts
+          do (if (typep pattern 'ico:variable-name-ast)
+                 (progn
+                   (push (make-let-binding-ast
+                          pattern-ast
+                          (aif (application 'null variable-ast)
+                               not-enough-arguments-ast
+                               (application 'first variable-ast)))
+                         binding-asts)
+                   (push (make-let-binding-ast
+                          variable-ast
+                          (application 'rest variable-ast))))
+                 (let ((temp-ast (node* (:variable-name :name (gensym)))))
+                   (push (make-let-binding-ast
+                          temp-ast
+                          (aif (application 'null variable-ast)
+                               not-enough-arguments-ast
+                               (application 'first variable-ast)))
+                         binding-asts)
+                   (push (make-let-binding-ast
+                          variable-ast
+                          (application 'rest variable-ast)))
+                   (destructure-lambda-list
+                    pattern-ast variable-ast let*-ast))))))
 
 ;;; Destructure an optional parameter.  Return a list of bindings.
 (defun destructure-optional (optional variable)
@@ -190,21 +184,11 @@
 ;;;
 ;;; DESTRUCTURE-LAMBDA-LIST
 
-(defun destructure-lambda-list
-    (canonicalized-lambda-list variable invoking-form-variable)
-  (let* ((remaining canonicalized-lambda-list)
-         (bindings '())
-         (ignored-variables '()))
-    (unless (or (null remaining)
-                (member (first (first remaining)) (intrinsic-keywords)
-                        :test #'eq))
-      (multiple-value-bind (nested-bindings nested-ignored-variables)
-          (destructure-required
-           (pop remaining) variable canonicalized-lambda-list invoking-form-variable)
-        (setf bindings
-              (append nested-bindings bindings))
-        (setf ignored-variables
-              (append nested-ignored-variables ignored-variables))))
+(defun destructure-lambda-list (lambda-list-ast variable-ast let*-ast)
+  ;; Destructure required parameters.
+  (let* ((section-ast (ico:required-section-ast lambda-list-ast))
+         (parameter-asts (ico:parameter-asts section-ast)))
+    (destructure-required parameter-asts variable-ast let*-ast)
     (when (first-group-is remaining '&optional)
       (setf bindings
             (append (destructure-optional (rest (pop remaining)) variable)
