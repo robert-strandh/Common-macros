@@ -57,35 +57,45 @@
        (not (null (first remaining)))
        (eq (first (first remaining)) lambda-list-keyword)))
 
+(defun not-enough-arguments-ast ()
+  (application 'error (aquote 'too-few-arguments)))
+
+(defun add-binding-asts (variable-ast form-ast let*-ast)
+  (reinitialize-instance let*-ast
+    :binding-asts
+    (append (ico:binding-asts let*-ast)
+            (make-let-binding-ast variable-ast form-ast))))
+
+(defun destructure-pattern (pattern-ast variable-ast let*-ast)
+  (let ((temp-ast (node* (:variable-name :name (gensym)))))
+    (add-binding-asts
+     temp-ast
+     (aif (application 'null variable-ast)
+          (not-enough-arguments-ast)
+          (application 'first variable-ast))
+     let*-ast)
+    (add-binding-asts
+     variable-ast
+     (application 'rest variable-ast)
+     let*-ast)
+    (destructure-lambda-list
+     pattern-ast temp-ast let*-ast)))
+
 ;;; Destructure a list of REQUIRED-PARAMETER-ASTs.
 (defun destructure-required (required-asts variable-ast let*-ast)
-  (let ((not-enough-arguments-ast
-          (application 'error (aquote 'too-few-arguments)))
-        (binding-asts '()))
-    (loop for pattern-ast in required-asts
-          do (if (typep pattern 'ico:variable-name-ast)
-                 (progn
-                   (push (make-let-binding-ast
-                          pattern-ast
-                          (aif (application 'null variable-ast)
-                               not-enough-arguments-ast
-                               (application 'first variable-ast)))
-                         binding-asts)
-                   (push (make-let-binding-ast
-                          variable-ast
-                          (application 'rest variable-ast))))
-                 (let ((temp-ast (node* (:variable-name :name (gensym)))))
-                   (push (make-let-binding-ast
-                          temp-ast
-                          (aif (application 'null variable-ast)
-                               not-enough-arguments-ast
-                               (application 'first variable-ast)))
-                         binding-asts)
-                   (push (make-let-binding-ast
-                          variable-ast
-                          (application 'rest variable-ast)))
-                   (destructure-lambda-list
-                    pattern-ast variable-ast let*-ast))))))
+  (loop for ast in required-asts
+        do (if (typep ast 'ico:variable-name-ast)
+               (progn
+                 (add-binding-asts
+                  ast
+                  (aif (application 'null variable-ast)
+                       not-enough-arguments-ast
+                       (application 'first variable-ast))
+                  let*-ast)
+                 (add-binding-asts
+                  variable-ast
+                  (application 'rest variable-ast)))
+               (destructure-pattern pattern-ast variable-ast let*-ast))))
 
 ;;; Destructure an optional parameter.  Return a list of bindings.
 (defun destructure-optional (optional variable)
