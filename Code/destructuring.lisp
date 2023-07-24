@@ -81,24 +81,51 @@
     (destructure-lambda-list
      pattern-ast temp-ast let*-ast)))
 
-;;; Destructure a list of REQUIRED-PARAMETER-ASTs.
-(defun destructure-required (required-asts variable-ast let*-ast)
-  (loop for ast in required-asts
-        do (if (typep ast 'ico:variable-name-ast)
-               (progn
-                 (add-binding-asts
-                  ast
-                  (aif (application 'null variable-ast)
-                       not-enough-arguments-ast
-                       (application 'first variable-ast))
-                  let*-ast)
-                 (add-binding-asts
-                  variable-ast
-                  (application 'rest variable-ast)))
-               (destructure-pattern pattern-ast variable-ast let*-ast))))
+;;; Destructure a REQUIRED-SECTION-AST.
+(defun destructure-required (section-ast variable-ast let*-ast)
+  (unless (null section-ast)
+    (loop for ast in (ico:parameter-asts section-ast)
+          for name-ast = (ico:name-ast ast)
+          do (if (typep name-ast 'ico:variable-name-ast)
+                 (progn
+                   (add-binding-asts
+                    name-ast
+                    (aif (application 'null variable-ast)
+                         (not-enough-arguments-ast)
+                         (application 'first variable-ast))
+                    let*-ast)
+                   (add-binding-asts
+                    variable-ast
+                    (application 'rest variable-ast)
+                    let*-ast))
+                 (destructure-pattern name-ast variable-ast let*-ast)))))
 
-;;; Destructure an optional parameter.  Return a list of bindings.
-(defun destructure-optional (optional variable)
+;;; FIXME: handle situation when the variable is a pattern.
+;;; Destructure an OPTIONAL-SECTION-AST.
+(defun destructure-optional (section-ast variable-ast let*-ast)
+  (unless (null section-ast)
+    (loop for ast in (ico:parameter-asts section-ast)
+          for name-ast = (ico:name-ast ast)
+          for init-form-ast = (ico:init-form-ast ast)
+          for supplied-p-parameter-ast = (ico:supplied-p-parameter-ast ast)
+          do (unless (null supplied-p-parameter-ast)
+               (add-binding-asts
+                supplied-p-parameter-ast
+                (application 'not (application 'null variable-ast))
+                let*-ast))
+             (add-binding-asts
+              name-ast
+              (aif (application 'null variable-ast)
+                   init-form-ast
+                   (application 'first variable-ast))
+              let*-ast)
+             (add-binding-asts
+              variable-ast
+              (aif (application 'null variable-ast)
+                   variable-ast
+                   (application 'rest variable-ast))
+              let*-ast))))
+
   (let ((bindings '()))
     (loop for (var default supplied-p) in optional
           do (unless (null supplied-p)
@@ -196,13 +223,10 @@
 
 (defun destructure-lambda-list (lambda-list-ast variable-ast let*-ast)
   ;; Destructure required parameters.
-  (let* ((section-ast (ico:required-section-ast lambda-list-ast))
-         (parameter-asts (ico:parameter-asts section-ast)))
-    (destructure-required parameter-asts variable-ast let*-ast)
-    (when (first-group-is remaining '&optional)
-      (setf bindings
-            (append (destructure-optional (rest (pop remaining)) variable)
-                    bindings)))
+  (let ((section-ast (ico:required-section-ast lambda-list-ast)))
+    (destructure-required section-asts variable-ast let*-ast))
+  (let ((section-ast (ico:optional-section-ast lambda-list-ast)))
+    (destructure-optional section-asts variable-ast let*-ast))
     (unless (or (member '&rest remaining :key #'first :test #'eq)
                 (member '&body remaining :key #'first :test #'eq)
                 (member '&key remaining :key #'first :test #'eq))
