@@ -6,7 +6,7 @@
   :components
   ((:file "packages")
    (:file "utilities")
-;;   (:file "destructuring")
+   (:file "destructuring")
    (:file "conditions")
    (:file "when")
    (:file "unless")
