@@ -253,49 +253,37 @@
 ;;;
 ;;; This function differs from parse-macro only in the code that
 ;;; destructures the lambda list from the arguments.
+;;;
+;;; FIXME: Currently there is no difference.  Handle the case where
+;;; the form is (FUNCALL (FUNCTION ...) ...)
 
-(defun parse-compiler-macro (name lambda-list body &optional environment)
-  (declare (ignore name environment)) ; For now.
-  (let* ((canonicalized-lambda-list
-           (canonicalize-macro-lambda-list lambda-list))
-         (environment-group
-           (extract-named-group canonicalized-lambda-list '&environment))
-         (environment-parameter
-           (if (null environment-group) (gensym) (second environment-group)))
-         (whole-group
-           (extract-named-group canonicalized-lambda-list '&whole))
-         (whole-parameter
-           (if (null whole-group) (gensym) (second whole-group)))
-         (remaining
-           (remove '&environment
-                   (remove '&whole canonicalized-lambda-list
-                           :key #'first :test #'eq)
-                   :key #'first :test #'eq))
-         (args-var (gensym)))
-    (multiple-value-bind (declarations documentation forms)
-        (separate-function-body body)
-      (multiple-value-bind (bindings ignored-variables)
-          (destructure-lambda-list remaining args-var whole-parameter)
-        `(lambda (,whole-parameter ,environment-parameter)
-           ,@(if (null documentation) '() (list documentation))
-           ;; If the lambda list does not contain &environment, then
-           ;; we IGNORE the GENSYMed parameter to avoid warnings.
-           ;; If the lambda list does contain &environment, we do
-           ;; not want to make it IGNORABLE because we would want a
-           ;; warning if it is not used then.
-           ,@(if (null environment-group)
-                 `((declare (ignore ,environment-parameter)))
-                 `())
-           (let ((,args-var (if (and (eq (car ,whole-parameter) 'funcall)
-                                   (consp (cdr ,whole-parameter))
-                                   (consp (cadr ,whole-parameter))
-                                   (eq (car (cadr ,whole-parameter)) 'function))
-                              (cddr ,whole-parameter)
-                              (cdr ,whole-parameter))))
-             (let* ,(reverse bindings)
-               (declare (ignore ,@ignored-variables))
-               ,@declarations
-               ,@forms)))))))
+(defun parse-compiler-macro (macro-ast)
+  (let* ((lambda-list-ast (ico:lambda-list-ast macro-ast))
+         (whole-section-ast
+           (ico:whole-section-ast lambda-list-ast))
+         (whole-parameter-ast
+           (if (null whole-section-ast)
+               (make-temp-ast)
+               (ico:parameter-ast whole-section-ast)))
+         (environment-section-ast
+           (ico:environment-section-ast lambda-list-ast))
+         (environment-parameter-ast
+           (if (null environment-section-ast)
+               (make-temp-ast)
+               (ico:parameter-ast environment-section-ast)))
+         (let*-ast (node* (:let*)
+                     (1 :declaration
+                        (ico:declaration-asts macro-ast))))
+         (variable-ast (node* (:variable-name :name (gensym)))))
+    (destructure-lambda-list lambda-list-ast variable-ast let*-ast)
+    (node* (:lambda)
+      (1 :lambda-list
+         (node* (:ordinary-lambda-list)
+           (1 :required-section
+              (node* (:required-section)
+                (* :parameter
+                   (list whole-parameter-ast environment-parameter-ast))))))
+      (1 :form let*-ast))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
