@@ -66,45 +66,45 @@
     (append (ico:binding-asts let*-ast)
             (make-let-binding-ast variable-ast form-ast))))
 
-(defun destructure-pattern (pattern-ast variable-ast let*-ast)
-  (let ((temp-ast (node* (:variable-name :name (gensym)))))
-    (add-binding-asts
-     temp-ast
-     (aif (application 'null variable-ast)
-          (not-enough-arguments-ast)
-          (application 'first variable-ast))
-     let*-ast)
-    (add-binding-asts
-     variable-ast
-     (application 'rest variable-ast)
-     let*-ast)
-    (destructure-lambda-list
-     pattern-ast temp-ast let*-ast)))
+(defgeneric destructure-variable-or-pattern-ast (ast variable-ast let*-ast))
 
-;;; Destructure a REQUIRED-SECTION-AST.
-(defun destructure-required (section-ast variable-ast let*-ast)
+(defmethod destructure-variable-or-pattern-ast
+    ((ast ico:variable-name-ast) variable-ast let*-ast)
+  (add-binding-asts ast variable-ast let*-ast))
+
+(defmethod destructure-variable-or-pattern-ast
+    ((ast ico:pattern-ast) variable-ast let*-ast)
+  (destructure-lambda-list ast variable-ast let*-ast))
+
+(defun make-temp-ast ()
+  (node* (:variable-name :name (gensym))))
+
+(defgeneric destructure-section (section-ast variable-ast let*-ast))
+
+(defmethod destructure-section
+    ((section-ast ico:required-section-ast) variable-ast let*-ast)
   (unless (null section-ast)
-    (loop for ast in (ico:parameter-asts section-ast)
+    (loop with temp-ast = (make-temp-ast)
+          for ast in (ico:parameter-asts section-ast)
           for name-ast = (ico:name-ast ast)
-          do (if (typep name-ast 'ico:variable-name-ast)
-                 (progn
-                   (add-binding-asts
-                    name-ast
-                    (aif (application 'null variable-ast)
-                         (not-enough-arguments-ast)
-                         (application 'first variable-ast))
-                    let*-ast)
-                   (add-binding-asts
-                    variable-ast
-                    (application 'rest variable-ast)
-                    let*-ast))
-                 (destructure-pattern name-ast variable-ast let*-ast)))))
+          do (add-binding-asts
+              temp-ast
+              (aif (application 'null variable-ast)
+                   (not-enough-arguments-ast)
+                   (application 'first variable-ast))
+              let*-ast)
+             (add-binding-asts
+              variable-ast
+              (application 'rest variable-ast)
+              let*-ast)
+             (destructure-variable-or-pattern-ast
+              name-ast temp-ast let*-ast))))
 
-;;; FIXME: handle situation when the variable is a pattern.
-;;; Destructure an OPTIONAL-SECTION-AST.
-(defun destructure-optional (section-ast variable-ast let*-ast)
+(defmethod destructure-section
+    ((section-ast ico:optional-section-ast) variable-ast let*-ast)
   (unless (null section-ast)
-    (loop for ast in (ico:parameter-asts section-ast)
+    (loop with temp-ast = (make-temp-ast)
+          for ast in (ico:parameter-asts section-ast)
           for name-ast = (ico:name-ast ast)
           for init-form-ast = (ico:init-form-ast ast)
           for supplied-p-parameter-ast = (ico:supplied-p-parameter-ast ast)
@@ -114,7 +114,7 @@
                 (application 'not (application 'null variable-ast))
                 let*-ast))
              (add-binding-asts
-              name-ast
+              temp-ast
               (aif (application 'null variable-ast)
                    init-form-ast
                    (application 'first variable-ast))
@@ -124,150 +124,96 @@
               (aif (application 'null variable-ast)
                    variable-ast
                    (application 'rest variable-ast))
-              let*-ast))))
+              let*-ast)
+             (destructure-variable-or-pattern-ast
+              name-ast temp-ast let*-ast))))
 
-  (let ((bindings '()))
-    (loop for (var default supplied-p) in optional
-          do (unless (null supplied-p)
-               (push `(,supplied-p (not (null ,variable)))
-                     bindings))
-             (push `(,var (if (null ,variable)
-                              ,default
-                              (first ,variable)))
-                   bindings)
-             (push `(,variable (if (null ,variable)
-                                   ,variable
-                                   (rest ,variable)))
-                   bindings))
-    bindings))
+(defmethod destructure-section
+    ((section-ast ico:rest-section-ast) variable-ast let*-ast)
+  (unless (null section-ast)
+    (let ((temp-ast (make-temp-ast))
+          (name-ast (ico:name-ast (ico:parameter-ast section-ast))))
+      (add-binding-asts temp-ast variable-ast let*-ast)
+      (destructure-variable-or-pattern-ast name-ast temp-ast let*-ast))))
 
-;;; Destructure a &REST or &BODY parameter which can be a variable or
-;;; a pattern.  Return a list of bindings and a list of variables to
-;;; ignore.
-(defun destructure-rest/body
-    (pattern variable invoking-form-variable)
-  (let ((bindings '())
-        (ignored-variables '()))
-    (if (symbolp pattern)
-        (push `(,pattern ,variable) bindings)
-        (let ((temp (gensym)))
-          (push `(,temp ,variable)
-                bindings)
-          (multiple-value-bind (nested-bindings nested-ignored-variables)
-              (destructure-lambda-list pattern temp invoking-form-variable)
-            (setf bindings
-                  (append nested-bindings bindings))
-            (setf ignored-variables
-                  (append nested-ignored-variables ignored-variables)))))
-    (values bindings ignored-variables)))
+(defun collect-keys (key-parameter-asts)
+  (loop for key-parameter-ast in key-parameter-asts
+        collect (ico:name (ico:keyword-ast key-parameter-ast))))
 
-;;; Destructure a list of &KEY parameters.  Return a list of bindings
-;;; and a list of variables to ignore.
-(defun destructure-key
-    (key variable canonicalized-lambda-list invoking-form-variable allow-other-keys)
-  (let* ((bindings '())
-         (ignored-variables '())
-         (keywords (mapcar #'caar key))
-         (odd-number-of-keyword-arguments-form
-           `(error 'odd-number-of-keyword-arguments
-                   :lambda-list
-                   ',(reduce #'append canonicalized-lambda-list)
-                   :invoking-form ,invoking-form-variable))
-         (check-keywords-form
-           (let ((temp (gensym)))
-             `(let ((,temp ,variable))
-                (tagbody
-                 again
-                   (if (null ,temp) (go out))
-                   (if (not (member (first ,temp)
-                                    '(:allow-other-keys ,@keywords)
-                                    :test #'eq))
-                       (error 'invalid-keyword
-                              :keyword (first ,temp)
-                              :lambda-list
-                              ',(reduce #'append canonicalized-lambda-list)
-                              :invoking-form ,invoking-form-variable)
-                       (progn (setf ,temp (cddr ,temp))
-                              (go again)))
-                 out)))))
-    (let ((ignored (gensym)))
-      (push ignored ignored-variables)
-      (push `(,ignored (if (oddp (length ,variable))
-                           ,odd-number-of-keyword-arguments-form))
-            bindings))
-    (unless allow-other-keys
-      (let ((ignored (gensym)))
-        (push ignored ignored-variables)
-        (push `(,ignored (if (not (getf ,variable :allow-other-keys))
-                             ,check-keywords-form))
-              bindings)))
-    (loop for ((keyword var) default supplied-p) in key
-          for temp1 = (gensym)
-          for temp2 = (gensym)
-          do (push `(,temp1 (list nil)) bindings)
-             (push `(,temp2 (getf ,variable ,keyword ,temp1))
-                   bindings)
-             (if (null supplied-p)
-                 nil
-                 (push `(,supplied-p (not (eq ,temp2 ,temp1)))
-                       bindings))
-             (push `(,var (if (eq ,temp2 ,temp1)
-                              ,default
-                              ,temp2))
-                   bindings))
-    (values bindings ignored-variables)))
+(defmethod destructure-section
+    ((section-ast ico:key-section-ast) variable-ast let*-ast)
+  (let ((ignore-ast (make-temp-ast)))
+    (add-binding-asts
+     ignore-ast
+     (aif (application 'oddp (application 'length variable-ast))
+          (application 'error (aliteral 'odd-number-of-keyword-arguments))
+          (aliteral 'nil))
+     let*-ast))
+  (unless (null (ico:allow-other-keys-ast section-ast))
+    (let ((ignore-ast (make-temp-ast))
+          (temp-ast (make-temp-ast)))
+      (add-binding-asts
+       ignore-ast
+       (alet ((b temp-ast variable-ast))
+         (atagbody
+          (atag 'again)
+          (aif (application 'null temp-ast)
+               (ago (atag 'out))
+               (aliteral 'nil))
+          (aif (application
+                'not
+                (application
+                 'member
+                 (application 'first temp-ast)
+                 (aliteral (cons :allow-other-keys
+                                 (collect-keys section-ast)))))
+               (application 'error (aliteral 'invalid-keyword))
+               (aprogn (node* (:setq)
+                         (1 :name temp-ast)
+                         (1 :value (application 'cddr temp-ast)))
+                       (ago (atag 'again))))
+          (atag 'out)))
+       let*-ast)))
+  (let ((unique-ast (application 'list (aliteral 'nil)))
+        (temp-ast-1 (make-temp-ast))
+        (temp-ast-2 (make-temp-ast)))
+    (add-binding-asts temp-ast-1 unique-ast let*-ast)
+    (loop for ast in (ico:parameter-asts section-ast)
+          for name-ast = (ico:name-ast ast)
+          for init-form-ast = (ico:init-form-ast ast)
+          for supplied-p-parameter-ast = (ico:supplied-p-parameter-ast ast)
+          for keyword-ast = (ico:keyword-ast ast)
+          do (add-binding-asts
+              temp-ast-2
+              (application 'getf variable-ast keyword-ast temp-ast-1)
+              let*-ast)
+             (unless (null supplied-p-parameter-ast)
+               (add-binding-asts
+                supplied-p-parameter-ast
+                (application
+                 'not
+                 (application 'eq temp-ast-2 temp-ast-1))
+                let*-ast))
+             (let ((temp-ast (make-temp-ast)))
+               (add-binding-asts
+                temp-ast
+                (aif (application 'eq temp-ast-1 temp-ast-2)
+                     init-form-ast
+                     temp-ast-2)
+                let*-ast)
+               (destructure-variable-or-pattern-ast
+                name-ast temp-ast let*-ast)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; DESTRUCTURE-LAMBDA-LIST
 
 (defun destructure-lambda-list (lambda-list-ast variable-ast let*-ast)
-  ;; Destructure required parameters.
-  (let ((section-ast (ico:required-section-ast lambda-list-ast)))
-    (destructure-required section-asts variable-ast let*-ast))
-  (let ((section-ast (ico:optional-section-ast lambda-list-ast)))
-    (destructure-optional section-asts variable-ast let*-ast))
-    (unless (or (member '&rest remaining :key #'first :test #'eq)
-                (member '&body remaining :key #'first :test #'eq)
-                (member '&key remaining :key #'first :test #'eq))
-      (let ((temp (gensym)))
-        (push temp ignored-variables)
-        (push `(,temp (if (not (null ,variable))
-                          (error 'too-many-arguments
-                                 :lambda-list
-                                 ',(reduce #'append canonicalized-lambda-list)
-                                 :invoking-form ,invoking-form-variable)))
-              bindings)))
-    (when (or (first-group-is remaining '&rest)
-              (first-group-is remaining '&body))
-      (multiple-value-bind (nested-bindings nested-ignored-variables)
-          (destructure-rest/body
-           (second (pop remaining)) variable invoking-form-variable)
-        (setf bindings
-              (append nested-bindings bindings))
-        (setf ignored-variables
-              (append nested-ignored-variables ignored-variables))))
-    (when (first-group-is remaining '&key)
-      (let* ((group (pop remaining))
-             (allow-other-keys
-               (if (first-group-is remaining '&allow-other-keys)
-                   (progn (pop remaining) t)
-                   nil)))
-        (multiple-value-bind (nested-bindings nested-ignored-variables)
-            (destructure-key
-             (rest group)
-             variable
-             canonicalized-lambda-list
-             invoking-form-variable
-             allow-other-keys)
-          (setf bindings
-                (append nested-bindings bindings))
-          (setf ignored-variables
-                (append nested-ignored-variables ignored-variables)))))
-    (when (first-group-is remaining '&aux)
-      (setf bindings
-            (append (reverse (rest (pop remaining))) bindings)))
-    (values bindings ignored-variables)))
+  (destructure-section (ico:required-section-ast lambda-list-ast))
+  (destructure-section (ico:optional-section-ast lambda-list-ast))
+  (destructure-section (ico:rest-section-ast lambda-list-ast))
+  (destructure-section (ico:key-section-ast lambda-list-ast))
+  (destructure-section (ico:aux-section-ast lambda-list-ast)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
