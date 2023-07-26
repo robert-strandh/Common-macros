@@ -209,11 +209,16 @@
 ;;; DESTRUCTURE-LAMBDA-LIST
 
 (defun destructure-lambda-list (lambda-list-ast variable-ast let*-ast)
-  (destructure-section (ico:required-section-ast lambda-list-ast))
-  (destructure-section (ico:optional-section-ast lambda-list-ast))
-  (destructure-section (ico:rest-section-ast lambda-list-ast))
-  (destructure-section (ico:key-section-ast lambda-list-ast))
-  (destructure-section (ico:aux-section-ast lambda-list-ast)))
+  (destructure-section
+   (ico:required-section-ast lambda-list-ast) variable-ast let*-ast)
+  (destructure-section
+   (ico:optional-section-ast lambda-list-ast) variable-ast let*-ast)
+  (destructure-section
+   (ico:rest-section-ast lambda-list-ast) variable-ast let*-ast)
+  (destructure-section
+   (ico:key-section-ast lambda-list-ast) variable-ast let*-ast)
+  (destructure-section
+   (ico:aux-section-ast lambda-list-ast) variable-ast let*-ast))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -238,6 +243,8 @@
                         (ico:declaration-asts macro-ast))))
          (variable-ast (node* (:variable-name :name (gensym)))))
     (destructure-lambda-list lambda-list-ast variable-ast let*-ast)
+    (reinitialize-instance let*-ast
+      :form-asts (ico:form-asts macro-ast))
     (node* (:lambda)
       (1 :lambda-list
          (node* (:ordinary-lambda-list)
@@ -278,6 +285,8 @@
                         (ico:declaration-asts macro-ast))))
          (variable-ast (node* (:variable-name :name (gensym)))))
     (destructure-lambda-list lambda-list-ast variable-ast let*-ast)
+    (reinitialize-instance let*-ast
+      :form-asts (ico:form-asts macro-ast))
     (node* (:lambda)
       (1 :lambda-list
          (node* (:ordinary-lambda-list)
@@ -293,8 +302,8 @@
 ;;;
 ;;; PARSE-DEFTYPE
 
-(defun parse-macro (macro-ast)
-  (let* ((lambda-list-ast (ico:lambda-list-ast macro-ast))
+(defun parse-deftype (deftype-ast)
+  (let* ((lambda-list-ast (ico:lambda-list-ast deftype-ast))
          (whole-section-ast
            (ico:whole-section-ast lambda-list-ast))
          (whole-parameter-ast
@@ -309,7 +318,7 @@
                (ico:parameter-ast environment-section-ast)))
          (let*-ast (node* (:let*)
                      (1 :declaration
-                        (ico:declaration-asts macro-ast))))
+                        (ico:declaration-asts deftype-ast))))
          (variable-ast (node* (:variable-name :name (gensym)))))
     (destructure-lambda-list lambda-list-ast variable-ast let*-ast)
     (node* (:lambda)
