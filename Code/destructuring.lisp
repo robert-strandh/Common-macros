@@ -245,7 +245,9 @@
               (node* (:required-section)
                 (* :parameter
                    (list whole-parameter-ast environment-parameter-ast))))))
-      (1 :form let*-ast))))
+      (1 :form
+         (ablock (ico:name-ast macro-ast)
+           let*-ast)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
@@ -283,7 +285,9 @@
               (node* (:required-section)
                 (* :parameter
                    (list whole-parameter-ast environment-parameter-ast))))))
-      (1 :form let*-ast))))
+      (1 :form
+         (ablock (ico:name-ast macro-ast)
+           let*-ast)))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
