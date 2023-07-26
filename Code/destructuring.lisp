@@ -325,24 +325,25 @@
 ;;;
 ;;; PARSE-DESTRUCTURING-BIND
 
-(defun parse-destructuring-bind (lambda-list form body)
-  (let* ((canonicalized-lambda-list
-           (canonicalize-destructuring-lambda-list lambda-list))
-         (whole-group
-           (extract-named-group canonicalized-lambda-list '&whole))
-         (whole-parameter
-           (if (null whole-group) (gensym) (second whole-group)))
-         (remaining
-           (remove '&whole canonicalized-lambda-list
-                   :key #'first :test #'eq))
-         (args-var (gensym)))
-    (multiple-value-bind (declarations forms)
-        (separate-ordinary-body body)
-      (multiple-value-bind (bindings ignored-variables)
-          (destructure-lambda-list remaining args-var whole-parameter)
-        `(let* ((,whole-parameter ,form)
-                (,args-var ,whole-parameter)
-                ,@(reverse bindings))
-           (declare (ignore ,@ignored-variables))
-           ,@declarations
-           ,@forms)))))
+(defun parse-destructuring-bind (destructuring-bind-ast)
+  (let* ((lambda-list-ast (ico:lambda-list-ast destructuring-bind-ast))
+         (whole-section-ast
+           (ico:whole-section-ast lambda-list-ast))
+         (whole-parameter-ast
+           (if (null whole-section-ast)
+               (make-temp-ast)
+               (ico:parameter-ast whole-section-ast)))
+         (let*-ast (node* (:let*)
+                     (1 :declaration
+                        (ico:declaration-asts destructuring-bind-ast))))
+         (variable-ast (node* (:variable-name :name (gensym))))
+         (args-ast (make-temp-ast)))
+    (add-binding-asts
+     whole-parameter-ast (ico:form-ast destructuring-bind-ast) let*-ast)
+    (add-binding-asts
+     args-ast whole-parameter-ast let*-ast)
+    (destructure-lambda-list lambda-list-ast variable-ast let*-ast)
+    ;; FIXME: add declarations.
+    (reinitialize-instance let*-ast
+      :form-asts (ico:form-asts destructuring-bind-ast))
+    let*-ast))
