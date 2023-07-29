@@ -65,4 +65,7 @@
    (#:bld #:iconoclast-builder)
    (#:abp #:architecture.builder-protocol)
    (#:ses #:s-expression-syntax)
-   (#:cmd #:common-macro-definitions)))
+   (#:cmd #:common-macro-definitions))
+  (:export #:with-builder
+           #:with-ast-origin))
+
