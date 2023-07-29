@@ -64,7 +64,7 @@
   (reinitialize-instance let*-ast
     :binding-asts
     (append (ico:binding-asts let*-ast)
-            (make-let-binding-ast variable-ast form-ast))))
+            (list (make-let-binding-ast variable-ast form-ast)))))
 
 (defgeneric destructure-variable-or-pattern-ast (ast variable-ast let*-ast))
 
@@ -80,6 +80,10 @@
   (node* (:variable-name :name (gensym))))
 
 (defgeneric destructure-section (section-ast variable-ast let*-ast))
+
+(defmethod destructure-section ((section-ast null) variable-ast let*-ast)
+  (declare (ignore section-ast variable-ast let*-ast))
+  nil)
 
 (defmethod destructure-section
     ((section-ast ico:required-section-ast) variable-ast let*-ast)
