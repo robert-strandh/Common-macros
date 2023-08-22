@@ -12,14 +12,15 @@
   `(let ((*origin* (ico:origin ,ast)))
      ,@body))
 
-(defmacro with-builder (&body body)
-  `(abp:with-builder ((ensure-builder))
+(defmacro with-builder (builder-form &body body)
+  `(abp:with-builder (,builder-form)
      ,@body))
 
 (defgeneric expand (client ast environment))
 
 (defmethod expand :around (client ast environment)
-  (with-builder (with-ast-origin ast (call-next-method))))
+  (with-builder (ensure-builder)
+    (with-ast-origin ast (call-next-method))))
 
 (defun extract-bindings (variable-clauses)
   (mapcar
@@ -248,7 +249,8 @@
   (ses:unparse (ensure-builder) t ast))
 
 (defun aquote (object)
-  (node* (:quote :object object)))
+  (node* (:quote)
+    (1 :object object)))
 
 (defun aliteral (object)
   (node* (:literal :value object)))
