@@ -233,32 +233,13 @@
     new-argument-list-ast))
 
 (defmethod destructure-section
-    ((section-ast ico:optional-section-ast) variable-ast let*-ast)
-  (unless (null section-ast)
-    (loop with temp-ast = (make-temp-ast)
-          for ast in (ico:parameter-asts section-ast)
-          for name-ast = (ico:name-ast ast)
-          for init-form-ast = (ico:init-form-ast ast)
-          for supplied-p-parameter-ast = (ico:supplied-p-parameter-ast ast)
-          do (unless (null supplied-p-parameter-ast)
-               (add-binding-asts
-                supplied-p-parameter-ast
-                (application 'not (application 'null variable-ast))
-                let*-ast))
-             (add-binding-asts
-              temp-ast
-              (aif (application 'null variable-ast)
-                   init-form-ast
-                   (application 'first variable-ast))
-              let*-ast)
-             (add-binding-asts
-              variable-ast
-              (aif (application 'null variable-ast)
-                   variable-ast
-                   (application 'rest variable-ast))
-              let*-ast)
-             (destructure-variable-or-pattern-ast
-              name-ast temp-ast let*-ast))))
+    ((section-ast ico:optional-section-ast) argument-list-ast let*-ast)
+  (let ((new-argument-list-ast argument-list-ast))
+    (loop for parameter-ast in (ico:parameter-asts section-ast)
+          do (setf new-argument-list-ast
+                   (destructure-optional-parameter
+                    parameter-ast new-argument-list-ast let*-ast)))
+    new-argument-list-ast))
 
 (defmethod destructure-section
     ((section-ast ico:rest-section-ast) variable-ast let*-ast)
