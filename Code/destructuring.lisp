@@ -57,6 +57,7 @@
 ;;; the newly created VARIABLE-REFERENCE-AST.
 (defun make-variable-reference-ast (variable-definition-ast)
   (let ((result (make-instance 'ico:variable-reference-ast
+                  :name (ico:name variable-definition-ast)
                   :variable-definition-ast variable-definition-ast)))
     (reinitialize-instance variable-definition-ast
       :variable-reference-asts
@@ -90,21 +91,89 @@
   (declare (ignore section-ast let*-ast))
   variable-definition-ast)
 
+;;; PARAMETER-AST is the AST that represents the parameter to be
+;;; destructured.  ARGUMENT-LIST-AST is a VARIABLE-DEFINITION-AST that
+;;; represents a variable that refers to the remaining elements of the
+;;; argument list.  LET*-AST is the AST to which new bindings should
+;;; be added.
+(defun destructure-required-parameter
+    (parameter-ast argument-list-ast let*-ast)
+  (let (;; NAME-AST is either the name of the parameter if the
+        ;; parameter is not a pattern.  Otherwise, NAME-AST is an AST
+        ;; that represents the pattern, i.e., a nested lambda list.
+        (name-ast (ico:name-ast parameter-ast))
+        ;; NEW-ARGUMENT-LIST-AST is a new VARIABLE-DEFINITION-AST that
+        ;; we introduce and that will refer to the REST of the
+        ;; argument list after this parameter has been destructured.
+        ;; We return NEW-ARGUMENT-LIST-AST so that further
+        ;; restructuring can refer to it.
+        (new-argument-list-ast
+          (make-instance 'ico:variable-definition-ast
+            :name (gensym)))
+        ;; TEMP-AST will refer to the FIRST of the argument list (when
+        ;; the argument list is not empty, that is).  It is passed as
+        ;; a parameter to DESTRUCTURE-VARIABLE-OR-PATTERN-AST and can
+        ;; then either be used to destructure further, if the object
+        ;; needs to be further destructured when NAME-AST represents a
+        ;; pattern.
+        (temp-ast
+          (make-instance 'ico:variable-definition-ast
+            :name (gensym))))
+    ;; The first binding we add is is the AST version of:
+    ;; (TEMP (IF (NULL ARGUMENT-LIST)
+    ;;           (ERROR...)
+    ;;           (FIRST ARGUMENT-LIST)))
+    (add-binding-asts
+     temp-ast
+     (aif (application
+           'null
+           (make-variable-reference-ast argument-list-ast))
+          (not-enough-arguments-ast)
+          (application
+           'first
+           (make-variable-reference-ast argument-list-ast)))
+     let*-ast)
+    ;; Next, we add a binding that is the AST version of:
+    ;; (NEW-ARGUMENT-LIST (REST ARGUMENT-LIST))
+    (add-binding-asts
+     new-argument-list-ast
+     (application
+      'rest
+      (make-variable-reference-ast argument-list-ast))
+     let*-ast)
+    ;; Finally, we call DESTRUCTURE-VARIABLE-OR-PATTERN-AST with
+    ;; TEMP-AST.  Then, if the parameter is just a name, the binding
+    ;; becomes (NAME TEMP).  If it is a patter, more bindings will
+    ;; be added by a recursive call to DESTRUCTURE-LAMBDA-LIST.
+    (destructure-variable-or-pattern-ast name-ast temp-ast let*-ast)
+    ;; And we return the new argument-list AST as promised.
+    new-argument-list-ast))
+
 (defmethod destructure-section
-    ((section-ast ico:required-section-ast) variable-ast let*-ast)
-  (unless (null section-ast)
-    (loop with temp-ast = (make-temp-ast)
-          for ast in (ico:parameter-asts section-ast)
+    ((section-ast ico:required-section-ast) variable-definition-ast let*-ast)
+  (let ((new-variable-definition-ast variable-definition-ast))
+    (loop for ast in (ico:parameter-asts section-ast)
           for name-ast = (ico:name-ast ast)
+          for temp-ast = (make-instance 'ico:variable-definition-ast
+                           :name (gensym))
           do (add-binding-asts
-              temp-ast
-              (aif (application 'null variable-ast)
+              name-ast
+              (aif (application
+                    'null
+                    (make-variable-reference-ast
+                     new-variable-definition-ast))
                    (not-enough-arguments-ast)
-                   (application 'first variable-ast))
+                   (application
+                    'first
+                    (make-variable-reference-ast
+                     new-variable-definition-ast)))
               let*-ast)
              (add-binding-asts
-              variable-ast
-              (application 'rest variable-ast)
+              temp-ast
+              (application
+               'rest
+               (make-variable-reference-ast
+                new-variable-definition-ast))
               let*-ast)
              (destructure-variable-or-pattern-ast
               name-ast temp-ast let*-ast))))
