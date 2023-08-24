@@ -242,11 +242,29 @@
     new-argument-list-ast))
 
 (defmethod destructure-section
-    ((section-ast ico:rest-section-ast) variable-ast let*-ast)
-  (let ((temp-ast (make-temp-ast))
-        (name-ast (ico:name-ast (ico:parameter-ast section-ast))))
-    (add-binding-asts temp-ast variable-ast let*-ast)
-    (destructure-variable-or-pattern-ast name-ast temp-ast let*-ast)))
+    ((section-ast ico:rest-section-ast) argument-list-ast let*-ast)
+  (let (;; NAME-AST is either the name of the parameter if the
+        ;; parameter is not a pattern.  Otherwise, NAME-AST is an AST
+        ;; that represents the pattern, i.e., a nested lambda list.
+        (name-ast (ico:name-ast (ico:parameter-ast section-ast)))
+        ;; TEMP-AST will refer to the remaining argument list.  It is
+        ;; passed as a parameter to
+        ;; DESTRUCTURE-VARIABLE-OR-PATTERN-AST and can then either be
+        ;; used to destructure further, if the object needs to be
+        ;; further destructured when NAME-AST represents a pattern.
+        (temp-ast
+          (make-instance 'ico:variable-definition-ast
+            :name (gensym))))
+    ;; We add the AST version of the binding: (TEMP ARGUMENT-LIST).
+    (add-binding-asts temp-ast argument-list-ast let*-ast)
+    ;; Finally, we call DESTRUCTURE-VARIABLE-OR-PATTERN-AST with
+    ;; TEMP-AST.  Then, if the parameter is just a name, the binding
+    ;; becomes (NAME TEMP).  If it is a patter, more bindings will
+    ;; be added by a recursive call to DESTRUCTURE-LAMBDA-LIST.
+    (destructure-variable-or-pattern-ast name-ast temp-ast let*-ast)
+    ;; Since we haven't manipulated the argument list at all, we
+    ;; return the AST we were passed as an argument.
+    argument-list-ast))
 
 (defun collect-keys (key-parameter-asts)
   (loop for key-parameter-ast in key-parameter-asts
