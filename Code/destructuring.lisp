@@ -243,11 +243,10 @@
 
 (defmethod destructure-section
     ((section-ast ico:rest-section-ast) variable-ast let*-ast)
-  (unless (null section-ast)
-    (let ((temp-ast (make-temp-ast))
-          (name-ast (ico:name-ast (ico:parameter-ast section-ast))))
-      (add-binding-asts temp-ast variable-ast let*-ast)
-      (destructure-variable-or-pattern-ast name-ast temp-ast let*-ast))))
+  (let ((temp-ast (make-temp-ast))
+        (name-ast (ico:name-ast (ico:parameter-ast section-ast))))
+    (add-binding-asts temp-ast variable-ast let*-ast)
+    (destructure-variable-or-pattern-ast name-ast temp-ast let*-ast)))
 
 (defun collect-keys (key-parameter-asts)
   (loop for key-parameter-ast in key-parameter-asts
