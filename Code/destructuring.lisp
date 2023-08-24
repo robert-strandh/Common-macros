@@ -52,6 +52,18 @@
 (defun not-enough-arguments-ast ()
   (application 'error (aquote 'too-few-arguments)))
 
+;;; Take a VARIABLE-DEFINITION-AST and create a VARIABLE-REFERENCE-AST
+;;; that references the same variable, and link the two up.  Return
+;;; the newly created VARIABLE-REFERENCE-AST.
+(defun make-variable-reference-ast (variable-definition-ast)
+  (let ((result (make-instance 'ico:variable-reference-ast
+                  :variable-definition-ast variable-definition-ast)))
+    (reinitialize-instance variable-definition-ast
+      :variable-reference-asts
+      (append (ico:variable-reference-asts variable-definition-ast)
+              (list result)))
+    result))
+
 (defun add-binding-asts (variable-ast form-ast let*-ast)
   (reinitialize-instance let*-ast
     :binding-asts
