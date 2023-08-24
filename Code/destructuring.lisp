@@ -49,14 +49,6 @@
 ;;;
 ;;; The lambda list is represented as an Iconoclast AST.
 
-;;; Given a list of the remaining groups of a lambda list, return true
-;;; if and only the list is not empty, and the first group of the list
-;;; starts with LAMBDA-LIST-KEYWORD.
-(defun first-group-is (remaining lambda-list-keyword)
-  (and (not (null remaining))
-       (not (null (first remaining)))
-       (eq (first (first remaining)) lambda-list-keyword)))
-
 (defun not-enough-arguments-ast ()
   (application 'error (aquote 'too-few-arguments)))
 
