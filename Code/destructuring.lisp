@@ -81,9 +81,10 @@
 
 (defgeneric destructure-section (section-ast variable-ast let*-ast))
 
-(defmethod destructure-section ((section-ast null) variable-ast let*-ast)
-  (declare (ignore section-ast variable-ast let*-ast))
-  nil)
+(defmethod destructure-section
+    ((section-ast null) variable-definition-ast let*-ast)
+  (declare (ignore section-ast let*-ast))
+  variable-definition-ast)
 
 (defmethod destructure-section
     ((section-ast ico:required-section-ast) variable-ast let*-ast)
@@ -212,17 +213,28 @@
 ;;;
 ;;; DESTRUCTURE-LAMBDA-LIST
 
-(defun destructure-lambda-list (lambda-list-ast variable-ast let*-ast)
-  (destructure-section
-   (ico:required-section-ast lambda-list-ast) variable-ast let*-ast)
-  (destructure-section
-   (ico:optional-section-ast lambda-list-ast) variable-ast let*-ast)
-  (destructure-section
-   (ico:rest-section-ast lambda-list-ast) variable-ast let*-ast)
-  (destructure-section
-   (ico:key-section-ast lambda-list-ast) variable-ast let*-ast)
-  (destructure-section
-   (ico:aux-section-ast lambda-list-ast) variable-ast let*-ast))
+(defun destructure-lambda-list
+    (lambda-list-ast variable-definition-ast let*-ast)
+  (let ((new-variable-definition-ast variable-definition-ast))
+    (setq new-variable-definition-ast
+          (destructure-section
+           (ico:required-section-ast lambda-list-ast)
+           new-variable-definition-ast let*-ast))
+    (setq new-variable-definition-ast
+          (destructure-section
+           (ico:optional-section-ast lambda-list-ast)
+           new-variable-definition-ast let*-ast))
+    (setq new-variable-definition-ast
+          (destructure-section
+           (ico:rest-section-ast lambda-list-ast)
+           new-variable-definition-ast let*-ast))
+    (setq new-variable-definition-ast
+          (destructure-section
+           (ico:key-section-ast lambda-list-ast)
+           new-variable-definition-ast let*-ast))
+    (destructure-section
+     (ico:aux-section-ast lambda-list-ast)
+     new-variable-definition-ast let*-ast)))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
