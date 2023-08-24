@@ -150,33 +150,13 @@
     new-argument-list-ast))
 
 (defmethod destructure-section
-    ((section-ast ico:required-section-ast) variable-definition-ast let*-ast)
-  (let ((new-variable-definition-ast variable-definition-ast))
-    (loop for ast in (ico:parameter-asts section-ast)
-          for name-ast = (ico:name-ast ast)
-          for temp-ast = (make-instance 'ico:variable-definition-ast
-                           :name (gensym))
-          do (add-binding-asts
-              name-ast
-              (aif (application
-                    'null
-                    (make-variable-reference-ast
-                     new-variable-definition-ast))
-                   (not-enough-arguments-ast)
-                   (application
-                    'first
-                    (make-variable-reference-ast
-                     new-variable-definition-ast)))
-              let*-ast)
-             (add-binding-asts
-              temp-ast
-              (application
-               'rest
-               (make-variable-reference-ast
-                new-variable-definition-ast))
-              let*-ast)
-             (destructure-variable-or-pattern-ast
-              name-ast temp-ast let*-ast))))
+    ((section-ast ico:required-section-ast) argument-list-ast let*-ast)
+  (let ((new-argument-list-ast argument-list-ast))
+    (loop for parameter-ast in (ico:parameter-asts section-ast)
+          do (setf new-argument-list-ast
+                   (destructure-required-parameter
+                    parameter-ast new-argument-list-ast let*-ast)))
+    new-argument-list-ast))
 
 (defmethod destructure-section
     ((section-ast ico:optional-section-ast) variable-ast let*-ast)
