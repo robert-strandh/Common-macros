@@ -270,15 +270,43 @@
   (loop for key-parameter-ast in key-parameter-asts
         collect (ico:name (ico:keyword-ast key-parameter-ast))))
 
-(defmethod destructure-section
-    ((section-ast ico:key-section-ast) variable-ast let*-ast)
-  (let ((ignore-ast (make-temp-ast)))
+;;; Add bindings to LET*-AST that check that the
+;;; VARIABLE-DEFINITION-AST ARGUMENT-LIST-AST holds a list of even
+;;; length, and signal an error otherwise.
+(defun add-bindings-checking-even-length (argument-list-ast let*-ast)
+  (let ((reference-ast (make-variable-reference-ast argument-list-ast))
+        (ignore-ast (make-instance 'ico:variable-definition-ast
+                      :name (gensym))))
     (add-binding-asts
      ignore-ast
-     (aif (application 'oddp (application 'length variable-ast))
+     (aif (application 'oddp (application 'length reference-ast))
           (application 'error (aliteral 'odd-number-of-keyword-arguments))
           (aliteral 'nil))
-     let*-ast))
+     let*-ast)))
+
+;;; Add a binding that binds a fresh lexical variable to a Boolean
+;;; value that true if and only if either &ALLOW-OTHER-KEYS is in
+;;; SECTION-AST or :ALLOW-OTHER-KEYS is supplied with a true value.
+;;; Return the AST representing the definition of the fresh lexical
+;;; variable.
+(defun add-binding-for-allow-other-keys
+    (section-ast argument-list-ast let*-ast)
+  (let ((result-ast (make-instance 'ico:variable-definition-ast
+                      :name (gensym))))
+    (add-binding-asts
+     result-ast
+     (if (null (ico:allow-other-keys-ast section-ast))
+         (application
+          'getf
+          (aliteral ':allow-other-keys)
+          (make-variable-reference-ast argument-list-ast))
+         (aliteral 't))
+     let*-ast)
+    result-ast))
+
+(defmethod destructure-section
+    ((section-ast ico:key-section-ast) argument-list-ast let*-ast)
+  (add-bindings-checking-even-length argument-list-ast let*-ast)
   (unless (null (ico:allow-other-keys-ast section-ast))
     (let ((ignore-ast (make-temp-ast))
           (temp-ast (make-temp-ast)))
