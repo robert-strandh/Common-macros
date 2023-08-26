@@ -361,6 +361,12 @@
          (aliteral unique-default)))
        let*-ast))))
 
+;;; Add a binding for each &KEY parameter.
+(defun add-bindings-for-parameters (section-ast argument-list-ast let*-ast)
+  (loop for parameter-ast in (ico:parameter-asts section-ast)
+        do (add-binding-for-parameter
+            parameter-ast argument-list-ast let*-ast)))
+
 ;;; Add a binding that checks the validity of the supplied keywords.
 (defun add-binding-checking-keyword-validity
     (section-ast argument-list-ast let*-ast)
