@@ -87,8 +87,11 @@
 (defgeneric destructure-variable-or-pattern-ast (ast variable-ast let*-ast))
 
 (defmethod destructure-variable-or-pattern-ast
-    ((ast ico:variable-name-ast) variable-ast let*-ast)
-  (add-binding-asts ast variable-ast let*-ast))
+    ((ast ico:variable-name-ast) variable-definition-ast let*-ast)
+  (add-binding-asts
+   ast
+   (make-variable-reference-ast variable-definition-ast)
+   let*-ast))
 
 (defmethod destructure-variable-or-pattern-ast
     ((ast ico:pattern-ast) variable-ast let*-ast)
