@@ -300,6 +300,54 @@
      let*-ast)
     result-ast))
 
+;;; Add a binding for the parameter, and another binding for the
+;;; SUPPLIED-P parameter if it is present.
+(defun add-binding-for-parameter (parameter-ast argument-list-ast let*-ast)
+  (let ((temp-ast
+          (make-instance 'ico:variable-definition-ast :name (gensym)))
+        ;; This symbol is used to pass as the DEFAULT argument to GETF
+        ;; so that if the keyword is not present, this symbol will be
+        ;; returned from the call to GETF.
+        (unique-default (gensym)))
+    ;; First, we add a binding that initializes the TEMP variable to
+    ;; the unique default if the keyword is not present, and to the
+    ;; value of the keyword argument if it is present.
+    (add-binding-asts
+     temp-ast
+     (application
+      'getf
+      argument-list-ast
+      (ico:keyword-ast parameter-ast)
+      (aliteral unique-default))
+     let*-ast)
+    ;; Then, we add the binding to the parameter variable.  If the
+    ;; value of the TEMP variable is the unique default, then we bind
+    ;; the parameter variable to the value of the init-form of the
+    ;; parameter (or NIL if there is no init-form).  If the value of
+    ;; the TEMP variable is not the unique default, then it is the
+    ;; value to be used to bind to the parameter variable.
+    (add-binding-asts
+     (ico:name-ast parameter-ast)
+     (aif (application 'eq temp-ast (aliteral unique-default))
+          (if (null (ico:init-form-ast parameter-ast))
+              (aliteral 'nil)
+              (ico:init-form-ast parameter-ast))
+          (make-variable-reference-ast temp-ast))
+     let*-ast)
+    ;; Finally, if the parameter has a SUPPLIED-P parameter, then we
+    ;; initialize it to T if and only if the TEMP variable does not
+    ;; contain the unique default value.
+    (unless (null (ico:supplied-p-parameter-ast parameter-ast))
+      (add-binding-asts
+       (ico:supplied-p-parameter-ast parameter-ast)
+       (application
+        'not
+        (application
+         'eq
+         (make-variable-reference-ast temp-ast)
+         (aliteral unique-default)))
+       let*-ast))))
+
 (defmethod destructure-section
     ((section-ast ico:key-section-ast) argument-list-ast let*-ast)
   (add-bindings-checking-even-length argument-list-ast let*-ast)
