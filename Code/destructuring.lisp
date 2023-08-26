@@ -50,7 +50,7 @@
 ;;; The lambda list is represented as an Iconoclast AST.
 
 (defun not-enough-arguments-ast ()
-  (application 'error (aquote 'too-few-arguments)))
+  (application 'error (aliteral 'too-few-arguments)))
 
 ;;; Take a VARIABLE-DEFINITION-AST and create a VARIABLE-REFERENCE-AST
 ;;; that references the same variable, and link the two up.  Return
