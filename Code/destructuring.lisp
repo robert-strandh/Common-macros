@@ -285,22 +285,18 @@
      let*-ast)))
 
 ;;; Add a binding that binds a fresh lexical variable to a Boolean
-;;; value that true if and only if either &ALLOW-OTHER-KEYS is in
-;;; SECTION-AST or :ALLOW-OTHER-KEYS is supplied with a true value.
-;;; Return the AST representing the definition of the fresh lexical
-;;; variable.
-(defun add-binding-for-allow-other-keys
-    (section-ast argument-list-ast let*-ast)
+;;; value that true if and only if :ALLOW-OTHER-KEYS is supplied with
+;;; a true value.  Return the AST representing the definition of the
+;;; fresh lexical variable.
+(defun add-binding-for-allow-other-keys (argument-list-ast let*-ast)
   (let ((result-ast (make-instance 'ico:variable-definition-ast
                       :name (gensym))))
     (add-binding-asts
      result-ast
-     (if (null (ico:allow-other-keys-ast section-ast))
-         (application
-          'getf
-          (aliteral ':allow-other-keys)
-          (make-variable-reference-ast argument-list-ast))
-         (aliteral 't))
+     (application
+      'getf
+      (aliteral ':allow-other-keys)
+      (make-variable-reference-ast argument-list-ast))
      let*-ast)
     result-ast))
 
