@@ -367,9 +367,11 @@
         do (add-binding-for-parameter
             parameter-ast argument-list-ast let*-ast)))
 
-;;; Add a binding that checks the validity of the supplied keywords.
+;;; Add a binding that checks the validity of the supplied keywords
+;;; only if the value of the variable represented by
+;;; ALLOW-OTHER-KEYS-AST is false.
 (defun add-binding-checking-keyword-validity
-    (section-ast argument-list-ast let*-ast)
+    (section-ast argument-list-ast allow-other-keys-ast let*-ast)
   (let ((ignore-ast
           (make-instance 'ico:variable-definition-ast :name (gensym)))
         (temp-ast 
@@ -380,88 +382,47 @@
           (make-instance 'ico:tag-definition-ast :name 'again)))
     (add-binding-asts
      ignore-ast
-     (alet ((b temp-ast argument-list-ast))
-       (atagbody
-        again-ast
-        (aif (application 'null temp-ast)
-             (ago (make-tag-reference-ast out-ast))
-             (aliteral 'nil))
-        (aif (application
-                'not
-                (application
-                 'member
-                 (application
-                  'first
-                  (make-variable-reference-ast temp-ast))
-                 (aliteral (cons :allow-other-keys
-                                 (collect-keys section-ast)))))
-               (application 'error (aliteral 'invalid-keyword))
-               (aprogn (node* (:setq)
-                         (1 :name (make-variable-reference-ast temp-ast))
-                         (1 :value (application
-                                    'cddr
-                                    (make-variable-reference-ast temp-ast))))
-                       (ago (make-tag-reference-ast again-ast))))
-        out-ast))
+     (aif (application
+           'null
+           (make-variable-reference-ast allow-other-keys-ast))
+          (alet ((b temp-ast argument-list-ast))
+            (atagbody
+             again-ast
+             (aif (application 'null temp-ast)
+                  (ago (make-tag-reference-ast out-ast))
+                  (aliteral 'nil))
+             (aif (application
+                   'not
+                   (application
+                    'member
+                    (application
+                     'first
+                     (make-variable-reference-ast temp-ast))
+                    (aliteral (cons :allow-other-keys
+                                    (collect-keys section-ast)))))
+                  (application 'error (aliteral 'invalid-keyword))
+                  (aprogn (node* (:setq)
+                            (1 :name (make-variable-reference-ast temp-ast))
+                            (1 :value (application
+                                       'cddr
+                                       (make-variable-reference-ast temp-ast))))
+                          (ago (make-tag-reference-ast again-ast))))
+             out-ast))
+          (aliteral 'nil))
      let*-ast)))
 
 (defmethod destructure-section
     ((section-ast ico:key-section-ast) argument-list-ast let*-ast)
   (add-bindings-checking-even-length argument-list-ast let*-ast)
-  (unless (null (ico:allow-other-keys-ast section-ast))
-    (let ((ignore-ast (make-temp-ast))
-          (temp-ast (make-temp-ast)))
-      (add-binding-asts
-       ignore-ast
-       (alet ((b temp-ast variable-ast))
-         (atagbody
-          (atag 'again)
-          (aif (application 'null temp-ast)
-               (ago (atag 'out))
-               (aliteral 'nil))
-          (aif (application
-                'not
-                (application
-                 'member
-                 (application 'first temp-ast)
-                 (aliteral (cons :allow-other-keys
-                                 (collect-keys section-ast)))))
-               (application 'error (aliteral 'invalid-keyword))
-               (aprogn (node* (:setq)
-                         (1 :name temp-ast)
-                         (1 :value (application 'cddr temp-ast)))
-                       (ago (atag 'again))))
-          (atag 'out)))
+  (when (null (ico:allow-other-keys-ast section-ast))
+    (let ((allow-other-keys-variable-ast
+            (add-binding-for-allow-other-keys argument-list-ast let*-ast)))
+      (add-binding-checking-keyword-validity
+       section-ast
+       argument-list-ast
+       allow-other-keys-variable-ast
        let*-ast)))
-  (let ((unique-ast (application 'list (aliteral 'nil)))
-        (temp-ast-1 (make-temp-ast))
-        (temp-ast-2 (make-temp-ast)))
-    (add-binding-asts temp-ast-1 unique-ast let*-ast)
-    (loop for ast in (ico:parameter-asts section-ast)
-          for name-ast = (ico:name-ast ast)
-          for init-form-ast = (ico:init-form-ast ast)
-          for supplied-p-parameter-ast = (ico:supplied-p-parameter-ast ast)
-          for keyword-ast = (ico:keyword-ast ast)
-          do (add-binding-asts
-              temp-ast-2
-              (application 'getf variable-ast keyword-ast temp-ast-1)
-              let*-ast)
-             (unless (null supplied-p-parameter-ast)
-               (add-binding-asts
-                supplied-p-parameter-ast
-                (application
-                 'not
-                 (application 'eq temp-ast-2 temp-ast-1))
-                let*-ast))
-             (let ((temp-ast (make-temp-ast)))
-               (add-binding-asts
-                temp-ast
-                (aif (application 'eq temp-ast-1 temp-ast-2)
-                     init-form-ast
-                     temp-ast-2)
-                let*-ast)
-               (destructure-variable-or-pattern-ast
-                name-ast temp-ast let*-ast)))))
+  (add-bindings-for-parameters section-ast argument-list-ast let*-ast))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
