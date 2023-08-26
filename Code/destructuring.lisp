@@ -65,6 +65,19 @@
               (list result)))
     result))
 
+;;; Take a TAG-DEFINITION-AST and create a TAG-REFERENCE-AST that
+;;; references the same tag, and link the two up.  Return the newly
+;;; created TAG-REFERENCE-AST.
+(defun make-tag-reference-ast (tag-definition-ast)
+  (let ((result (make-instance 'ico:tag-reference-ast
+                  :name (ico:name tag-definition-ast)
+                  :tag-definition-ast tag-definition-ast)))
+    (reinitialize-instance tag-definition-ast
+      :tag-reference-asts
+      (append (ico:tag-reference-asts tag-definition-ast)
+              (list result)))
+    result))
+
 (defun add-binding-asts (variable-ast form-ast let*-ast)
   (reinitialize-instance let*-ast
     :binding-asts
@@ -347,6 +360,44 @@
          (make-variable-reference-ast temp-ast)
          (aliteral unique-default)))
        let*-ast))))
+
+;;; Add a binding that checks the validity of the supplied keywords.
+(defun add-binding-checking-keyword-validity
+    (section-ast argument-list-ast let*-ast)
+  (let ((ignore-ast
+          (make-instance 'ico:variable-definition-ast :name (gensym)))
+        (temp-ast 
+          (make-instance 'ico:variable-definition-ast :name (gensym)))
+        (out-ast
+          (make-instance 'ico:tag-definition-ast :name 'out))
+        (again-ast
+          (make-instance 'ico:tag-definition-ast :name 'again)))
+    (add-binding-asts
+     ignore-ast
+     (alet ((b temp-ast argument-list-ast))
+       (atagbody
+        again-ast
+        (aif (application 'null temp-ast)
+             (ago (make-tag-reference-ast out-ast))
+             (aliteral 'nil))
+        (aif (application
+                'not
+                (application
+                 'member
+                 (application
+                  'first
+                  (make-variable-reference-ast temp-ast))
+                 (aliteral (cons :allow-other-keys
+                                 (collect-keys section-ast)))))
+               (application 'error (aliteral 'invalid-keyword))
+               (aprogn (node* (:setq)
+                         (1 :name (make-variable-reference-ast temp-ast))
+                         (1 :value (application
+                                    'cddr
+                                    (make-variable-reference-ast temp-ast))))
+                       (ago (make-tag-reference-ast again-ast))))
+        out-ast))
+     let*-ast)))
 
 (defmethod destructure-section
     ((section-ast ico:key-section-ast) argument-list-ast let*-ast)
