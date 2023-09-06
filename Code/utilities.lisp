@@ -19,8 +19,7 @@
 (defgeneric expand (client ast environment))
 
 (defmethod expand :around (client ast environment)
-  (with-builder (ensure-builder)
-    (with-ast-origin ast (call-next-method))))
+  (with-ast-origin ast (call-next-method)))
 
 (defun extract-bindings (variable-clauses)
   (mapcar
