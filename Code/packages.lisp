@@ -68,5 +68,6 @@
    (#:cmd #:common-macro-definitions))
   (:export #:with-builder
            #:with-ast-origin
-           #:destructure-lambda-list))
+           #:destructure-lambda-list
+           #:expand))
 
