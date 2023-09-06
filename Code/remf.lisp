@@ -37,3 +37,30 @@
                         ;; We found a match.
                         (setf (cdr rest) (cdddr rest))
                         (return t)))))))))
+
+;; (defmethod expand (client (ast ico:remf-ast) environment)
+;;   (declare (ignore client))
+;;   (multiple-value-bind
+;;         (binding-asts store-variable-asts store-ast read-ast)
+;;       (expand-place-ast (ico:place-ast ast) environment)
+;;     (let ((indicator-value-variable (gensym))
+;;           (store-variable-ast (first store-variable-asts)))
+;;       (ablock 'nil
+;;         (alet* (binding-asts
+;;                 (b store-variable-ast read-ast)
+;;                 (b (make-variable-name-ast indicator-value-variable)
+;;                    (ico:indicator-ast ast)))
+;;           (awhen (application 'null store-ast)
+;;             (node* (:return) (1 :form (make-quote-ast 'nil))))
+;;           (awhen (application
+;;                   'eq
+;;                   (make-variable-name-ast indicator-value-variable)
+;;                   store-variable-ast)
+;;             (node* (:setq)
+;;               (1 :variable-name store-variable-ast)
+;;               (1 :value (appliacation 'cddr store-variable-ast)))
+;;             store-ast
+;;             (node* (:return) (1 :form (make-quote-ast 't))))
+          
+;;; Either we wait until we have a LOOP AST, or we write
+;;; this expansion so that it contains DO.
