@@ -50,7 +50,7 @@
 ;;; The lambda list is represented as an Iconoclast AST.
 
 (defun not-enough-arguments-ast ()
-  (application 'error (aliteral 'too-few-arguments)))
+  (application 'error (aliteral "too-few-arguments")))
 
 ;;; Take a VARIABLE-DEFINITION-AST and create a VARIABLE-REFERENCE-AST
 ;;; that references the same variable, and link the two up.  Return
@@ -296,7 +296,7 @@
     (add-binding-asts
      ignore-ast
      (aif (application 'oddp (application 'length reference-ast))
-          (application 'error (aliteral 'odd-number-of-keyword-arguments))
+          (application 'error (aliteral "odd-number-of-keyword-arguments"))
           (aliteral 'nil))
      let*-ast)))
 
@@ -403,7 +403,7 @@
                      (make-variable-reference-ast temp-ast))
                     (aliteral (cons :allow-other-keys
                                     (collect-keys section-ast)))))
-                  (application 'error (aliteral 'invalid-keyword))
+                  (application 'error (aliteral "invalid-keyword"))
                   (aprogn (node* (:setq)
                             (1 :name (make-variable-reference-ast temp-ast))
                             (1 :value (application
