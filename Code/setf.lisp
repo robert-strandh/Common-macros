@@ -3,6 +3,7 @@
 ;;; This macro should be rewritten when the s-expression-syntax
 ;;; library can handle SETF.
 
+;;; This definition is wrong because SETF can take no pairs.
 (defmacro cmd:setf
     (&whole form &environment env place new-value-form &rest more-pairs)
   (cond ((null more-pairs)
