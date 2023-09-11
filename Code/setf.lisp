@@ -3,27 +3,28 @@
 ;;; This macro should be rewritten when the s-expression-syntax
 ;;; library can handle SETF.
 
-;;; This definition is wrong because SETF can take no pairs.
 (defmacro cmd:setf
-    (&whole form &environment env place new-value-form &rest more-pairs)
-  (cond ((null more-pairs)
+    (&whole form &environment env &rest pairs)
+  (cond ((null pairs)
+         'nil)
+        ((null (rest pairs))
+         (error 'odd-number-of-arguments-to-setf :form form))
+        ((null (rest (rest pairs)))
          (multiple-value-bind (variables
                                values
                                store-variables
                                writer-form
                                reader-form)
-             (get-setf-expansion place env)
+             (get-setf-expansion (first pairs) env)
            (declare (ignore reader-form))
            `(let* ,(mapcar #'list variables values)
               ;; Optimize a bit when there is only one store variable.
               ,(if (= 1 (length store-variables))
-                   `(let ((,(first store-variables) ,new-value-form))
+                   `(let ((,(first store-variables) ,(second pairs)))
                       ,writer-form)
                    `(multiple-value-bind ,store-variables
-                        ,new-value-form
+                        ,(second pairs)
                       ,writer-form)))))
-        ((not (null (cdr more-pairs)))
-         `(progn (setf ,place ,new-value-form)
-                 (setf ,@more-pairs)))
         (t
-         (error 'odd-number-of-arguments-to-setf :form form))))
+         `(progn (setf ,(first pairs) ,(second pairs))
+                 (setf ,@(rest (rest pairs)))))))
