@@ -28,3 +28,14 @@
         (t
          `(progn (setf ,(first pairs) ,(second pairs))
                  (setf ,@(rest (rest pairs)))))))
+
+(defun expand-place-value-pair (client place-ast values-ast environment)
+  (declare (ignore client))
+  (multiple-value-bind (binding-asts store-variable-asts store-ast read-ast)
+      (expand-place-ast place-ast environment)
+    (alet* (binding-asts)
+      (node* (:multiple-value-bind)
+        (* :name store-variable-asts)
+        (1 :values values-ast)
+        (1 :form store-ast))
+      read-ast)))
