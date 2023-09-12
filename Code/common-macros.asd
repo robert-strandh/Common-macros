@@ -1,10 +1,12 @@
 (cl:in-package #:asdf-user)
 
 (defsystem #:common-macros
-  :depends-on (#:iconoclast-builder)
+  :depends-on (#:iconoclast-builder
+               #:trucler)
   :serial t
   :components
   ((:file "packages")
+   (:file "trucler-extra")
    (:file "utilities")
    (:file "destructuring")
    (:file "conditions")
