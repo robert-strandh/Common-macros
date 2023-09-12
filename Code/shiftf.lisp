@@ -35,14 +35,15 @@
 ;;;                     ...
 ;;;                     <storing-formn>))) ...))))
 
-(defmacro cmd:shiftf (&rest arguments)
+(defmacro cmd:shiftf (&environment environment &rest arguments)
   (let* ((places (butlast arguments))
          (new-value-form (first (last arguments)))
          (setf-expansions
            ;; Collect the SETF-EXPANSION of each place as a list of the
            ;; values returned by GET-SETF-EXPANSION. 
            (mapcar (lambda (place)
-                     (multiple-value-list (get-setf-expansion place)))
+                     (multiple-value-list
+                      (trucler:get-setf-expansion nil environment place)))
                    places)))
     (flet ((make-let*-bindings (temporary-variables value-forms)
              (mapcar #'list temporary-variables value-forms)))

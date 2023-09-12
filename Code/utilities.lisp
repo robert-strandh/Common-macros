@@ -82,7 +82,7 @@
 (defun expand-place-ast (place-ast environment)
   (multiple-value-bind
         (variables value-forms store-variables store-form read-form)
-      (get-setf-expansion (ico:place place-ast) environment)
+      (trucler:get-setf-expansion nil environment (ico:place place-ast))
     (values
      (loop for variable in variables
            for value-form in value-forms

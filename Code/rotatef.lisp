@@ -1,12 +1,13 @@
 (cl:in-package #:common-macros)
 
-(defmacro cmd:rotatef (&rest places)
+(defmacro cmd:rotatef (&environment environment &rest places)
   (let* ((setf-expansions
            ;; Collect the SETF-EXPANSION of each place as a list of the
            ;; values returned by GET-SETF-EXPANSION. 
            (loop for place in places
                  collect (multiple-value-list
-                          (get-setf-expansion place))))
+                          (trucler:get-setf-expansion
+                           nil environment place))))
          (result
            ;; We start by creating the body of the result, which
            ;; contains all the STORE-FORMs, storing the

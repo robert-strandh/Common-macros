@@ -15,7 +15,7 @@
                                store-variables
                                writer-form
                                reader-form)
-             (get-setf-expansion (first pairs) env)
+             (trucler:get-setf-expansion nil env (first pairs))
            (declare (ignore reader-form))
            `(let* ,(mapcar #'list variables values)
               ;; Optimize a bit when there is only one store variable.
