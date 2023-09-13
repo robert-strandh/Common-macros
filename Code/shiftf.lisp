@@ -43,7 +43,7 @@
            ;; values returned by GET-SETF-EXPANSION. 
            (mapcar (lambda (place)
                      (multiple-value-list
-                      (trucler:get-setf-expansion nil environment place)))
+                      (get-setf-expansion place environment)))
                    places)))
     (flet ((make-let*-bindings (temporary-variables value-forms)
              (mapcar #'list temporary-variables value-forms)))

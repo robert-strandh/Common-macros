@@ -10,7 +10,7 @@
 
 (defmacro cmd:remf (place indicator &environment environment)
   (multiple-value-bind (vars vals store-vars writer-form reader-form)
-      (trucler:get-setf-expansion nil environment place)
+      (get-setf-expansion place environment)
     (let ((indicator-value-variable (gensym))
           (store-var (car store-vars)))
       `(block nil
@@ -42,7 +42,7 @@
 ;;   (declare (ignore client))
 ;;   (multiple-value-bind
 ;;         (binding-asts store-variable-asts store-ast read-ast)
-;;       (expand-place-ast (ico:place-ast ast) environment)
+;;       (expand-place-ast client (ico:place-ast ast) environment)
 ;;     (let ((indicator-value-variable (gensym))
 ;;           (store-variable-ast (first store-variable-asts)))
 ;;       (ablock 'nil

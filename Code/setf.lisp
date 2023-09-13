@@ -15,7 +15,7 @@
                                store-variables
                                writer-form
                                reader-form)
-             (trucler:get-setf-expansion nil env (first pairs))
+             (get-setf-expansion (first pairs) env)
            (declare (ignore reader-form))
            `(let* ,(mapcar #'list variables values)
               ;; Optimize a bit when there is only one store variable.
@@ -30,9 +30,8 @@
                  (setf ,@(rest (rest pairs)))))))
 
 (defun expand-place-value-pair (client place-ast values-ast environment)
-  (declare (ignore client))
   (multiple-value-bind (binding-asts store-variable-asts store-ast read-ast)
-      (expand-place-ast place-ast environment)
+      (expand-place-ast client place-ast environment)
     (alet* (binding-asts)
       (node* (:multiple-value-bind)
         (* :name store-variable-asts)
