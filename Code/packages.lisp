@@ -60,6 +60,7 @@
 
 (defpackage #:common-macros
   (:use #:common-lisp)
+  (:shadow #:get-setf-expansion)
   (:local-nicknames
    (#:ico #:iconoclast)
    (#:bld #:iconoclast-builder)
@@ -69,5 +70,6 @@
   (:export #:with-builder
            #:with-ast-origin
            #:destructure-lambda-list
+           #:get-setf-expansion
            #:expand))
 
