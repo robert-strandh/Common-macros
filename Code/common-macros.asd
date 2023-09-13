@@ -7,6 +7,7 @@
   :components
   ((:file "packages")
    (:file "trucler-extra")
+   (:file "generic-functions")
    (:file "utilities")
    (:file "destructuring")
    (:file "conditions")
