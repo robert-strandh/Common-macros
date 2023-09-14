@@ -94,6 +94,37 @@
               :value-asts (list new-reference))
             place-ast)))
 
+(defmethod ast-setf-expansion
+    (client (place-ast ico:application-ast) environment)
+  (let* ((operator-ast (ico:function-name-ast place-ast))
+         (argument-asts (ico:argument-asts place-ast))
+         (temporary-definitions
+           (loop repeat (length argument-asts)
+                 collect (make-instance 'ico:variable-definition-ast
+                           :name (gensym))))
+         (temporary-references
+           (loop for definition in temporary-definitions
+                 collect (make-variable-reference-ast definition)))
+         (new-definition (make-instance 'ico:variable-definition-ast
+                           :name (gensym)))
+         (new-reference (make-variable-reference-ast new-definition)))
+    (values temporary-definitions
+            argument-asts
+            (list new-definition)
+            (make-instance 'ico:application-ast
+              :function-name-ast
+              (make-instance 'ico:global-function-name-reference-ast
+                :name 'funcall)
+              :argument-asts
+              (list*
+               (make-instance 'ico:global-function-name-reference-ast
+                 :name `(setf ,(ico:name operator-ast)))
+               new-reference
+               temporary-references))
+            (make-instance 'ico:application-ast
+              :function-name-ast operator-ast
+              :argument-asts temporary-references))))
+
 (defun expand-place-ast (client place-ast environment)
   (multiple-value-bind
         (variables value-forms store-variables store-form read-form)
