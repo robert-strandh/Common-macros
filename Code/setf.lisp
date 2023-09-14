@@ -1,14 +1,17 @@
 (cl:in-package #:common-macros)
 
 (defun expand-place-value-pair (client place-ast values-ast environment)
-  (multiple-value-bind (binding-asts store-variable-asts store-ast read-ast)
-      (expand-place-ast client place-ast environment)
-    (alet* (binding-asts)
-      (node* (:multiple-value-bind)
-        (* :name store-variable-asts)
-        (1 :values values-ast)
-        (1 :form store-ast))
-      read-ast)))
+  (multiple-value-bind
+        (temporary-asts form-asts store-variable-asts store-ast read-ast)
+      (ast-setf-expansion client place-ast environment)
+    (make-instance 'ico:let*-ast
+      :binding-asts
+      (mapcar #'make-let-binding-ast temporary-asts form-asts)
+      :form-asts
+      (make-instance 'ico:multiple-value-bind-ast
+        :values-ast values-ast
+        :variable-name-asts store-variable-asts
+        :form-asts (list store-ast read-ast)))))
 
 (defmethod expand (client (ast ico:setf-ast) environment)
   (node* (:progn)
