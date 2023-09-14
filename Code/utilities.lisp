@@ -79,6 +79,21 @@
                          ,form-variable
                          (list ,form-variable))))))))
 
+(defgeneric ast-setf-expansion (client place-ast environment))
+
+(defmethod ast-setf-expansion
+    (client (place-ast ico:variable-reference-ast) environment)
+  (let* ((new-definition (make-instance 'ico:variable-definition-ast
+                           :name (gensym)))
+         (new-reference (make-variable-reference-ast new-definition)))
+    (values '()
+            '()
+            (list new-definition)
+            (make-instance 'ico:setq-ast
+              :variable-name-asts (list place-ast)
+              :value-asts (list new-reference))
+            place-ast)))
+
 (defun expand-place-ast (client place-ast environment)
   (multiple-value-bind
         (variables value-forms store-variables store-form read-form)
