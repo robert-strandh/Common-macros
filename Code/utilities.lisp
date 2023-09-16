@@ -21,6 +21,8 @@
 (defmethod expand :around (client ast environment)
   (with-ast-origin ast (call-next-method)))
 
+(defgeneric unparse-expand (builder ast))
+
 (defun extract-bindings (variable-clauses)
   (mapcar
    (lambda (clause)
