@@ -8,10 +8,10 @@
       :binding-asts
       (mapcar #'make-let-binding-ast temporary-asts form-asts)
       :form-asts
-      (make-instance 'ico:multiple-value-bind-ast
-        :values-ast values-ast
-        :variable-name-asts store-variable-asts
-        :form-asts (list store-ast read-ast)))))
+      (list (make-instance 'ico:multiple-value-bind-ast
+              :values-ast values-ast
+              :variable-name-asts store-variable-asts
+              :form-asts (list store-ast read-ast))))))
 
 (defmethod expand (client (ast ico:setf-ast) environment)
   (node* (:progn)
