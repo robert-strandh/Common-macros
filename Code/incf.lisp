@@ -4,7 +4,6 @@
   (multiple-value-bind
         (temporary-asts form-asts store-variable-asts store-ast read-ast)
       (ast-setf-expansion client (ico:place-ast ast) environment)
-    (declare (ignore read-ast))
     (let ((delta-ast (if (null (ico:delta-ast ast))
                          (make-instance 'ico:literal-ast :literal '1)
                          (ico:delta-ast ast))))
@@ -16,6 +15,5 @@
                 :binding-asts
                 (list (make-let-binding-ast
                        (first store-variable-asts)
-                       delta-ast))
+                       (application '+ read-ast delta-ast)))
                 :form-asts (list store-ast)))))))
-
