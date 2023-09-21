@@ -12,9 +12,9 @@
         (cons (make-let-binding-ast item-definition (ico:item-ast ast))
               (mapcar #'make-let-binding-ast temporary-asts form-asts))
         :form-asts
-        (make-instance 'ico:let-ast
-          :binding-asts
-          (list (make-let-binding-ast
-                 (first store-variable-asts)
-                 (application 'cons item-reference read-ast)))
-          :form-asts (list store-ast))))))
+        (list (make-instance 'ico:let-ast
+                :binding-asts
+                (list (make-let-binding-ast
+                       (first store-variable-asts)
+                       (application 'cons item-reference read-ast)))
+                :form-asts (list store-ast)))))))
