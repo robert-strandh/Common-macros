@@ -2,15 +2,15 @@
 
 (defmethod expand (client (ast ico:pop-ast) environment)
   (multiple-value-bind
-        (binding-asts store-variable-asts store-ast read-ast)
-      (expand-place-ast client (ico:place-ast ast) environment)
-    (alet* (binding-asts
-            (b (first store-variable-asts) read-ast))
-      (node* (:prog1)
-        (1 :first (first store-variable-asts))
-        (1 :form
-           (node* (:setq)
-             (1 :name (first store-variable-asts))
-             (1 :value
-                (application 'cdr (first store-variable-asts)))))
-        (1 :form store-ast)))))
+        (temporary-asts form-asts store-variable-asts store-ast read-ast)
+      (ast-setf-expansion client (ico:place-ast ast) environment)
+    (make-instance 'ico:let-ast
+      :binding-asts
+      (mapcar #'make-let-binding-ast temporary-asts form-asts)
+      :form-asts
+      (list (make-instance 'ico:let-ast
+              :binding-asts
+              (list (make-let-binding-ast
+                     (first store-variable-asts)
+                     (application 'cdr read-ast)))
+              :form-asts (list store-ast read-ast))))))
