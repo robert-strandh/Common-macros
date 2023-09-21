@@ -127,30 +127,6 @@
               :function-name-ast operator-ast
               :argument-asts temporary-references))))
 
-(defun expand-place-ast (client place-ast environment)
-  (multiple-value-bind
-        (variables value-forms store-variables store-form read-form)
-      (trucler:get-setf-expansion client environment place-ast)
-    (values
-     (loop for variable in variables
-           for value-form in value-forms
-           for variable-name-ast
-             = (node* (:variable-name :name variable))
-           for value-ast
-             = (node* (:unparsed
-                       :context :form
-                       :expression value-form))
-           collect (make-let-binding-ast variable-name-ast value-ast))
-     (loop for store-variable in store-variables
-           collect
-           (node* (:variable-name :name store-variable)))
-     (node* (:unparsed
-             :context :form
-             :expression store-form))
-     (node* (:unparsed
-             :context :form
-             :expression read-form)))))
-
 (defun alet-or-alet* (which-one binding-ast-forms body-ast-forms)
   `(flet ((b (x y)
             (make-let-binding-ast x y)))
