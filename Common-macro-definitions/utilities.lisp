@@ -39,3 +39,6 @@
                 `(,(first place) ,@temporaries)))))
 
 (defparameter *client* nil)
+
+(defun proper-list-p (object)
+  (numberp (ignore-errors (list-length object))))
