@@ -1,1 +1,10 @@
 (cl:in-package #:common-macro-definitions)
+
+(defmacro push (&environment environment item place)
+  (multiple-value-bind (vars vals store-vars writer-form reader-form)
+      (get-setf-expansion place environment)
+    (let ((item-var (gensym)))
+      `(let* ((,item-var ,item)
+              ,@(mapcar #'list vars vals)
+              (,(car store-vars) (cons ,item-var ,reader-form)))
+         ,writer-form))))
