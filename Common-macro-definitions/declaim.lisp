@@ -1,8 +1,8 @@
 (cl:in-package #:common-macro-definitions)
 
-(defgeneric proclaim (declaration-specifier))
+(defgeneric proclaim (declaration-specifier environment))
 
-(defmacro declaim (declaration-specifiers)
+(defmacro declaim (&environment environment declaration-specifiers)
   `(eval-when (:compile-toplevel :load-toplevel :execute)
      ,@(loop for declaration-specifier in declaration-specifiers
-             collect (proclaim declaration-specifier))))
+             collect (proclaim declaration-specifier environment))))
