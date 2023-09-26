@@ -10,4 +10,5 @@
    #:defmacro
    #:get-setf-expansion
    #:wrap-in-method-lambda
-   #:wrap-in-ensure-method))
+   #:wrap-in-ensure-method
+   #:defun-compile-time-action))
