@@ -52,6 +52,8 @@
    (:file "psetq")
    (:file "restart-case")
    (:file "typecase")
+   (:file "etypecase")
+   (:file "ctypecase")
    (:file "with-accessors")
    (:file "with-input-from-string")
    (:file "with-open-file")
