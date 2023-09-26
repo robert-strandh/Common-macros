@@ -11,4 +11,6 @@
    #:get-setf-expansion
    #:wrap-in-method-lambda
    #:wrap-in-ensure-method
-   #:defun-compile-time-action))
+   #:defun-compile-time-action
+   #:defclass-compile-time-action
+   #:ensure-class))
