@@ -5,7 +5,8 @@
   (:shadow #:macroexpand-1
            #:defmacro
            #:get-setf-expansion
-           #:ensure-generic-function)
+           #:ensure-generic-function
+           #:proclaim)
   (:export
    #:macroexpand-1
    #:defmacro
@@ -16,4 +17,5 @@
    #:defclass-compile-time-action
    #:ensure-class
    #:defgeneric-compile-time-action
-   #:ensure-generic-function))
+   #:ensure-generic-function
+   #:proclaim))
