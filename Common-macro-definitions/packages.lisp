@@ -8,4 +8,6 @@
   (:export
    #:macroexpand-1
    #:defmacro
-   #:gets-setf-expansion))
+   #:get-setf-expansion
+   #:wrap-in-method-lambda
+   #:wrap-in-ensure-method))
