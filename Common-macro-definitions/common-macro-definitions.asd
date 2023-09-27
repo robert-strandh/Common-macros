@@ -44,6 +44,7 @@
    (:file "ignore-errors")
    (:file "in-package")
    (:file "check-type")
+   (:file "iteration-support")
    (:file "dolist")
    (:file "dotimes")
    (:file "do")
