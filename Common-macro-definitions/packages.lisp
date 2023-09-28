@@ -8,6 +8,7 @@
            #:ensure-generic-function
            #:proclaim)
   (:export
+   #:*client*
    #:macroexpand-1
    #:defmacro
    #:get-setf-expansion
