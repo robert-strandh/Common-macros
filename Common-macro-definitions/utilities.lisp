@@ -3,6 +3,9 @@
 (defparameter *operator-table*
   (make-hash-table :test #'eq))
 
+(defun macro-function-exists-p (operator)
+  (nth-value 1 (gethash operator *operator-table*)))
+
 (defun transform-name (name)
   (let ((result (gethash name *operator-table*)))
     (when (null result)
@@ -15,8 +18,7 @@
 
 (defun macroexpand-1 (form &optional environment)
   (cl:macroexpand-1 (cons (gethash (first form) *operator-table*)
-                          (rest form))
-                    environment))
+                          (rest form))))
 
 (defun get-setf-expansion (place &optional environment)
   (declare (ignore environment))
