@@ -18,4 +18,5 @@
    #:ensure-class
    #:defgeneric-compile-time-action
    #:ensure-generic-function
-   #:proclaim))
+   #:proclaim
+   #:macro-function-exists-p))
