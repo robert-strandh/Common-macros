@@ -9,7 +9,7 @@
       (separate-function-body body)
     `(progn
        (eval-when (:compile-toplevel)
-         ,(defun-compile-time-action name lambda-list environment))
+         ,(defun-compile-time-action *client* name lambda-list environment))
        (eval-when (:load-toplevel :execute)
          (setf (fdefinition ',name)
                (lambda ,lambda-list
