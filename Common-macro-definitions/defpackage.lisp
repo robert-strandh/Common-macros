@@ -162,9 +162,7 @@
 (defun make-shadow (options package-var)
   `(shadow
     (list ,@(loop for symbol-name in (group-options :shadow options)
-                  collect `(make-instance 'symbol
-                             :name ,(string symbol-name)
-                             :package ,package-var)))
+                  collect `(intern ,(string symbol-name) ,package-var)))
     ,package-var))
 
 (defun make-use (options package-var)
@@ -192,10 +190,8 @@
        (let* ((,package-var (find-package ,(string name)))
               (,package-var
                 (if (null ,package-var)
-                    (make-instance 'package
-                      :name ,(string name)
-                      :nicknames ',(gather-nicknames options)
-                      :local-nicknames ',(gather-local-nicknames options))
+                    (make-package ,(string name)
+                      :nicknames ',(gather-nicknames options))
                     ,package-var)))
          (setf (find-package ',(string name))
                ,package-var)
