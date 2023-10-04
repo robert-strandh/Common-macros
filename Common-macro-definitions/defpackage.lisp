@@ -172,10 +172,8 @@
     ,package-var))
 
 (defun make-intern (options package-var)
-  `(intern
-    (list ,@(loop for name in (group-options :intern options)
-                  collect (string name)))
-    ,package-var))
+  (loop for name in (group-options :intern options)
+        collect `(intern ,(string name) ,package-var)))
 
 (defun make-export (options package-var)
   `(export
@@ -199,7 +197,7 @@
          ,(make-shadow options package-var)
          ,(make-use options package-var)
          ,@(make-imports options package-var)
-         ,(make-intern options package-var)
+         ,@(make-intern options package-var)
          ,(make-export options package-var)))))
 
 (defmacro defpackage (name &rest options)
