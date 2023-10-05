@@ -178,8 +178,8 @@
 
 (defun make-export (options package-var)
   `(export
-    ,(loop for name in (group-options :export options)
-           collect `(find-symbol ,(string name) ,package-var))
+    (list ,@(loop for name in (group-options :export options)
+                  collect `(find-symbol ,(string name) ,package-var)))
     ,package-var))
 
 (defun defpackage-expander (name options)
