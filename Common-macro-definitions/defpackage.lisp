@@ -172,7 +172,8 @@
     ,package-var))
 
 (defun make-intern (options package-var)
-  (loop for name in (group-options :intern options)
+  (loop for name in (append (group-options :intern options)
+                            (group-options :export options))
         collect `(intern ,(string name) ,package-var)))
 
 (defun make-export (options package-var)
