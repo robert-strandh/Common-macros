@@ -177,7 +177,7 @@
 
 (defun make-export (options package-var)
   `(export
-    (list ,@(loop for name in (group-options :use options)
+    (list ,@(loop for name in (group-options :export options)
                   collect `(find-symbol ,(string name) ,package-var)))
     ,package-var))
 
