@@ -17,6 +17,7 @@
   `(cl:defmacro ,(transform-name name) ,lambda-list ,@body))
 
 (defun macroexpand-1 (form &optional environment)
+  (declare (ignore environment))
   (cl:macroexpand-1 (cons (gethash (first form) *operator-table*)
                           (rest form))))
 
@@ -44,6 +45,16 @@
 
 (defun proper-list-p (object)
   (numberp (ignore-errors (list-length object))))
+
+(defun circular-list-p (object)
+  (and (consp object)
+       (equal (multiple-value-list (ignore-errors (list-length object)))
+              '(nil))))
+
+(defun dotted-list-p (object)
+  (and (consp object)
+       (not (proper-list-p object))
+       (not (circular-list-p object))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
