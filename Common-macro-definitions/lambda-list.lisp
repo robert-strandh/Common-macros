@@ -205,19 +205,18 @@
 ;;; by replacing var or (var) by (var nil)
 (defun canonicalize-nontrivial-optional (optional default)
   (if (consp optional)
-      (multiple-value-bind (length structure)
-          (list-structure optional)
-        (unless (and (eq structure :proper)
-                     (<= 1 length 3)
+      (progn
+        (unless (and (proper-list-p optional)
+                     (<= 1 (length optional) 3)
                      (symbolp (car optional))
                      (not (constantp (car optional)))
-                     (or (< length 3)
+                     (or (< (length optional) 3)
                          (symbolp (caddr optional))
                          (not (constantp (caddr optional)))))
           (error 'malformed-ordinary-optional
                  :code optional))
         `(,(car optional)
-          ,(if (> length 1) (cadr optional) default)
+          ,(if (> (length optional) 1) (cadr optional) default)
           . ,(cddr optional)))
       (progn
         (unless (and (symbolp optional)
@@ -262,10 +261,9 @@
 ;;; ((:var var) init-form supplied-p-parameter).
 (defun canonicalize-nontrivial-key (key default)
   (if (consp key)
-      (multiple-value-bind (length structure)
-          (list-structure key)
-        (unless (and (eq structure :proper)
-                     (<= 1 length 3)
+      (progn 
+        (unless (and (proper-list-p key)
+                     (<= 1 (length key) 3)
                      (or (and (symbolp (car key))
                               (not (constantp (car key))))
                          (and (consp (car key))
@@ -274,7 +272,7 @@
                               (symbolp (cadar key))
                               (not (constantp (cadar key)))
                               (null (cddar key))))
-                     (or (< length 3)
+                     (or (< (length key) 3)
                          (symbolp (caddr key))
                          (not (constantp (caddr key)))))
           (error 'malformed-ordinary-key
@@ -282,7 +280,7 @@
         `(,(if (symbolp (car key))
                `(,(intern (symbol-name (car key)) :keyword) ,(car key))
                (car key))
-          ,(if (> length 1) (cadr key) default)
+          ,(if (> (length key) 1) (cadr key) default)
           . ,(cddr key)))
       (progn
         (unless (and (symbolp key)
