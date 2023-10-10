@@ -238,7 +238,7 @@
            :code parameter))
   parameter)
 
-;;; Canonicalize an ordinary &key item.
+;;; Canonicalize an ordinary &KEY item.
 ;;; We canonicalize it a bit, so that instead of having the original
 ;;; 7 different possible forms:
 ;;;
@@ -295,7 +295,7 @@
 (defun canonicalize-deftype-key (key)
   (canonicalize-nontrivial-key key '*))
 
-;;; Canonicalize a defgeneric &optional item.
+;;; Canonicalize a defgeneric &OPTIONAL item.
 ;;; We canonicalize it, so that instead of having the original
 ;;; 2 different possible forms:
 ;;;
@@ -323,7 +323,7 @@
                  :code optional))
         optional)))
 
-;;; Canonicalize a defgeneric &key item.
+;;; Canonicalize a defgeneric &KEY item.
 ;;; We canonicalize it, so that instead of having the original
 ;;; 3 different possible forms:
 ;;;
@@ -425,7 +425,7 @@
         (t
          (error "&REST or &BODY parameter must be a variable or a CONS."))))
 
-;;; Canonicalize an &aux item.
+;;; Canonicalize an &AUX item.
 ;;; We canonicalize it, so that instead of having the original
 ;;; 3 different possible forms:
 ;;;
