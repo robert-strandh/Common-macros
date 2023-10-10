@@ -6,6 +6,7 @@
   ((:file "packages")
    (:file "conditions")
    (:file "utilities")
+   (:file "lambda-list")
    (:file "when")
    (:file "unless")
    (:file "and")
