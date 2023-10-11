@@ -187,7 +187,7 @@
   (unless (and (symbolp parameter)
                (not (constantp parameter)))
     (error 'required-must-be-variable
-           :code parameter))
+           :required-parameter parameter))
   parameter)
 
 ;;; Canonicalize an ordinary &optional item.
