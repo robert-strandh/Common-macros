@@ -180,8 +180,9 @@
                     (arity (arity feature)))
                (unless (or (eq arity '*)
                            (= arity (length (rest group))))
-                 (error "Incorrect arity for lambda-list keyword ~s"
-                        first))))))
+                 (error 'incorrect-arity-lambda-list-keyword
+                        :incorrect-arity-keyword first
+                        :incorrect-arity (length (rest group))))))))
 
 (defun canonicalize-ordinary-required (parameter)
   (unless (and (symbolp parameter)
