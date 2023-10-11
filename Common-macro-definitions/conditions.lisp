@@ -540,3 +540,13 @@
                      "A malformed defgeneric key parameter was found:~@
                       ~s"
                      (defgeneric-key condition)))))
+
+(define-condition malformed-specialized-required (program-error)
+  ((%specialized-required
+    :initarg :specialized-required
+    :reader specialized-required))
+  (:report (lambda (condition stream)
+             (format stream
+                     "A malformed specialized required parameter was found:~@
+                      ~s"
+                     (specialized-required condition)))))
