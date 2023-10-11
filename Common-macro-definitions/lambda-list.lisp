@@ -317,13 +317,13 @@
                      (symbolp (car optional))
                      (not (constantp (car optional))))
           (error 'malformed-defgeneric-optional
-                 :code optional))
+                 :defgeneric-optional optional))
         (car optional))
       (progn
         (unless (and (symbolp optional)
                      (not (constantp optional)))
           (error 'malformed-defgeneric-optional
-                 :code optional))
+                 :defgeneric-optional optional))
         optional)))
 
 ;;; Canonicalize a defgeneric &KEY item.
