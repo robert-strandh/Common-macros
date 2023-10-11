@@ -454,3 +454,17 @@
                       must be a variable, but the following was found:~@
                       ~s"
                      (required-parameter condition)))))
+
+(define-condition incorrect-arity-lambda-list-keyword (program-error)
+  ((%incorrect-arity-keyword
+    :initarg :incorrect-arity-keyword
+    :reader incorrect-arity-keyword)
+   (%incorrect-arity
+    :initarg :incorrect-arity
+    :reader incorrect-arity))
+  (:report (lambda (condition stream)
+             (format stream
+                     "The lambda-list keyword: ~s~@
+                      occurs ~a times."
+                     (incorrect-arity-keyword condition)
+                     (incorrect-arity condition)))))
