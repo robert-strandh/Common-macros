@@ -530,3 +530,13 @@
                      "A malformed defgeneric optional parameter was found:~@
                       ~s"
                      (defgeneric-optional condition)))))
+
+(define-condition malformed-defgeneric-key (program-error)
+  ((%defgeneric-key
+    :initarg :defgeneric-key
+    :reader defgeneric-key))
+  (:report (lambda (condition stream)
+             (format stream
+                     "A malformed defgeneric key parameter was found:~@
+                      ~s"
+                     (defgeneric-key condition)))))
