@@ -402,7 +402,7 @@
   (unless (and (symbolp parameter)
                (not (constantp parameter)))
     (error 'environment-must-be-followed-by-variable
-           :code parameter))
+           :environment parameter))
   parameter)
 
 (defun canonicalize-whole (parameter)
