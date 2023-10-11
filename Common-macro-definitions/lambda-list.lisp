@@ -217,7 +217,7 @@
                          (symbolp (caddr optional))
                          (not (constantp (caddr optional)))))
           (error 'malformed-ordinary-optional
-                 :code optional))
+                 :ordinary-optional optional))
         `(,(car optional)
           ,(if (> (length optional) 1) (cadr optional) default)
           . ,(cddr optional)))
