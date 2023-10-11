@@ -512,3 +512,21 @@
                      "A malformed ordinary key parameter was found:~@
                       ~s"
                      (ordinary-key condition)))))
+
+;;; This condition is used to indicate that there is a malformed item
+;;; following the &optional lambda-list keyword in a defgeneric lambda
+;;; list.  This lambda list allows the following form for such an item:
+;;;
+;;;   * var
+;;;   * (var)
+;;;
+;;; where var is a symbol that is not a name of a constant.
+(define-condition malformed-defgeneric-optional (program-error)
+  ((%defgeneric-optional
+    :initarg :defgeneric-optional
+    :reader defgeneric-optional))
+  (:report (lambda (condition stream)
+             (format stream
+                     "A malformed defgeneric optional parameter was found:~@
+                      ~s"
+                     (defgeneric-optional condition)))))
