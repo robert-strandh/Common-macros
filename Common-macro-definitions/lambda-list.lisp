@@ -409,7 +409,7 @@
   (unless (and (symbolp parameter)
                (not (constantp parameter)))
     (error 'whole-must-be-followed-by-variable
-           :code parameter))
+           :whole parameter))
   parameter)
 
 (defun canonicalize-destructuring-required (parameter)
