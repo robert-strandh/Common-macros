@@ -550,3 +550,13 @@
                      "A malformed specialized required parameter was found:~@
                       ~s"
                      (specialized-required condition)))))
+
+(define-condition environment-must-be-followed-by-variable (program-error)
+  ((%environment
+    :initarg :environment
+    :reader environment))
+  (:report (lambda (condition stream)
+             (format stream
+                     "&ENVIRONMENT must be followed by a variable,~@
+                      but the following was found instead: ~s"
+                     (environment condition)))))
