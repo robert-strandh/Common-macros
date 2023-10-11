@@ -492,3 +492,13 @@
                      "A malformed ordinary optional parameter was found:~@
                       ~s"
                      (ordinary-optional condition)))))
+
+(define-condition rest/body-must-be-followed-by-variable (program-error)
+  ((%rest/body
+    :initarg :rest/body
+    :reader rest/body))
+  (:report (lambda (condition stream)
+             (format stream
+                     "&REST or &BODY must be followed by a variable,~@
+                      but the following was found instead: ~s"
+                     (rest/body condition)))))
