@@ -560,3 +560,13 @@
                      "&ENVIRONMENT must be followed by a variable,~@
                       but the following was found instead: ~s"
                      (environment condition)))))
+
+(define-condition whole-must-be-followed-by-variable (program-error)
+  ((%whole
+    :initarg :whole
+    :reader whole))
+  (:report (lambda (condition stream)
+             (format stream
+                     "&WHOLE must be followed by a variable,~@
+                      but the following was found instead: ~s"
+                     (whole condition)))))
