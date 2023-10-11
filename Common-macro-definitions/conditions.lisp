@@ -502,3 +502,13 @@
                      "&REST or &BODY must be followed by a variable,~@
                       but the following was found instead: ~s"
                      (rest/body condition)))))
+
+(define-condition malformed-ordinary-key (program-error)
+  ((%ordinary-key
+    :initarg :ordinary-key
+    :reader ordinary-key))
+  (:report (lambda (condition stream)
+             (format stream
+                     "A malformed ordinary key parameter was found:~@
+                      ~s"
+                     (ordinary-key condition)))))
