@@ -389,13 +389,13 @@
                                        (null (cddadr required))
                                        (eq (caadr required) 'eql))))))
           (error 'malformed-specialized-required
-                 :code required))
+                 :specialized-required required))
         `(,(car required) ,(if (null (cdr required)) t (cadr required))))
       (progn
         (unless (and (symbolp required)
                      (not (constantp required)))
           (error 'malformed-specialized-required
-                 :code required))
+                 :specialized-required required))
         `(,required t))))
 
 (defun canonicalize-environment (parameter)
