@@ -427,3 +427,17 @@
                      "Illegal lambda-list keyword:~@
                       ~s was found."
                      (illegal-lambda-list-keyword condition)))))
+
+(define-condition multiple-lambda-list-keyword (program-error)
+  ((%multiple-lambda-list-keyword
+    :initarg :multiple-lambda-list-keyword
+    :reader multiple-lambda-list-keyword)
+   (%number-of-occurrences
+    :initarg :number-of-occurrences
+    :reader number-of-occurrences))
+  (:report (lambda (condition stream)
+             (format stream
+                     "The lambda-list keyword: ~s~@
+                      occurs ~a times."
+                     (multiple-lambda-list-keyword condition)
+                     (number-of-occurrences condition)))))
