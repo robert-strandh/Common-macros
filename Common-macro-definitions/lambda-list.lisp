@@ -157,8 +157,9 @@
     (loop for (keyword . count) in occurrences
           for feature = (find-feature keyword)
           unless (= count (occurrence-count feature))
-            do (error "Lambda-list keyword ~s occurs ~s times"
-                      keyword count))))
+            do (error 'multiple-lambda-list-keyword
+                      :multiple-lambda-list-keyword keyword
+                      :number-of-occurrences count))))
 
 (defun check-order (keywords)
   (let ((orders (loop for keyword in keywords
