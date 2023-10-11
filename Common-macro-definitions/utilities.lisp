@@ -43,6 +43,12 @@
 
 (defparameter *client* nil)
 
+;;; If LIST-LENGTH is given a proper list, then it returns the length
+;;; of that list, which is a number.  If LIST-LENGTH is given a
+;;; circular list, it returns NIL which is not a number.  If
+;;; LIST-LENGTH is given anything other than a proper list or a
+;;; circular list, it signals an error, so then IGNORE-ERRORS returns
+;;; NIL as its first value, which again is not a number.
 (defun proper-list-p (object)
   (numberp (ignore-errors (list-length object))))
 
