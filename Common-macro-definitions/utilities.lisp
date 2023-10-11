@@ -75,16 +75,13 @@
        (not (proper-list-p object))
        (not (circular-list-p object))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;
-;;; Separate an ordinary body such as a let or let* body that may
+;;; Separate an ordinary body such as a LET or LET* body that may
 ;;; contain declarations (but no documentation) into the declarations
 ;;; and the executable forms.
 ;;;
 ;;; If there are declarations after the first executable form (which
 ;;; is a syntax error), then those declarations will be considered
 ;;; part of the executable forms.
-
 (defun separate-ordinary-body (body)
   (let ((pos (position-if-not (lambda (item)
                                 (and (consp item)
@@ -94,9 +91,7 @@
         (values body '())
         (values (subseq body 0 pos) (subseq body pos)))))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;;
-;;; Separate a body such as a defun, flet, or lables that may contain
+;;; Separate a body such as a DEFUN, FLET, or LABLES that may contain
 ;;; both declarations and a documentation string into the
 ;;; declarations, the documentation, and the executable forms.
 ;;;
@@ -105,7 +100,6 @@
 ;;; symbol DECLARE.  The second value is a the documentation as a
 ;;; string, or NIL if no documentation was found.  The last value is a
 ;;; list of forms.
-
 (defun separate-function-body (body)
   (let ((declarations '())
         (documentation nil)
