@@ -141,7 +141,7 @@
 (defun check-allowed (keyword canonicalizers)
   (unless (member keyword canonicalizers :test #'eq :key #'car)
     (error 'illegal-lambda-list-keyword
-           :illegal-lambda-list-keyword keyword)))
+           :illegal-keyword keyword)))
 
 (defun check-all-allowed (keywords canonicalizers)
   (loop for keyword in keywords

@@ -419,14 +419,14 @@
                      (slot-list condition)))))
 
 (define-condition illegal-lambda-list-keyword (program-error)
-  ((%illegal-lambda-list-keyword
-    :initarg :illegal-lambda-list-keyword
-    :reader illegal-lambda-list-keyword))
+  ((%illegal-keyword
+    :initarg :illegal-keyword
+    :reader illegal-keyword))
   (:report (lambda (condition stream)
              (format stream
                      "Illegal lambda-list keyword:~@
                       ~s was found."
-                     (illegal-lambda-list-keyword condition)))))
+                     (illegal-keyword condition)))))
 
 (define-condition multiple-lambda-list-keyword (program-error)
   ((%multiple-lambda-list-keyword
