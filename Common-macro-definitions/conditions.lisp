@@ -441,3 +441,16 @@
                       occurs ~a times."
                      (multiple-lambda-list-keyword condition)
                      (number-of-occurrences condition)))))
+
+;;; This condition is used to indicate that in a (non destructuring)
+;;; lambda list, the required parameter must be a variable
+(define-condition required-must-be-variable (program-error)
+  ((%required-parameter
+    :initarg :required-parameter
+    :reader required-parameter))
+  (:report (lambda (condition stream)
+             (format stream
+                     "A required parameter in this kind of lambda list~@
+                      must be a variable, but the following was found:~@
+                      ~s"
+                     (required-parameter condition)))))
