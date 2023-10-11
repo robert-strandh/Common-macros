@@ -417,3 +417,13 @@
                       slot specs, but~@
                       ~s was found."
                      (slot-list condition)))))
+
+(define-condition illegal-lambda-list-keyword (program-error)
+  ((%illegal-lambda-list-keyword
+    :initarg :illegal-lambda-list-keyword
+    :reader illegal-lambda-list-keyword))
+  (:report (lambda (condition stream)
+             (format stream
+                     "Illegal lambda-list keyword:~@
+                      ~s was found."
+                     (illegal-lambda-list-keyword condition)))))
