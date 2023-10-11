@@ -1,6 +1,7 @@
 (cl:in-package #:asdf-user)
 
 (defsystem "common-macro-definitions"
+  :depends-on ("ecclesia")
   :serial t
   :components
   ((:file "packages")
