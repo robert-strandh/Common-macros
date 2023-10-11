@@ -279,7 +279,7 @@
                          (symbolp (caddr key))
                          (not (constantp (caddr key)))))
           (error 'malformed-ordinary-key
-                 :code key))
+                 :ordinary-key key))
         `(,(if (symbolp (car key))
                `(,(intern (symbol-name (car key)) :keyword) ,(car key))
                (car key))
@@ -289,7 +289,7 @@
         (unless (and (symbolp key)
                      (not (constantp key)))
           (error 'malformed-ordinary-key
-                 :code key))
+                 :ordinary-key key))
         `((,(intern (symbol-name key) :keyword) ,key) ,default))))
 
 (defun canonicalize-ordinary-key (key)
