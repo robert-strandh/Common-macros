@@ -158,7 +158,7 @@
           for feature = (find-feature keyword)
           unless (= count (occurrence-count feature))
             do (error 'multiple-lambda-list-keyword
-                      :multiple-lambda-list-keyword keyword
+                      :multiple-keyword keyword
                       :number-of-occurrences count))))
 
 (defun check-order (keywords)

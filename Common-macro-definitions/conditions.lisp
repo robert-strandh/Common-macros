@@ -429,9 +429,9 @@
                      (illegal-keyword condition)))))
 
 (define-condition multiple-lambda-list-keyword (program-error)
-  ((%multiple-lambda-list-keyword
-    :initarg :multiple-lambda-list-keyword
-    :reader multiple-lambda-list-keyword)
+  ((%multiple-keyword
+    :initarg :multiple-keyword
+    :reader multiple-keyword)
    (%number-of-occurrences
     :initarg :number-of-occurrences
     :reader number-of-occurrences))
@@ -439,7 +439,7 @@
              (format stream
                      "The lambda-list keyword: ~s~@
                       occurs ~a times."
-                     (multiple-lambda-list-keyword condition)
+                     (multiple-keyword condition)
                      (number-of-occurrences condition)))))
 
 ;;; This condition is used to indicate that in a (non destructuring)
