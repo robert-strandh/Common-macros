@@ -352,7 +352,7 @@
                               (not (constantp (cadar key)))
                               (null (cddar key)))))
           (error 'malformed-defgeneric-key
-                 :code key))
+                 :defgeneric-key key))
         `(,(if (symbolp (car key))
                `(,(intern (symbol-name (car key)) :keyword) ,(car key))
                (car key))))
@@ -360,7 +360,7 @@
         (unless (and (symbolp key)
                      (not (constantp key)))
           (error 'malformed-defgeneric-key
-                 :code key))
+                 :defgeneric-key key))
         `(,(intern (symbol-name key) :keyword) ,key))))
 
 ;;; Canonicalize a specialized required parameter.
