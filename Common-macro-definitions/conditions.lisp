@@ -468,3 +468,27 @@
                       occurs ~a times."
                      (incorrect-arity-keyword condition)
                      (incorrect-arity condition)))))
+
+;;; This condition is used to indicate that there is a malformed item
+;;; following the &optional lambda-list keyword in an ordinary lambda
+;;; list, a specialized lambda list, a boa lambda list, a defsetf
+;;; lambda list, a define-modify-macro lambda list, or a
+;;; define-method-combination lambda list.  These lambda lists allow
+;;; the following form for such an item:
+;;;
+;;;   * var
+;;;   * (var)
+;;;   * (var init-form)
+;;;   * (var init-form supplied-p-parameter)
+;;;
+;;; where var and supplied-p-parameter are symbols that are not names
+;;; of constants.
+(define-condition malformed-ordinary-optional (program-error)
+  ((%ordinary-optional
+    :initarg :ordinary-optional
+    :reader ordinary-optional))
+  (:report (lambda (condition stream)
+             (format stream
+                     "A malformed ordinary optional parameter was found:~@
+                      ~s"
+                     (ordinary-optional condition)))))
