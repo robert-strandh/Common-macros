@@ -225,7 +225,7 @@
         (unless (and (symbolp optional)
                      (not (constantp optional)))
           (error 'malformed-ordinary-optional
-                 :code optional))
+                 :ordinary-optional optional))
         `(,optional ,default))))
 
 (defun canonicalize-ordinary-optional (optional)
@@ -238,7 +238,7 @@
   (unless (and (symbolp parameter)
                (not (constantp parameter)))
     (error 'rest/body-must-be-followed-by-variable
-           :code parameter))
+           :rest/body parameter))
   parameter)
 
 ;;; Canonicalize an ordinary &KEY item.
