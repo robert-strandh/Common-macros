@@ -30,6 +30,7 @@
    (:file "defvar")
    (:file "defpackage")
    (:file "defparameter")
+   (:file "defmacro")
    (:file "defun")
    (:file "defclass")
    (:file "define-condition")
