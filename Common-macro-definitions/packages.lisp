@@ -2,6 +2,7 @@
 
 (defpackage #:common-macro-definitions
   (:use #:common-lisp)
+  (:local-nicknames (#:ecc #:ecclesia))
   (:shadow #:macroexpand-1
            #:defmacro
            #:get-setf-expansion
