@@ -6,7 +6,7 @@
 
 (defmacro defun (&environment environment name lambda-list &body body)
   (multiple-value-bind (declarations documentation forms)
-      (separate-function-body body)
+      (ecc:separate-function-body body)
     `(progn
        (eval-when (:compile-toplevel)
          ,(defun-compile-time-action *client* name lambda-list environment))

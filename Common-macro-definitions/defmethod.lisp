@@ -27,7 +27,7 @@
     (multiple-value-bind (required-part remaining-part)
         (split-specialized-lambda-list lambda-list)
       (multiple-value-bind (declarations documentation forms)
-          (separate-function-body body)
+          (ecc:separate-function-body body)
         (values qualifiers
                 (extract-required-parameters required-part)
                 remaining-part

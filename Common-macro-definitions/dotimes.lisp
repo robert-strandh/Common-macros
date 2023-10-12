@@ -10,7 +10,7 @@
   (count-form-must-be-nonnegative-integer count-form)
   (body-must-be-proper-list body)
   (multiple-value-bind (declarations forms)
-      (separate-ordinary-body body)
+      (ecc:separate-ordinary-body body)
     (let ((start-tag (gensym))
           (end-tag (gensym))
           (count-var (gensym)))

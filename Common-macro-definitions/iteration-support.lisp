@@ -78,7 +78,7 @@
     (error 'malformed-end-test
            :found end-test))
   (multiple-value-bind (declarations forms)
-      (separate-ordinary-body body)
+      (ecc:separate-ordinary-body body)
     (let ((start-tag (gensym)))
       `(block nil
          (,let-type ,(extract-bindings variable-clauses)

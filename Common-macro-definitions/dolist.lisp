@@ -20,7 +20,7 @@
   (list-form-must-be-list list-form)
   (body-must-be-proper-list body)
   (multiple-value-bind (declarations forms)
-      (separate-ordinary-body body)
+      (ecc:separate-ordinary-body body)
     (let ((start-tag (gensym))
           (end-tag (gensym))
           (list-var (gensym)))

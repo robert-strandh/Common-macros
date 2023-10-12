@@ -2,7 +2,7 @@
 
 (defmacro prog (bindings &body body)
   (multiple-value-bind (declarations items)
-      (separate-ordinary-body body)
+      (ecc:separate-ordinary-body body)
     `(block nil
        (let ,bindings
          ,@declarations
