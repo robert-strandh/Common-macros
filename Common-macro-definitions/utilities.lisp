@@ -1,24 +1,17 @@
 (cl:in-package #:common-macro-definitions)
 
-(defparameter *operator-table*
-  (make-hash-table :test #'eq))
+(defun transform-name (name)
+  (intern (string-downcase (symbol-name name))))
 
 (defun macro-function-exists-p (operator)
-  (nth-value 1 (gethash operator *operator-table*)))
-
-(defun transform-name (name)
-  (let ((result (gethash name *operator-table*)))
-    (when (null result)
-      (setq result (intern (string-downcase (symbol-name name))))
-      (setf (gethash name *operator-table* ) result))
-    result))
+  (not (null (macro-function (transform-name operator)))))
 
 (cl:defmacro defmacro (name lambda-list &body body)
   `(cl:defmacro ,(transform-name name) ,lambda-list ,@body))
 
 (defun macroexpand-1 (form &optional environment)
   (declare (ignore environment))
-  (cl:macroexpand-1 (cons (gethash (first form) *operator-table*)
+  (cl:macroexpand-1 (cons (transform-name (first form))
                           (rest form))))
 
 (defun get-setf-expansion (place &optional environment)
