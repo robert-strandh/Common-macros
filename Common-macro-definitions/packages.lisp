@@ -20,5 +20,6 @@
    #:ensure-class
    #:defgeneric-compile-time-action
    #:ensure-generic-function
+   #:wrap-in-setf-type-function
    #:proclaim
    #:macro-function-exists-p))
