@@ -35,6 +35,7 @@
    (:file "defclass")
    (:file "define-condition")
    (:file "defgeneric")
+   (:file "deftype")
    (:file "declaim")
    (:file "lambda")
    (:file "prog")
