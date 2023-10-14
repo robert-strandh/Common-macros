@@ -36,6 +36,7 @@
    (:file "define-condition")
    (:file "defgeneric")
    (:file "deftype")
+   (:file "destructuring-bind")
    (:file "declaim")
    (:file "lambda")
    (:file "prog")
