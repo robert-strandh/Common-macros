@@ -31,6 +31,7 @@
    (:file "defpackage")
    (:file "defparameter")
    (:file "defmacro")
+   (:file "define-compiler-macro")
    (:file "defun")
    (:file "defclass")
    (:file "define-condition")
