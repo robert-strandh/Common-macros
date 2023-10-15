@@ -77,7 +77,7 @@
       (gethash :initarg table)
     (if flag
         (progn (remhash :initarg table)
-               `(:initargs ',(reverse value)))
+               `(:initargs ,(reverse value)))
         '())))
 
 (defun split-accessors (table)
@@ -141,7 +141,7 @@
   ;; A direct-slot-spec can be a symbol which is then the
   ;; name of the slot.
   (if (symbolp direct-slot-spec)
-      `(:name ',direct-slot-spec)
+      `(:name ,direct-slot-spec)
       (progn
         ;; If the direct-slot-spec is not a symbol, it must
         ;; be a non-empty proper list.
@@ -156,7 +156,7 @@
         (check-slot-options-even-length direct-slot-spec)
         (let ((ht (make-hash-table :test #'eq)))
           (populate-table-with-slot-options ht (cdr direct-slot-spec))
-          (let ((result `(:name ',(car direct-slot-spec))))
+          (let ((result `(:name ,(car direct-slot-spec))))
             (flet ((add (option)
                      (setf result (append result option))))
               (add (process-initform-option ht direct-slot-spec))
