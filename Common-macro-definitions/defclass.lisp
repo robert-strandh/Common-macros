@@ -93,7 +93,7 @@
       (gethash :reader table)
     (if flag
         (progn (remhash :reader table)
-               `(:readers ',(reverse value)))
+               `(:readers ,(reverse value)))
         '())))
 
 (defun process-writers (table)
@@ -101,7 +101,7 @@
       (gethash :writer table)
     (if flag
         (progn (remhash :writer table)
-               `(:writers ',(reverse value)))
+               `(:writers ,(reverse value)))
         '())))
 
 (defun process-documentation (table direct-slot-spec)
@@ -171,14 +171,14 @@
               (maphash (lambda (name value)
                          (add (list name (reverse value))))
                        ht))
-            `(list ,@result))))))
+            result)))))
 
 (defun canonicalize-direct-slot-specs (direct-slot-specs)
   (when (not (proper-list-p direct-slot-specs))
     (error 'malformed-slot-list
            :slot-list direct-slot-specs))
-  `(list ,@(loop for spec in direct-slot-specs
-                 collect (canonicalize-direct-slot-spec spec))))
+  (loop for spec in direct-slot-specs
+        collect (canonicalize-direct-slot-spec spec)))
 
 ;;; Canonicalize a single default initarg.  Recall that a
 ;;; canonicalized default initarg is a list of three elements: The
@@ -189,7 +189,7 @@
   (unless (symbolp name)
     (error 'default-initarg-name-must-be-symbol
            :datum name))
-  `(list ,name ',form (lambda () ,form)))
+  `(,name ',form (lambda () ,form)))
 
 ;;; Canonicalize the :DEFAULT-INITARGS class option.
 (defun canonicalize-default-initargs (initargs)
@@ -199,8 +199,8 @@
   (unless (evenp (length initargs))
     (error 'malformed-default-initargs-option
            :option `(:default-initargs ,@initargs)))
-  `(list ,@(loop for (name value) on initargs by #'cddr
-                 collect (canonicalize-default-initarg name value))))
+  (loop for (name value) on initargs by #'cddr
+        collect (canonicalize-default-initarg name value)))
 
 (defun check-options-non-empty (options)
   ;; Check that each option is a non-empty list
