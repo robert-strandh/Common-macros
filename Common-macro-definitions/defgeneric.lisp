@@ -53,7 +53,7 @@
 ;;; DEFGENERIC form is reevaluated.
 
 (defmacro defgeneric
-    (&environment environment name lambda-list options-and-methods)
+    (&environment environment name lambda-list &optional options-and-methods)
   (check-defgeneric-options-and-methods options-and-methods)
   (multiple-value-bind (options methods)
       (separate-options-and-methods options-and-methods)
@@ -97,17 +97,18 @@
               documentation-option
               environment))
          (eval-when (:load-toplevel :execute)
-           ,(ensure-generic-function
-             *client*
-              name
-              lambda-list
-              argument-precedence-order
-              generic-function-class-name
-              method-class-name
-              method-combination-name
-              method-combination-arguments
-              documentation-option
-              environment))
-         ,@(loop for method in methods
-                 collect `(defmethod ,name ,@(rest method)))
-         (fdefinition ',name)))))
+           (let ((result 
+                   ,(ensure-generic-function
+                     *client*
+                     name
+                     lambda-list
+                     argument-precedence-order
+                     generic-function-class-name
+                     method-class-name
+                     method-combination-name
+                     method-combination-arguments
+                     documentation-option
+                     environment)))
+             ,@(loop for method in methods
+                     collect `(defmethod ,name ,@(rest method)))
+             result))))))
