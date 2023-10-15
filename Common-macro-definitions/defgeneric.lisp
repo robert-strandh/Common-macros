@@ -24,7 +24,8 @@
                   :key #'car :test-not #'eq)))
 
 (defgeneric defgeneric-compile-time-action
-    (name
+    (client
+     name
      lambda-list
      argument-precedence-order
      generic-function-class-name
@@ -35,7 +36,8 @@
      environment))
 
 (defgeneric ensure-generic-function
-    (name
+    (client
+     name
      lambda-list
      argument-precedence-order
      generic-function-class-name
@@ -84,6 +86,7 @@
       `(progn
          (eval-when (:compile-toplevel)
            ,(defgeneric-compile-time-action
+              *client*
               name
               lambda-list
               argument-precedence-order
@@ -95,6 +98,7 @@
               environment))
          (eval-when (:load-toplevel :execute)
            ,(ensure-generic-function
+             *client*
               name
               lambda-list
               argument-precedence-order
