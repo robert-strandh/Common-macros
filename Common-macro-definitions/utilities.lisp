@@ -1,7 +1,8 @@
 (cl:in-package #:common-macro-definitions)
 
 (defun transform-name (name)
-  (intern (string-downcase (symbol-name name))))
+  (intern (string-downcase (symbol-name name))
+          (find-package "COMMON-MACRO-DEFINITIONS")))
 
 (defun macro-function-exists-p (operator)
   (not (null (macro-function (transform-name operator)))))
