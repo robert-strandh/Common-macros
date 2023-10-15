@@ -281,7 +281,8 @@
             metaclass-name
             environment))
        (eval-when (:load-toplevel :execute)
-         ,(ensure-class name
+         ,(ensure-class *client*
+                        name
                         canonicalized-superclass-names
                         (canonicalize-direct-slot-specs slot-specifiers)
                         options
