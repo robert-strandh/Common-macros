@@ -22,4 +22,5 @@
    #:ensure-generic-function
    #:wrap-in-setf-type-function
    #:proclaim
+   #:wrap-in-make-method-lambda
    #:macro-function-exists-p))
