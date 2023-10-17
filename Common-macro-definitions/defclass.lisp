@@ -27,7 +27,7 @@
   class-name)
 
 (defun canonicalize-direct-superclass-names (direct-superclass-names)
-  (unless (cleavir-code-utilities:proper-list-p direct-superclass-names)
+  (unless (ecc:proper-list-p direct-superclass-names)
     (error 'superclass-list-must-be-proper-list
            :datum direct-superclass-names))
   (loop for name in direct-superclass-names
@@ -39,7 +39,7 @@
   `(lambda () ,form))
 
 (defun check-slot-spec-non-empty-proper-list (direct-slot-spec)
-  (unless (and (cleavir-code-utilities:proper-list-p direct-slot-spec)
+  (unless (and (ecc:proper-list-p direct-slot-spec)
                (consp direct-slot-spec))
     (error 'malformed-slot-spec
            :slot-spec direct-slot-spec)))
@@ -174,7 +174,7 @@
             `(list ,@result))))))
 
 (defun canonicalize-direct-slot-specs (direct-slot-specs)
-  (when (not (cleavir-code-utilities:proper-list-p direct-slot-specs))
+  (when (not (ecc:proper-list-p direct-slot-specs))
     (error 'malformed-slot-list
            :slot-list direct-slot-specs))
   `(list ,@(loop for spec in direct-slot-specs
@@ -193,7 +193,7 @@
 
 ;;; Canonicalize the :DEFAULT-INITARGS class option.
 (defun canonicalize-default-initargs (initargs)
-  (unless (cleavir-code-utilities:proper-list-p initargs)
+  (unless (ecc:proper-list-p initargs)
     (error 'malformed-default-initargs-option
            :option `(:default-initargs ,@initargs)))
   (unless (evenp (length initargs))
@@ -270,8 +270,7 @@
   (let* ((canonicalized-superclass-names
            (canonicalize-direct-superclass-names superclass-names))
          (options (canonicalize-defclass-options options))
-         (metaclass-name (getf options :metaclass 'standard-class))
-         (env-var (gensym)))
+         (metaclass-name (getf options :metaclass 'standard-class)))
     `(progn
        (eval-when (:compile-toplevel)
          ,(defclass-compile-time-action
