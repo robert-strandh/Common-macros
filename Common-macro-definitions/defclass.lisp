@@ -280,7 +280,7 @@
             metaclass-name
             environment))
        (eval-when (:load-toplevel :execute)
-         (,(ensure-class-name)
+         (,(ensure-class-name *client*)
           ',name
           :name ',name
           :direct-superclasses
