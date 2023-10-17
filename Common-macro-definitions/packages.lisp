@@ -17,7 +17,7 @@
    #:wrap-in-ensure-method
    #:defun-compile-time-action
    #:defclass-compile-time-action
-   #:ensure-class
+   #:ensure-class-name
    #:defgeneric-compile-time-action
    #:ensure-generic-function
    #:wrap-in-setf-type-function

@@ -11,7 +11,7 @@
           (error 'malformed-typecase-clauses
                  :clauses clauses)
           (let ((clause (car clauses)))
-            (unless (and (proper-list-p clause)
+            (unless (and (ecc:proper-list-p clause)
                          (not (null clause)))
               (error 'malformed-typecase-clause
                      :clause clause))
@@ -48,7 +48,7 @@
           (error 'malformed-typecase-clauses
                  :clauses clauses)
           (let ((clause (car clauses)))
-            (unless (and (proper-list-p clause)
+            (unless (and (ecc:proper-list-p clause)
                          (not (null clause)))
               (error 'malformed-typecase-clause
                      :clause clause))

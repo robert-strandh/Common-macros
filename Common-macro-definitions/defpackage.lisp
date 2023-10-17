@@ -10,7 +10,7 @@
   (unless (consp option)
     (error 'defpackage-option-must-be-a-non-empty-list
            :option option))
-  (unless (proper-list-p option)
+  (unless (ecc:proper-list-p option)
     (error 'defpackage-option-must-be-a-proper-list
            :option option))
   (unless (member (first option)
@@ -32,7 +32,7 @@
              unless (consp argument)
                do (error 'package-local-nickname-argument-must-be-cons
                          :argument argument)
-             unless (proper-list-p argument)
+             unless (ecc:proper-list-p argument)
                do (error 'package-local-nickname-argument-must-be-proper-list
                          :argument argument)
              unless (= (length argument) 2)

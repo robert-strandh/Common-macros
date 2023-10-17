@@ -5,7 +5,7 @@
              (if (null clauses)
                  nil
                  (let ((clause (car clauses)))
-                   (if (not (and (proper-list-p clause)
+                   (if (not (and (ecc:proper-list-p clause)
                                  (not (null clause))))
                        (error 'malformed-cond-clause
                               :clause clause)

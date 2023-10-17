@@ -23,12 +23,12 @@
 
 ;;; Check that iteration body is a proper list.
 (defun body-must-be-proper-list (body)
-  (unless (proper-list-p body)
+  (unless (ecc:proper-list-p body)
     (error 'malformed-body
            :datum body)))
 
 (defun check-variable-clauses (variable-clauses)
-  (unless (proper-list-p variable-clauses)
+  (unless (ecc:proper-list-p variable-clauses)
     (error 'malformed-variable-clauses
            :datum variable-clauses))
   (mapcar
@@ -73,7 +73,7 @@
   ;; Do some syntax checking.
   (check-variable-clauses variable-clauses)
   (body-must-be-proper-list body)
-  (unless (and (proper-list-p end-test)
+  (unless (and (ecc:proper-list-p end-test)
                (not (null end-test)))
     (error 'malformed-end-test
            :found end-test))

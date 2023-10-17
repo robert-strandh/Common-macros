@@ -40,7 +40,7 @@
          (if (and (atom keys)
                   (not (null keys)))
              (list keys)
-             (if (not (proper-list-p keys))
+             (if (not (ecc:proper-list-p keys))
                  (error 'malformed-keys
                         :keys keys)
                  keys)))
@@ -58,7 +58,7 @@
           (error 'malformed-case-clauses
                  :clauses clauses)
           (let ((clause (car clauses)))
-            (unless (and (proper-list-p clause)
+            (unless (and (ecc:proper-list-p clause)
                          (not (null clause)))
               (error 'malformed-case-clause
                      :clause clause))
@@ -76,7 +76,7 @@
                       `(if (eql ,variable ',keys)
                            (progn ,@forms)
                            ,(expand-case-clauses (cdr clauses) variable))
-                      (if (not (proper-list-p keys))
+                      (if (not (ecc:proper-list-p keys))
                           (error 'malformed-keys
                                  :keys keys)
                           `(if (or ,@(eql-ify keys variable))
