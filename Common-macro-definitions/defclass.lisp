@@ -27,7 +27,7 @@
   class-name)
 
 (defun canonicalize-direct-superclass-names (direct-superclass-names)
-  (unless (proper-list-p direct-superclass-names)
+  (unless (cleavir-code-utilities:proper-list-p direct-superclass-names)
     (error 'superclass-list-must-be-proper-list
            :datum direct-superclass-names))
   (loop for name in direct-superclass-names
@@ -39,7 +39,7 @@
   `(lambda () ,form))
 
 (defun check-slot-spec-non-empty-proper-list (direct-slot-spec)
-  (unless (and (proper-list-p direct-slot-spec)
+  (unless (and (cleavir-code-utilities:proper-list-p direct-slot-spec)
                (consp direct-slot-spec))
     (error 'malformed-slot-spec
            :slot-spec direct-slot-spec)))
@@ -77,7 +77,7 @@
       (gethash :initarg table)
     (if flag
         (progn (remhash :initarg table)
-               `(:initargs ,(reverse value)))
+               `(:initargs ',(reverse value)))
         '())))
 
 (defun split-accessors (table)
@@ -93,7 +93,7 @@
       (gethash :reader table)
     (if flag
         (progn (remhash :reader table)
-               `(:readers ,(reverse value)))
+               `(:readers ',(reverse value)))
         '())))
 
 (defun process-writers (table)
@@ -101,7 +101,7 @@
       (gethash :writer table)
     (if flag
         (progn (remhash :writer table)
-               `(:writers ,(reverse value)))
+               `(:writers ',(reverse value)))
         '())))
 
 (defun process-documentation (table direct-slot-spec)
@@ -141,7 +141,7 @@
   ;; A direct-slot-spec can be a symbol which is then the
   ;; name of the slot.
   (if (symbolp direct-slot-spec)
-      `(:name ,direct-slot-spec)
+      `(:name ',direct-slot-spec)
       (progn
         ;; If the direct-slot-spec is not a symbol, it must
         ;; be a non-empty proper list.
@@ -156,7 +156,7 @@
         (check-slot-options-even-length direct-slot-spec)
         (let ((ht (make-hash-table :test #'eq)))
           (populate-table-with-slot-options ht (cdr direct-slot-spec))
-          (let ((result `(:name ,(car direct-slot-spec))))
+          (let ((result `(:name ',(car direct-slot-spec))))
             (flet ((add (option)
                      (setf result (append result option))))
               (add (process-initform-option ht direct-slot-spec))
@@ -171,14 +171,14 @@
               (maphash (lambda (name value)
                          (add (list name (reverse value))))
                        ht))
-            result)))))
+            `(list ,@result))))))
 
 (defun canonicalize-direct-slot-specs (direct-slot-specs)
-  (when (not (proper-list-p direct-slot-specs))
+  (when (not (cleavir-code-utilities:proper-list-p direct-slot-specs))
     (error 'malformed-slot-list
            :slot-list direct-slot-specs))
-  (loop for spec in direct-slot-specs
-        collect (canonicalize-direct-slot-spec spec)))
+  `(list ,@(loop for spec in direct-slot-specs
+                 collect (canonicalize-direct-slot-spec spec))))
 
 ;;; Canonicalize a single default initarg.  Recall that a
 ;;; canonicalized default initarg is a list of three elements: The
@@ -189,18 +189,18 @@
   (unless (symbolp name)
     (error 'default-initarg-name-must-be-symbol
            :datum name))
-  `(,name ',form (lambda () ,form)))
+  `(list ,name ',form (lambda () ,form)))
 
 ;;; Canonicalize the :DEFAULT-INITARGS class option.
 (defun canonicalize-default-initargs (initargs)
-  (unless (proper-list-p initargs)
+  (unless (cleavir-code-utilities:proper-list-p initargs)
     (error 'malformed-default-initargs-option
            :option `(:default-initargs ,@initargs)))
   (unless (evenp (length initargs))
     (error 'malformed-default-initargs-option
            :option `(:default-initargs ,@initargs)))
-  (loop for (name value) on initargs by #'cddr
-        collect (canonicalize-default-initarg name value)))
+  `(list ,@(loop for (name value) on initargs by #'cddr
+                 collect (canonicalize-default-initarg name value))))
 
 (defun check-options-non-empty (options)
   ;; Check that each option is a non-empty list
@@ -262,8 +262,7 @@
 (defgeneric defclass-compile-time-action
     (client name superclass-names metaclass-name environment))
 
-(defgeneric ensure-class
-    (client name superclass-names direct-slot-specs options environment))
+(defgeneric ensure-class-name (client))
 
 (defmacro defclass
     (&environment environment
@@ -271,7 +270,8 @@
   (let* ((canonicalized-superclass-names
            (canonicalize-direct-superclass-names superclass-names))
          (options (canonicalize-defclass-options options))
-         (metaclass-name (getf options :metaclass 'standard-class)))
+         (metaclass-name (getf options :metaclass 'standard-class))
+         (env-var (gensym)))
     `(progn
        (eval-when (:compile-toplevel)
          ,(defclass-compile-time-action
@@ -281,9 +281,11 @@
             metaclass-name
             environment))
        (eval-when (:load-toplevel :execute)
-         ,(ensure-class *client*
-                        name
-                        canonicalized-superclass-names
-                        (canonicalize-direct-slot-specs slot-specifiers)
-                        options
-                        environment)))))
+         (,(ensure-class-name)
+          ',name
+          :name ',name
+          :direct-superclasses
+          ',canonicalized-superclass-names
+          :direct-slots
+          ,(canonicalize-direct-slot-specs slot-specifiers)
+          ,@options)))))
