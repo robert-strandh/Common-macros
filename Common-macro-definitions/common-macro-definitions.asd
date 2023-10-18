@@ -46,6 +46,7 @@
    (:file "prog2")
    (:file "pushnew")
    (:file "remf")
+   (:file "handler-case")
    (:file "ignore-errors")
    (:file "in-package")
    (:file "check-type")
