@@ -36,6 +36,7 @@
    (:file "defclass")
    (:file "define-condition")
    (:file "defgeneric")
+   (:file "defsetf")
    (:file "deftype")
    (:file "destructuring-bind")
    (:file "declaim")
