@@ -4,8 +4,11 @@
   (intern (string-downcase (symbol-name name))
           (find-package "COMMON-MACRO-DEFINITIONS")))
 
+(defun macro-function (operator)
+  (cl:macro-function (transform-name operator)))
+
 (defun macro-function-exists-p (operator)
-  (not (null (macro-function (transform-name operator)))))
+  (not (null (macro-function operator))))
 
 (cl:defmacro defmacro (name lambda-list &body body)
   `(cl:defmacro ,(transform-name name) ,lambda-list ,@body))

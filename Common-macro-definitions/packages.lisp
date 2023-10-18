@@ -3,13 +3,15 @@
 (defpackage #:common-macro-definitions
   (:use #:common-lisp)
   (:local-nicknames (#:ecc #:ecclesia))
-  (:shadow #:macroexpand-1
+  (:shadow #:macro-function
+           #:macroexpand-1
            #:defmacro
            #:get-setf-expansion
            #:ensure-generic-function
            #:proclaim)
   (:export
    #:*client*
+   #:macro-function
    #:macroexpand-1
    #:defmacro
    #:get-setf-expansion
