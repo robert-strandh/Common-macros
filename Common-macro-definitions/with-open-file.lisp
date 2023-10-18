@@ -6,6 +6,7 @@
                           &body body)
   ;; keywords are only there to make the lambda list nice.
   (declare (ignore direction element-type if-exists if-does-not-exist external-format))
+  (check-variable-name stream)
   (multiple-value-bind (declarations forms) (ecc:separate-ordinary-body body)
     (let ((abortedp (gensym "ABORT")))
       `(let ((,stream (open ,filespec ,@options)) (,abortedp t))

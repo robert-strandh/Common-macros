@@ -1,6 +1,11 @@
 (cl:in-package #:common-macro-definitions)
 
 (defmacro handler-case (form &rest clauses)
+  (loop for clause in clauses
+        unless (and (ecc:proper-list-p clause)
+                 (>= (length clause) 2)
+                 (typep (second clause) '(or symbol (cons symbol null))))
+          do (error 'malformed-handler-case-clause :clause clause))
   (let ((no-error-clause (assoc :no-error clauses)))
     (if no-error-clause
         ;; if we have a no-error clause, we handle it specially,

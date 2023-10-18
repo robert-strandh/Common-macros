@@ -39,5 +39,5 @@
        (expand-short-defsetf access-fn update-fn documentation)))
     (list ; long form
      (destructuring-bind (lambda-list (&rest stores) &body body) rest
-       (assert (every #'symbolp stores))
+       (mapc #'check-variable-name stores)
        (expand-long-defsetf access-fn lambda-list stores body)))))
