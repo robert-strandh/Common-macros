@@ -40,6 +40,7 @@
    (:file "deftype")
    (:file "destructuring-bind")
    (:file "declaim")
+   (:file "do-symbols")
    (:file "lambda")
    (:file "prog")
    (:file "progstar")
