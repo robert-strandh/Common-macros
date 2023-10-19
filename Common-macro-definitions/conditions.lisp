@@ -43,6 +43,21 @@
 (define-condition malformed-typecase-clause (program-error)
   ((%clause :initarg :clause :reader clause)))
 
+(define-condition variable-name-must-be-symbol (program-error)
+  ((%name :initarg :name :reader name))
+  (:report (lambda (condition stream)
+             (format stream "Expected a variable name,~@
+                             but the following was given instead:~@
+                             ~s"
+                     (name condition)))))
+
+(defun check-variable-name (variable-name)
+  (unless (symbolp variable-name)
+    (error 'variable-name-must-be-symbol :name variable-name)))
+
+(define-condition malformed-handler-case-clause (program-error)
+  ((%clause :initarg :clause :reader clause)))
+
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
 ;;; Conditions used at runtime
