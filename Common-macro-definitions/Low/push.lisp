@@ -2,7 +2,7 @@
 
 (defmacro push (&environment environment item place)
   (multiple-value-bind (vars vals store-vars writer-form reader-form)
-      (get-setf-expansion place environment)
+      (get-setf-expansion *client* place environment)
     (let ((item-var (gensym)))
       `(let* ((,item-var ,item)
               ,@(mapcar #'list vars vals)
