@@ -11,6 +11,7 @@
    (:file "defparameter")
    (:file "defmacro")
    (:file "define-compiler-macro")
+   (:file "define-setf-expander")
    (:file "defun")
    (:file "defclass")
    (:file "defgeneric")
