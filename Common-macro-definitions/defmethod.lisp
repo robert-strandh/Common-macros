@@ -15,11 +15,13 @@
   (loop for parameter in required-part
         collect (if (symbolp parameter) parameter (first parameter))))
 
-(defun extract-specializers (required-part)
+(defun extract-specializers (required-part unspecialized-token)
   (loop for parameter in required-part
-        collect (if (symbolp parameter) 't (second parameter))))
+        collect (if (symbolp parameter)
+                    unspecialized-token
+                    (second parameter))))
 
-(defun parse-defmethod (all-but-name)
+(defun parse-defmethod (all-but-name unspecialized-token)
   (let* ((lambda-list-position (position-if #'listp all-but-name))
          (qualifiers (subseq all-but-name 0 lambda-list-position))
          (lambda-list (elt all-but-name lambda-list-position))
@@ -31,7 +33,7 @@
         (values qualifiers
                 (extract-required-parameters required-part)
                 remaining-part
-                (extract-specializers required-part)
+                (extract-specializers required-part unspecialized-token)
                 declarations
                 documentation
                 forms)))))
@@ -50,22 +52,29 @@
 
 (defmacro defmethod
     (&environment environment function-name &rest rest)
-  (multiple-value-bind
-        (qualifiers required remaining specializers declarations documentation forms)
-      (parse-defmethod rest)
-    (let ((lambda-list (append required remaining)))
-      (let ((method-lambda
-              (wrap-in-make-method-lambda
-               *client*
-               `(lambda ,lambda-list
-                  ,@declarations
-                  (block ,(if (consp function-name)
-                              (second function-name)
-                              function-name)
-                    ,@forms))
-               function-name
-               environment)))
-        (wrap-in-ensure-method
-         *client*
-         function-name lambda-list qualifiers
-         specializers documentation method-lambda)))))
+  (let ((unspecialized-token (gensym)))
+    (multiple-value-bind
+          (qualifiers required remaining specializers
+           declarations documentation forms)
+        (parse-defmethod rest unspecialized-token)
+      (let ((lambda-list (append required remaining))
+            (ignorables (loop for parameter in required
+                              for specializer in specializers
+                              unless (eq specializer unspecialized-token)
+                                collect parameter)))
+        (let ((method-lambda
+                (wrap-in-make-method-lambda
+                 *client*
+                 `(lambda ,lambda-list
+                    ,@declarations
+                    (declare (ignorable ,@ignorables))
+                    (block ,(if (consp function-name)
+                                (second function-name)
+                                function-name)
+                      ,@forms))
+                 function-name
+                 environment)))
+          (wrap-in-ensure-method
+           *client*
+           function-name lambda-list qualifiers
+           specializers documentation method-lambda))))))
