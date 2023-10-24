@@ -77,4 +77,5 @@
           (wrap-in-ensure-method
            *client*
            function-name lambda-list qualifiers
-           specializers documentation method-lambda))))))
+           (subst 't unspecialized-token specializers)
+           documentation method-lambda))))))
