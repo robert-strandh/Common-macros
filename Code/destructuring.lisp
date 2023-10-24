@@ -272,7 +272,10 @@
           (make-instance 'ico:variable-definition-ast
             :name (gensym))))
     ;; We add the AST version of the binding: (TEMP ARGUMENT-LIST).
-    (add-binding-asts temp-ast argument-list-ast let*-ast)
+    (add-binding-asts
+     temp-ast
+     (make-variable-reference-ast argument-list-ast)
+     let*-ast)
     ;; Finally, we call DESTRUCTURE-VARIABLE-OR-PATTERN-AST with
     ;; TEMP-AST.  Then, if the parameter is just a name, the binding
     ;; becomes (NAME TEMP).  If it is a patter, more bindings will
