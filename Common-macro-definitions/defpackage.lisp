@@ -177,10 +177,13 @@
         collect `(intern ,(string name) ,package-var)))
 
 (defun make-export (options package-var)
-  `(export
-    (loop for name in ',(group-options :export options)
-          collect (find-symbol (string name) ,package-var))
-    ,package-var))
+  (let ((export-options (group-options :export options)))
+    (if (null export-options)
+        'nil
+        `(export
+          (loop for name in ',export-options
+                collect (find-symbol (string name) ,package-var))
+          ,package-var))))
 
 (defun defpackage-expander (name options)
   (check-defpackage-options options)
