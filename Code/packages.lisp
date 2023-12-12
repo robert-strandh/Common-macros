@@ -12,5 +12,7 @@
            #:with-ast-origin
            #:destructure-lambda-list
            #:get-setf-expansion
-           #:expand))
+           #:expand
+           #:parse-macro
+           #:parse-compiler-macro))
 
