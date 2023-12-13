@@ -484,7 +484,10 @@
          (let*-ast (make-instance 'ico:let*-ast
                      :declaration-asts (ico:declaration-asts macro-ast)))
          (variable-ast (make-instance 'ico:variable-definition-ast
-                         :name (gensym))))
+                         :name (gensym)))
+         (whole-reference-ast
+           (make-variable-reference-ast (ico:name-ast whole-parameter-ast))))
+    (add-binding-asts variable-ast whole-reference-ast let*-ast)
     (destructure-lambda-list lambda-list-ast variable-ast let*-ast)
     (reinitialize-instance let*-ast
       :form-asts (ico:form-asts macro-ast))
