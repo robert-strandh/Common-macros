@@ -467,13 +467,19 @@
            (ico:whole-section-ast lambda-list-ast))
          (whole-parameter-ast
            (if (null whole-section-ast)
-               (make-temp-ast)
+               (make-instance 'ico:required-parameter-ast
+                 :name-ast
+                 (make-instance 'ico:variable-definition-ast
+                   :name (gensym)))
                (ico:parameter-ast whole-section-ast)))
          (environment-section-ast
            (ico:environment-section-ast lambda-list-ast))
          (environment-parameter-ast
            (if (null environment-section-ast)
-               (make-temp-ast)
+               (make-instance 'ico:required-parameter-ast
+                 :name-ast
+                 (make-instance 'ico:variable-definition-ast
+                   :name (gensym)))
                (ico:parameter-ast environment-section-ast)))
          (let*-ast (make-instance 'ico:let*-ast
                      :declaration-asts (ico:declaration-asts macro-ast)))
@@ -482,7 +488,8 @@
     (destructure-lambda-list lambda-list-ast variable-ast let*-ast)
     (reinitialize-instance let*-ast
       :form-asts (ico:form-asts macro-ast))
-    (make-instance 'ico:lambda-ast
+    (make-instance 'ico:local-function-ast
+      :name-ast (ico:name-ast macro-ast)
       :lambda-list-ast
       (make-instance 'ico:ordinary-lambda-list-ast
         :required-section-ast
