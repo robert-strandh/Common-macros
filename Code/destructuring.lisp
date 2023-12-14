@@ -487,7 +487,14 @@
                          :name (gensym)))
          (whole-reference-ast
            (make-variable-reference-ast (ico:name-ast whole-parameter-ast))))
-    (add-binding-asts variable-ast whole-reference-ast let*-ast)
+    (add-binding-asts
+     variable-ast
+     (make-instance 'ico:application-ast
+       :function-name-ast
+       (make-instance 'ico:global-function-name-reference-ast
+         :name 'cdr)
+       :argument-asts (list whole-reference-ast))
+     let*-ast)
     (destructure-lambda-list lambda-list-ast variable-ast let*-ast)
     (reinitialize-instance let*-ast
       :form-asts (ico:form-asts macro-ast))
