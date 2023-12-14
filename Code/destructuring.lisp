@@ -492,7 +492,7 @@
      (make-instance 'ico:application-ast
        :function-name-ast
        (make-instance 'ico:global-function-name-reference-ast
-         :name 'cdr)
+         :name 'rest)
        :argument-asts (list whole-reference-ast))
      let*-ast)
     (destructure-lambda-list lambda-list-ast variable-ast let*-ast)
