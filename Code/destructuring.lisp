@@ -527,31 +527,49 @@
            (ico:whole-section-ast lambda-list-ast))
          (whole-parameter-ast
            (if (null whole-section-ast)
-               (make-temp-ast)
+               (make-instance 'ico:required-parameter-ast
+                 :name-ast
+                 (make-instance 'ico:variable-definition-ast
+                   :name (gensym)))
                (ico:parameter-ast whole-section-ast)))
          (environment-section-ast
            (ico:environment-section-ast lambda-list-ast))
          (environment-parameter-ast
            (if (null environment-section-ast)
-               (make-temp-ast)
+               (make-instance 'ico:required-parameter-ast
+                 :name-ast
+                 (make-instance 'ico:variable-definition-ast
+                   :name (gensym)))
                (ico:parameter-ast environment-section-ast)))
-         (let*-ast (node* (:let*)
-                     (1 :declaration
-                        (ico:declaration-asts macro-ast))))
-         (variable-ast (node* (:variable-name :name (gensym)))))
+         (let*-ast (make-instance 'ico:let*-ast
+                     :declaration-asts (ico:declaration-asts macro-ast)))
+         (variable-ast (make-instance 'ico:variable-definition-ast
+                         :name (gensym)))
+         (whole-reference-ast
+           (make-variable-reference-ast (ico:name-ast whole-parameter-ast))))
+    (add-binding-asts
+     variable-ast
+     (make-instance 'ico:application-ast
+       :function-name-ast
+       (make-instance 'ico:global-function-name-reference-ast
+         :name 'rest)
+       :argument-asts (list whole-reference-ast))
+     let*-ast)
     (destructure-lambda-list lambda-list-ast variable-ast let*-ast)
     (reinitialize-instance let*-ast
       :form-asts (ico:form-asts macro-ast))
-    (node* (:lambda)
-      (1 :lambda-list
-         (node* (:ordinary-lambda-list)
-           (1 :required-section
-              (node* (:required-section)
-                (* :parameter
-                   (list whole-parameter-ast environment-parameter-ast))))))
-      (1 :form
-         (ablock (ico:name-ast macro-ast)
-           let*-ast)))))
+    (make-instance 'ico:local-function-ast
+      :name-ast (ico:name-ast macro-ast)
+      :lambda-list-ast
+      (make-instance 'ico:ordinary-lambda-list-ast
+        :required-section-ast
+        (make-instance 'ico:required-section-ast
+          :parameter-asts
+          (list whole-parameter-ast environment-parameter-ast)))
+      :form-asts
+      (list (make-instance 'ico:block-ast
+              :name-ast (ico:name-ast macro-ast)
+              :form-asts (list let*-ast))))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;;;
