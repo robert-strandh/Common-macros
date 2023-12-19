@@ -53,7 +53,7 @@
 ;;; DEFGENERIC form is reevaluated.
 
 (defmacro defgeneric
-    (&environment environment name lambda-list &optional options-and-methods)
+    (&environment environment name lambda-list &rest options-and-methods)
   (check-defgeneric-options-and-methods options-and-methods)
   (multiple-value-bind (options methods)
       (separate-options-and-methods options-and-methods)
