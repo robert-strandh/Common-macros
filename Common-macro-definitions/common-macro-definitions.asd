@@ -34,7 +34,6 @@
    (:file "define-compiler-macro")
    (:file "defun")
    (:file "defclass")
-   (:file "define-condition")
    (:file "defgeneric")
    (:file "defsetf")
    (:file "deftype")
