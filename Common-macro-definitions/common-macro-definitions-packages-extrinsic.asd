@@ -3,4 +3,4 @@
 (defsystem "common-macro-definitions-packages-extrinsic"
   :serial t
   :components
-  ((:file "packages")))
+  ((:file "packages-extrinsic")))
