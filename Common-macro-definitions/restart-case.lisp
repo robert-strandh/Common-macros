@@ -59,10 +59,6 @@
          (with-condition-restarts ,condition (car *restart-clusters*)
            (,function ,format-control ,condition))))))
 
-(defun restart-bind-transform-binding (binding)
-  (destructuring-bind (name function . arguments) binding
-    `(make-restart :name ',name :function ,function ,@arguments)))
-
 ;;; RESTART-CASE - bindings and cases
 
 (defun restart-case-make-restart-binding (temp-var parsed-case)
