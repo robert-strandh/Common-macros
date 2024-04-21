@@ -4,8 +4,7 @@
   :depends-on ("ecclesia")
   :serial t
   :components
-  ((:file "conditions")
-   (:file "utilities")
+  ((:file "utilities")
    (:file "when")
    (:file "unless")
    (:file "and")
