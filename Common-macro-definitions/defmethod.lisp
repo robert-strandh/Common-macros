@@ -38,8 +38,7 @@
                 documentation
                 forms)))))
 
-(defgeneric wrap-in-make-method-lambda
-    (client lambda-expression generic-function-name environment))
+(defgeneric wrap-in-make-method-lambda (client lambda-expression environment))
 
 (defgeneric wrap-in-ensure-method
   (client
@@ -72,7 +71,6 @@
                                 (second function-name)
                                 function-name)
                       ,@forms))
-                 function-name
                  environment)))
           (wrap-in-ensure-method
            *client*
