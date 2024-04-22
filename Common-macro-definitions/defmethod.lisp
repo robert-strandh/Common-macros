@@ -42,8 +42,6 @@
 
 (defgeneric ensure-method-wrapper (client))
 
-(defgeneric wrap-in-make-method-lambda (client lambda-expression environment))
-
 (defgeneric wrap-in-ensure-method
   (client
    function-name
