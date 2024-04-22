@@ -15,7 +15,6 @@
    #:macroexpand-1
    #:defmacro
    #:get-setf-expansion
-   #:wrap-in-method-lambda
    #:wrap-in-ensure-method
    #:defun-compile-time-action
    #:defclass-compile-time-action
@@ -26,5 +25,4 @@
    #:proclaim
    #:make-method-lambda-wrapper
    #:ensure-method-wrapper
-   #:wrap-in-make-method-lambda
    #:macro-function-exists-p))

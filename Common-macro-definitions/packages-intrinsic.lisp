@@ -7,7 +7,6 @@
            #:proclaim)
   (:export
    #:*client*
-   #:wrap-in-method-lambda
    #:wrap-in-ensure-method
    #:defun-compile-time-action
    #:defclass-compile-time-action
@@ -17,5 +16,4 @@
    #:wrap-in-setf-type-function
    #:make-method-lambda-wrapper
    #:ensure-method-wrapper
-   #:wrap-in-make-method-lambda
    #:macro-function-exists-p))
