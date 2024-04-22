@@ -53,8 +53,7 @@
    documentation
    method-lambda))
 
-(defmacro defmethod
-    (&environment environment function-name &rest rest)
+(defun expand-defmethod (environment function-name rest)
   (let ((unspecialized-token (gensym)))
     (multiple-value-bind
           (qualifiers required remaining specializers
@@ -81,3 +80,7 @@
            function-name lambda-list qualifiers
            (subst 't unspecialized-token specializers)
            documentation method-lambda))))))
+
+(defmacro defmethod
+    (&environment environment function-name &rest rest)
+  (expand-defmethod environment function-name rest))
