@@ -24,5 +24,6 @@
    #:ensure-generic-function
    #:wrap-in-setf-type-function
    #:proclaim
+   #:make-method-lambda-wrapper
    #:wrap-in-make-method-lambda
    #:macro-function-exists-p))

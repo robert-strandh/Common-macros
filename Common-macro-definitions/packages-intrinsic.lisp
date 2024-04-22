@@ -15,5 +15,6 @@
    #:defgeneric-compile-time-action
    #:ensure-generic-function
    #:wrap-in-setf-type-function
+   #:make-method-lambda-wrapper
    #:wrap-in-make-method-lambda
    #:macro-function-exists-p))
