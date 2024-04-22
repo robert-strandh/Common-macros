@@ -53,7 +53,8 @@
    documentation
    method-lambda))
 
-(defun expand-defmethod (environment function-name rest)
+(defun expand-defmethod
+    (function-name rest make-method-lambda-wrapper)
   (let ((unspecialized-token (gensym)))
     (multiple-value-bind
           (qualifiers required remaining specializers
@@ -65,22 +66,21 @@
                               unless (eq specializer unspecialized-token)
                                 collect parameter)))
         (let ((method-lambda
-                (wrap-in-make-method-lambda
-                 *client*
-                 `(lambda ,lambda-list
-                    ,@declarations
-                    (declare (ignorable ,@ignorables))
-                    (block ,(if (consp function-name)
-                                (second function-name)
-                                function-name)
-                      ,@forms))
-                 environment)))
+                (funcall make-method-lambda-wrapper
+                         `(lambda ,lambda-list
+                            ,@declarations
+                            (declare (ignorable ,@ignorables))
+                            (block ,(if (consp function-name)
+                                        (second function-name)
+                                        function-name)
+                              ,@forms)))))
           (wrap-in-ensure-method
            *client*
            function-name lambda-list qualifiers
            (subst 't unspecialized-token specializers)
            documentation method-lambda))))))
 
-(defmacro defmethod
-    (&environment environment function-name &rest rest)
-  (expand-defmethod environment function-name rest))
+(defmacro defmethod (function-name &rest rest)
+  (expand-defmethod
+   function-name rest
+   (make-method-lambda-wrapper *client*)))
