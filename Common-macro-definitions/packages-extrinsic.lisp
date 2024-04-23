@@ -15,7 +15,6 @@
    #:macroexpand-1
    #:defmacro
    #:get-setf-expansion
-   #:wrap-in-ensure-method
    #:defun-compile-time-action
    #:defclass-compile-time-action
    #:ensure-class-name

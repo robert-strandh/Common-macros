@@ -7,7 +7,6 @@
            #:proclaim)
   (:export
    #:*client*
-   #:wrap-in-ensure-method
    #:defun-compile-time-action
    #:defclass-compile-time-action
    #:ensure-class-name
