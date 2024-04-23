@@ -133,10 +133,6 @@
   (mapcar #'string
           (group-options :nicknames options)))
 
-(defun gather-local-nicknames (options)
-  (mapcar #'string
-          (group-options :local-nicknames options)))
-
 (defun make-shadowing-imports (options package-var)
   (loop for (option-name . arguments) in options
         when (eq option-name :shadowing-import-from)
@@ -185,6 +181,13 @@
                 collect (find-symbol (string name) ,package-var))
           ,package-var))))
 
+(defun make-local-nicknames
+    (options add-local-nickname package-var)
+  (let ((local-nicknames-options (group-options :export options)))
+    (loop for (nickname package-name) in local-nicknames-options
+          collect `(,add-local-nickname
+                    nickname (find-package ',package-name) ,package-var))))
+
 (defun defpackage-expander (name options)
   (check-defpackage-options options)
   (let ((package-var (gensym)))
@@ -202,7 +205,8 @@
          ,(make-use options package-var)
          ,@(make-imports options package-var)
          ,@(make-intern options package-var)
-         ,(make-export options package-var)))))
+         ,(make-export options package-var)
+         ,@(make-local-nicknames options package-var)))))
 
 (defmacro defpackage (name &rest options)
   (defpackage-expander name options))
