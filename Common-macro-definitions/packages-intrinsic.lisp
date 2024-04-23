@@ -12,7 +12,7 @@
    #:ensure-class-name
    #:defgeneric-compile-time-action
    #:ensure-generic-function
-   #:wrap-in-setf-type-function
+   #:setf-type-function-wrapper
    #:make-method-lambda-wrapper
    #:ensure-method-wrapper
    #:macro-function-exists-p))
