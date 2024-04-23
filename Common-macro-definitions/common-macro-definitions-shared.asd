@@ -6,7 +6,6 @@
   :components
   ((:file "utilities")
    (:file "defmethod")
-   (:file "defvar")
    (:file "deftype")
    (:file "defpackage")
    (:file "defparameter")

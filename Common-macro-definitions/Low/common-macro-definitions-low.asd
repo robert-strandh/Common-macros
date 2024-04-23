@@ -24,5 +24,6 @@
    (:file "nth-value")
    (:file "shiftf")
    (:file "rotatef")
+   (:file "defvar")
    (:file "expand-defmethod")
    (:file "expand-deftype")))
