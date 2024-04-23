@@ -42,17 +42,8 @@
 
 (defgeneric ensure-method-wrapper (client))
 
-(defgeneric wrap-in-ensure-method
-  (client
-   function-name
-   lambda-list
-   qualifiers
-   specializers
-   documentation
-   method-lambda))
-
 (defun expand-defmethod
-    (function-name rest make-method-lambda-wrapper)
+    (function-name rest make-method-lambda-wrapper ensure-method-wrapper)
   (let ((unspecialized-token (gensym)))
     (multiple-value-bind
           (qualifiers required remaining specializers
@@ -72,13 +63,13 @@
                                         (second function-name)
                                         function-name)
                               ,@forms)))))
-          (wrap-in-ensure-method
-           *client*
-           function-name lambda-list qualifiers
-           (subst 't unspecialized-token specializers)
-           documentation method-lambda))))))
+          (funcall ensure-method-wrapper
+                   function-name lambda-list qualifiers
+                   (subst 't unspecialized-token specializers)
+                   documentation method-lambda))))))
 
 (defmacro defmethod (function-name &rest rest)
   (expand-defmethod
    function-name rest
-   (make-method-lambda-wrapper *client*)))
+   (make-method-lambda-wrapper *client*)
+   (ensure-method-wrapper *client*)))
