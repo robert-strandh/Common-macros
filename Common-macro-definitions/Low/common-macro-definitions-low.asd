@@ -23,4 +23,5 @@
    (:file "multiple-value-setq")
    (:file "nth-value")
    (:file "shiftf")
-   (:file "rotatef")))
+   (:file "rotatef")
+   (:file "expand-defmethod")))
