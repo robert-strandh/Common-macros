@@ -188,7 +188,7 @@
           collect `(,add-local-nickname
                     nickname (find-package ',package-name) ,package-var))))
 
-(defun defpackage-expander (name options)
+(defun expand-defpackage (name options)
   (check-defpackage-options options)
   (let ((package-var (gensym)))
     `(eval-when (:compile-toplevel :load-toplevel :execute)
@@ -209,4 +209,4 @@
          #+(or),@(make-local-nicknames options package-var)))))
 
 (defmacro defpackage (name &rest options)
-  (defpackage-expander name options))
+  (expand-defpackage name options))
