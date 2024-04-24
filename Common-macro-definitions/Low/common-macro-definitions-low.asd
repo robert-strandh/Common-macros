@@ -26,4 +26,5 @@
    (:file "rotatef")
    (:file "defvar")
    (:file "expand-defmethod")
-   (:file "expand-deftype")))
+   (:file "expand-deftype")
+   (:file "expand-defpackage")))
