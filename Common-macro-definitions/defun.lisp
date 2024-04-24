@@ -4,12 +4,12 @@
 (defgeneric defun-compile-time-action
     (client name lambda-list environment))
 
-(defmacro defun (&environment environment name lambda-list &body body)
+(defun expand-defun (name lambda-list body compile-time-action)
   (multiple-value-bind (declarations documentation forms)
       (ecc:separate-function-body body)
     `(progn
        (eval-when (:compile-toplevel)
-         ,(defun-compile-time-action *client* name lambda-list environment))
+         ,compile-time-action)
        (eval-when (:load-toplevel :execute)
          (setf (fdefinition ',name)
                (lambda ,lambda-list
@@ -20,3 +20,8 @@
                  (block ,(if (symbolp name) name (second name))
                    ,@forms)))
          ',name))))
+
+(defmacro defun (&environment environment name lambda-list &body body)
+  (expand-defun
+   name lambda-list body
+   (defun-compile-time-action *client* name lambda-list environment)))
