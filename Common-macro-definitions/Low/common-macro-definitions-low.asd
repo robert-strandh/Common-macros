@@ -27,4 +27,5 @@
    (:file "defvar")
    (:file "expand-defmethod")
    (:file "expand-deftype")
-   (:file "expand-defpackage")))
+   (:file "expand-defpackage")
+   (:file "expand-defun")))
