@@ -264,9 +264,8 @@
 
 (defgeneric ensure-class-name (client))
 
-(defmacro defclass
-    (&environment environment
-     name superclass-names slot-specifiers &rest options)
+(defun expand-defclass
+    (environment name superclass-names slot-specifiers options)
   (let* ((canonicalized-superclass-names
            (canonicalize-direct-superclass-names superclass-names))
          (options (canonicalize-defclass-options options))
@@ -288,3 +287,9 @@
           :direct-slots
           ,(canonicalize-direct-slot-specs slot-specifiers)
           ,@options)))))
+
+(defmacro defclass
+    (&environment environment
+     name superclass-names slot-specifiers &rest options)
+  (expand-defclass
+   environment name superclass-names slot-specifiers options))
