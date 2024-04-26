@@ -265,19 +265,15 @@
 (defgeneric ensure-class-name (client))
 
 (defun expand-defclass
-    (environment name superclass-names slot-specifiers options)
+    (name superclass-names slot-specifiers options compile-time-action)
   (let* ((canonicalized-superclass-names
            (canonicalize-direct-superclass-names superclass-names))
          (options (canonicalize-defclass-options options))
          (metaclass-name (getf options :metaclass 'standard-class)))
     `(progn
        (eval-when (:compile-toplevel)
-         ,(defclass-compile-time-action
-            *client*
-            name
-            canonicalized-superclass-names
-            metaclass-name
-            environment))
+         ,(funcall compile-time-action
+                   name canonicalized-superclass-names metaclass-name))
        (eval-when (:load-toplevel :execute)
          (,(ensure-class-name *client*)
           ',name
@@ -292,4 +288,8 @@
     (&environment environment
      name superclass-names slot-specifiers &rest options)
   (expand-defclass
-   environment name superclass-names slot-specifiers options))
+   name superclass-names slot-specifiers options
+   (lambda (name canonicalized-superclass-names metaclass-name)
+     (defclass-compile-time-action
+       *client* name canonicalized-superclass-names
+       metaclass-name environment))))
