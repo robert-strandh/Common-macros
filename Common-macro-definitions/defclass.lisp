@@ -265,7 +265,8 @@
 (defgeneric ensure-class-name (client))
 
 (defun expand-defclass
-    (name superclass-names slot-specifiers options compile-time-action)
+    (name superclass-names slot-specifiers options
+     compile-time-action ensure-class-name)
   (let* ((canonicalized-superclass-names
            (canonicalize-direct-superclass-names superclass-names))
          (options (canonicalize-defclass-options options))
@@ -275,7 +276,7 @@
          ,(funcall compile-time-action
                    name canonicalized-superclass-names metaclass-name))
        (eval-when (:load-toplevel :execute)
-         (,(ensure-class-name *client*)
+         (,ensure-class-name
           ',name
           :name ',name
           :direct-superclasses
@@ -292,4 +293,5 @@
    (lambda (name canonicalized-superclass-names metaclass-name)
      (defclass-compile-time-action
        *client* name canonicalized-superclass-names
-       metaclass-name environment))))
+       metaclass-name environment))
+   (ensure-class-name *client*)))
