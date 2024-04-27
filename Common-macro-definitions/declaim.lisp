@@ -2,10 +2,13 @@
 
 (defgeneric proclaim (client declaration-specifier environment))
 
-(defun expand-declaim (environment declaration-specifiers)
+(defun expand-declaim (declaration-specifiers proclaim)
   `(eval-when (:compile-toplevel :load-toplevel :execute)
      ,@(loop for declaration-specifier in declaration-specifiers
-             collect (proclaim *client* declaration-specifier environment))))
+             collect (funcall proclaim declaration-specifier))))
 
 (defmacro declaim (&environment environment &rest declaration-specifiers)
-  (expand-declaim environment declaration-specifiers))
+  (expand-declaim
+   declaration-specifiers
+   (lambda (declaration-specifier)
+     (proclaim *client* declaration-specifier environment))))
