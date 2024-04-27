@@ -53,7 +53,7 @@
 ;;; DEFGENERIC form is reevaluated.
 
 (defun expand-defgeneric
-    (environment name lambda-list options-and-methods)
+    (environment name lambda-list options-and-methods compile-time-action)
   (check-defgeneric-options-and-methods options-and-methods)
   (multiple-value-bind (options methods)
       (separate-options-and-methods options-and-methods)
@@ -85,17 +85,15 @@
              (assoc :documentation options)))
       `(progn
          (eval-when (:compile-toplevel)
-           ,(defgeneric-compile-time-action
-              *client*
-              name
-              lambda-list
-              argument-precedence-order
-              generic-function-class-name
-              method-class-name
-              method-combination-name
-              method-combination-arguments
-              documentation-option
-              environment))
+           ,(funcall compile-time-action
+                     name
+                     lambda-list
+                     argument-precedence-order
+                     generic-function-class-name
+                     method-class-name
+                     method-combination-name
+                     method-combination-arguments
+                     documentation-option))
          (eval-when (:load-toplevel :execute)
            (let ((result 
                    ,(ensure-generic-function
@@ -111,9 +109,29 @@
                      environment)))
              ,@(loop for method in methods
                      collect `(defmethod ,name ,@(rest method)))
-             result))))))  
+             result))))))
 
 (defmacro defgeneric
     (&environment environment name lambda-list &rest options-and-methods)
   (expand-defgeneric
-   environment name lambda-list options-and-methods))
+   environment name lambda-list options-and-methods
+   (lambda
+       (name
+        lambda-list
+        argument-precedence-order
+        generic-function-class-name
+        method-class-name
+        method-combination-name
+        method-combination-arguments
+        documentation-option)
+     (defgeneric-compile-time-action
+       *client*
+       name
+       lambda-list
+       argument-precedence-order
+       generic-function-class-name
+       method-class-name
+       method-combination-name
+       method-combination-arguments
+       documentation-option
+       environment))))
