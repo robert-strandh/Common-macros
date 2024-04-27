@@ -52,8 +52,8 @@
 ;;; slot of the generic function so that we can remove them when the
 ;;; DEFGENERIC form is reevaluated.
 
-(defmacro defgeneric
-    (&environment environment name lambda-list &rest options-and-methods)
+(defun expand-defgeneric
+    (environment name lambda-list options-and-methods)
   (check-defgeneric-options-and-methods options-and-methods)
   (multiple-value-bind (options methods)
       (separate-options-and-methods options-and-methods)
@@ -111,4 +111,9 @@
                      environment)))
              ,@(loop for method in methods
                      collect `(defmethod ,name ,@(rest method)))
-             result))))))
+             result))))))  
+
+(defmacro defgeneric
+    (&environment environment name lambda-list &rest options-and-methods)
+  (expand-defgeneric
+   environment name lambda-list options-and-methods))
