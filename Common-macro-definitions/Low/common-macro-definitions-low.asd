@@ -31,6 +31,7 @@
    (:file "expand-defun")
    (:file "expand-defclass")
    (:file "expand-defgeneric")
+   (:file "expand-declaim")
    (:file "defsetf")
    (:file "destructuring-bind")
    (:file "do-symbols")
