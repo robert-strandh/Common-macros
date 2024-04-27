@@ -29,4 +29,5 @@
    (:file "expand-deftype")
    (:file "expand-defpackage")
    (:file "expand-defun")
-   (:file "expand-defclass")))
+   (:file "expand-defclass")
+   (:file "expand-defgeneric")))
