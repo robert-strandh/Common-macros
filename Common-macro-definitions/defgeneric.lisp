@@ -53,7 +53,8 @@
 ;;; DEFGENERIC form is reevaluated.
 
 (defun expand-defgeneric
-    (environment name lambda-list options-and-methods compile-time-action)
+    (name lambda-list options-and-methods
+     compile-time-action ensure-generic-function)
   (check-defgeneric-options-and-methods options-and-methods)
   (multiple-value-bind (options methods)
       (separate-options-and-methods options-and-methods)
@@ -96,17 +97,15 @@
                      documentation-option))
          (eval-when (:load-toplevel :execute)
            (let ((result 
-                   ,(ensure-generic-function
-                     *client*
-                     name
-                     lambda-list
-                     argument-precedence-order
-                     generic-function-class-name
-                     method-class-name
-                     method-combination-name
-                     method-combination-arguments
-                     documentation-option
-                     environment)))
+                   ,(funcall ensure-generic-function
+                             name
+                             lambda-list
+                             argument-precedence-order
+                             generic-function-class-name
+                             method-class-name
+                             method-combination-name
+                             method-combination-arguments
+                             documentation-option)))
              ,@(loop for method in methods
                      collect `(defmethod ,name ,@(rest method)))
              result))))))
@@ -114,7 +113,7 @@
 (defmacro defgeneric
     (&environment environment name lambda-list &rest options-and-methods)
   (expand-defgeneric
-   environment name lambda-list options-and-methods
+   name lambda-list options-and-methods
    (lambda
        (name
         lambda-list
@@ -134,4 +133,24 @@
        method-combination-name
        method-combination-arguments
        documentation-option
-       environment))))
+       environment))
+   (lambda
+       (name
+        lambda-list
+        argument-precedence-order
+        generic-function-class-name
+        method-class-name
+        method-combination-name
+        method-combination-arguments
+        documentation-option)
+     (ensure-generic-function
+      *client*
+      name
+      lambda-list
+      argument-precedence-order
+      generic-function-class-name
+      method-class-name
+      method-combination-name
+      method-combination-arguments
+      documentation-option
+      environment))))
