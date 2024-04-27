@@ -14,8 +14,6 @@
    (:file "defun")
    (:file "defclass")
    (:file "defgeneric")
-   (:file "defsetf")
-   (:file "destructuring-bind")
    (:file "declaim")
    (:file "do-symbols")
    (:file "lambda")

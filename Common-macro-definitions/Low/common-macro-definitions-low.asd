@@ -30,4 +30,6 @@
    (:file "expand-defpackage")
    (:file "expand-defun")
    (:file "expand-defclass")
-   (:file "expand-defgeneric")))
+   (:file "expand-defgeneric")
+   (:file "defsetf")
+   (:file "destructuring-bind")))
