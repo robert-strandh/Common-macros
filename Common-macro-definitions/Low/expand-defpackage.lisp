@@ -183,12 +183,12 @@
 
 (defun make-local-nicknames
     (options add-local-nickname package-var)
-  (let ((local-nicknames-options (group-options :export options)))
+  (let ((local-nicknames-options (group-options :local-nicknames options)))
     (loop for (nickname package-name) in local-nicknames-options
           collect `(,add-local-nickname
-                    nickname (find-package ',package-name) ,package-var))))
+                    ',nickname (find-package ',package-name) ,package-var))))
 
-(defun expand-defpackage (name options)
+(defun expand-defpackage (name options add-local-nickname)
   (check-defpackage-options options)
   (let ((package-var (gensym)))
     `(eval-when (:compile-toplevel :load-toplevel :execute)
@@ -206,4 +206,4 @@
          ,@(make-imports options package-var)
          ,@(make-intern options package-var)
          ,(make-export options package-var)
-         #+(or),@(make-local-nicknames options package-var)))))
+         #+(or),@(make-local-nicknames options add-local-nickname package-var)))))
