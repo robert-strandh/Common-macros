@@ -16,6 +16,7 @@
    #:defmacro
    #:get-setf-expansion
    #:defun-compile-time-action
+   #:add-local-nickname
    #:defclass-compile-time-action
    #:ensure-class-name
    #:defgeneric-compile-time-action
