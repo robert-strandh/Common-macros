@@ -206,4 +206,4 @@
          ,@(make-imports options package-var)
          ,@(make-intern options package-var)
          ,(make-export options package-var)
-         #+(or),@(make-local-nicknames options add-local-nickname package-var)))))
+         ,@(make-local-nicknames options add-local-nickname package-var)))))
