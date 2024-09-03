@@ -2,7 +2,7 @@
 
 (defmacro pop (&environment environment place)
   (multiple-value-bind (vars vals store-vars writer-form reader-form)
-      (get-setf-expansion place environment)
+      (get-setf-expansion *client* place environment)
     `(let* (,@(mapcar #'list vars vals)
             (,(car store-vars) ,reader-form))
        (if (listp ,(car store-vars))

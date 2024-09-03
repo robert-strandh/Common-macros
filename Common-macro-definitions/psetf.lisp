@@ -6,7 +6,7 @@
            ;; values returned by GET-SETF-EXPANSION.
            (loop for place in pairs by #'cddr
                  collect (multiple-value-list
-                          (get-setf-expansion place environment))))
+                          (get-setf-expansion *client* place environment))))
          (result
            ;; We start by creating the body of the result, which
            ;; contains all the STORE-FORMs, storing the
