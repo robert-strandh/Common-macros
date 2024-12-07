@@ -2,7 +2,7 @@
 
 (defmacro remf (&environment environment place indicator)
   (multiple-value-bind (vars vals store-vars writer-form reader-form)
-      (get-setf-expansion place environment)
+      (get-setf-expansion *client* place environment)
     (let ((indicator-var (gensym)))
       `(let* (,@(if (null vars)
                     `()

@@ -38,7 +38,7 @@
              `(error 'both-test-and-test-not-given))
       (let ((item-var (gensym)))
         (multiple-value-bind (vars vals store-vars writer-form reader-form)
-            (get-setf-expansion place environment)
+            (get-setf-expansion *client* place environment)
           `(let ((,item-var ,item)
                  ,@(mapcar #'list vars vals)
                  ,@(make-bindings args))
