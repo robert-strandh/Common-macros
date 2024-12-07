@@ -58,10 +58,10 @@
 (defun make-variable-reference-ast (variable-definition-ast)
   (let ((result (make-instance 'ico:variable-reference-ast
                   :name (ico:name variable-definition-ast)
-                  :variable-definition-ast variable-definition-ast)))
+                  :definition-ast variable-definition-ast)))
     (reinitialize-instance variable-definition-ast
-      :variable-reference-asts
-      (append (ico:variable-reference-asts variable-definition-ast)
+      :reference-asts
+      (append (ico:reference-asts variable-definition-ast)
               (list result)))
     result))
 
