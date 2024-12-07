@@ -24,7 +24,11 @@
     ;; evaluate the sub forms of the place and in a
     ;; MULTIPLE-VALUE-BIND to bind the STORE-VARIABLEs to the values
     ;; of the respective FORM.
-    (loop for form in (reverse pairs) by #'cddr
+    (loop ;; SBCL LOOP has a bug that makes IN (REVERSE ...) BY
+          ;; ... error with BY not being a recognized LOOP keyword.
+          ;; So we set a temporary variable instead.
+          with reverse-pairs = (reverse pairs)
+          for form in reverse-pairs by #'cddr
           for (temporary-variables
                value-forms
                store-variables)
