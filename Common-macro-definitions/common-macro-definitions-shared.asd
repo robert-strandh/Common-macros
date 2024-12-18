@@ -27,4 +27,5 @@
    (:file "remf")
    (:file "rotatef")
    (:file "setf")
-   (:file "shiftf")))
+   (:file "shiftf")
+   (:file "define-modify-macro")))
