@@ -25,4 +25,5 @@
    #:proclaim
    #:make-method-lambda-wrapper
    #:ensure-method-wrapper
-   #:macro-function-exists-p))
+   #:macro-function-exists-p
+   #:wrap-in-setf-setf-expander))
