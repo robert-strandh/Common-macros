@@ -6,6 +6,9 @@
   `(eval-when (:compile-toplevel :load-toplevel :execute)
      ,(wrap-in-setf-setf-expander
        ;; DEFINE-SETF-EXPANDER just has an ordinary macro lambda list, ergo
-       *client* access-fn (ecc:parse-macro access-fn lambda-list body environment)
+       *client*
+       access-fn
+       (ecc:parse-macro-using-canonicalization
+        access-fn lambda-list body environment)
        environment)
      ',access-fn))
