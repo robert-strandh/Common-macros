@@ -27,7 +27,7 @@
                            (second rest)))))
          (multiple-value-bind
                (vars vals store-vars writer-form reader-form)
-             (get-setf-expansion ,place-var)
+             (cl:get-setf-expansion ,place-var)
            ;; This last part would look more "natural" if written
            ;; using the backquote facility, but the problem is that
            ;; the DEFINE-MODIFY-MACRO macro code is read by some
