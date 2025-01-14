@@ -1,6 +1,7 @@
 (cl:in-package #:common-macro-definitions)
 
-(defmacro setf (&whole form &environment env place new-value-form &rest more-pairs)
+(defmacro setf
+    (&whole form &environment env place new-value-form &rest more-pairs)
   (cond ((null more-pairs)
          (multiple-value-bind (variables
                                values
