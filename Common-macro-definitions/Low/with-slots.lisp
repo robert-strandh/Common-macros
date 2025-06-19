@@ -7,7 +7,7 @@
            ,(loop for entry in slot-entries
                   collect (if (symbolp entry)
                               `(,entry
-                                (slot-value ,instance-var ,entry))
+                                (slot-value ,instance-var ',entry))
                               `(,(first entry)
-                                (slot-value ,instance-var ,(second entry)))))
+                                (slot-value ,instance-var ',(second entry)))))
          ,@body))))
