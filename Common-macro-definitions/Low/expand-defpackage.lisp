@@ -198,8 +198,6 @@
                     (make-package ,(string name)
                       :nicknames ',(gather-nicknames options))
                     ,package-var)))
-         (setf (find-package ',(string name))
-               ,package-var)
          ,@(make-shadowing-imports options package-var)
          ,(make-shadow options package-var)
          ,(make-use options package-var)
