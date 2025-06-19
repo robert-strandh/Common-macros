@@ -196,7 +196,7 @@
               (,package-var
                 (if (null ,package-var)
                     (make-package ,(string name)
-                      :nicknames ',(gather-nicknames options))
+                      :nicknames ',(gather-nicknames options) :use '())
                     ,package-var)))
          ,@(make-shadowing-imports options package-var)
          ,(make-shadow options package-var)
