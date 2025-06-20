@@ -2,4 +2,5 @@
 
 (defmacro in-package (string-designator)
   `(eval-when (:compile-toplevel :load-toplevel :execute)
-     (setq *package* (find-package ',string-designator))))
+     (setq *package* (or (find-package ',string-designator)
+                       (error 'package-error :package ',string-designator)))))
